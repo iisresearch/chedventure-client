@@ -1,0 +1,31 @@
+<div fxLayout="column">
+  <h2 mat-dialog-title style="margin-bottom: 0.5em">Select image</h2>
+  <div style="color: #747474">Please select the image you would like to use in this room</div>
+  <mat-divider style="margin: 1em 0 1em 0"></mat-divider>
+
+  <mat-dialog-content fxLayout="row wrap" fxLayoutGap="10px grid">
+    <div *ngFor="let room of data.rooms">
+
+      <mat-card class="room-select-card">
+        <mat-card-header>
+          <mat-card-title>{{room.name}}</mat-card-title>
+        </mat-card-header>
+        <img mat-card-image [src]="getImageOfRoom(room)"/>
+        <mat-card-content>
+          <div *ngIf="room.hitboxes !== undefined">
+            <p>Number of hitboxes in the room: <b>{{room.hitboxes.length}}</b></p>
+          </div>
+        </mat-card-content>
+        <mat-card-actions fxLayout="row" fxLayoutAlign="space-between">
+          <button mat-button (click)="onSelect(room)">SELECT</button>
+          <button *ngIf="room.createdByUserId" (click)="onDelete(room)" mat-button color="warn" type="button">DELETE</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </mat-dialog-content>
+
+
+
+</div>
+
+

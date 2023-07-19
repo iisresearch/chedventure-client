@@ -1,0 +1,49 @@
+<div fxLayout="column">
+  <ng-container *ngIf="!createNewCharacter; else updateCharacterTitle">
+    <h3>Configure character</h3>
+  </ng-container>
+  <ng-template #updateCharacterTitle>
+    <h3>Configure new character</h3>
+  </ng-template>
+
+  <form [formGroup]="characterForm" fxLayout="column" (ngSubmit)="onSubmit()">
+
+    <mat-form-field>
+      <mat-label for="name">Name</mat-label>
+      <input matInput id="name" type="text" formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label for="title">Title</mat-label>
+      <input matInput id="title" type="text" formControlName="title">
+      <mat-hint align="start">Optional: Description the title or position (e.g. CEO) of this character.</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label for="description">Description</mat-label>
+      <textarea matInput id="description" type="text" formControlName="description"></textarea>
+      <mat-hint align="start">Optional: Description of this character.</mat-hint>
+    </mat-form-field>
+
+    <mat-checkbox (change)="onChangeUseDummyChatbot()" style="margin-top: 1em" color="primary" formControlName="useDummyChatbot">
+      Use dummy chatbot
+    </mat-checkbox>
+
+    <mat-form-field [class.disabled]="this.useDummyChatbot?.value">
+      <mat-label for="chatbotUrl">Chatbot URL</mat-label>
+      <input matInput id="chatbotUrl" type="text" formControlName="chatbotUrl">
+    </mat-form-field>
+
+    <div fxLayout="row">
+      <div style="margin: 1em 1em 1em 1em;" *ngIf="character !== undefined && character !== null">
+        <button mat-raised-button color="primary" type="submit">Save</button>
+      </div>
+      <div style="margin: 1em 1em 1em 1em;" *ngIf="!createNewCharacter">
+        <button mat-raised-button color="warn" (click)="deleteCharacter()" type="button">Delete</button>
+      </div>
+    </div>
+
+
+  </form>
+
+</div>

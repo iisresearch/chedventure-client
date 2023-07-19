@@ -1,0 +1,62 @@
+<div id="chat" *ngIf="chatIsShown">
+  <iframe width="750" height="750" src="https://creator.voiceflow.com/prototype/626abdde3e2ab5c39626f392"></iframe>
+</div>
+
+
+<div id="toolBar">
+  <div class="button-row" fxLayout="row" fxLayoutAlign="space-evenly">
+    <button mat-raised-button color="accent" (click)="moveBack()" [disabled]="moveBackIsDisabled">Go to previous room</button>
+    <button mat-raised-button color="accent" (click)="moveToMap()" [disabled]="moveToMapIsDisabled">Go to map</button>
+  </div>
+  <mat-divider></mat-divider>
+  <h3>Next Step</h3>
+  <ul>
+    <li *ngIf="mapIsShown">Hover over any of the selectable rooms to get a preview of the room.</li>
+    <li *ngIf="mapIsShown">Select the room you would like to enter.</li>
+
+    <li *ngIf="roomIsShown">Hover over any of the stakeholders to get a preview of him/her in the toolbar.</li>
+    <li *ngIf="roomIsShown">Select the stakeholder you would like to interact with or go
+      back to ground plan.</li>
+
+    <li *ngIf="chatIsShown">Converse in the chat or find another stakeholder you would like to talk to.</li>
+  </ul>
+  <mat-divider></mat-divider>
+
+  <div *ngIf="roomIsShown">
+    <h4>Conference Room</h4>
+    <p>You are currently in the <i>Conference Room</i>. There are <i>3</i> stakeholders waiting for a conversation with you.</p>
+  </div>
+
+  <div *ngIf="hoverRoom && mapIsShown">
+    <h4>Conference Room</h4>
+    <p>There are <i>3</i> stakeholders waiting for a conversation with you in the <i>Conference Room</i> :</p>
+    <ul>
+      <li><i>Sally Mustermann, Product Manager</i></li>
+      <li><i>Ximena Hans, CEO</i></li>
+      <li><i>Lucy Biplab, Secretary</i></li>
+    </ul>
+    <img src="assets/meeting-room.jpg" style="max-width: 350px;"/>
+  </div>
+
+  <div *ngIf="roomIsShown && hoverStakeholder && selectedStakeholderName as name">
+    <mat-divider></mat-divider>
+    <h4>{{name}}</h4>
+    <ul>
+      <li><i>{{name}}</i> is waiting for a conversation with you!</li>
+      <li *ngIf="selectedStakeholderPosition as position">Position: <i>{{position}}</i></li>
+      <li *ngIf="selectedStakeholderDescription as description">{{description}}</li>
+    </ul>
+  </div>
+
+  <div *ngIf="chatIsShown && selectedStakeholder as stakeholder">
+    <h4>{{stakeholder.name}}</h4>
+    <ul>
+      <li *ngIf="selectedStakeholderPosition as position">Position: <i>{{position}}</i></li>
+      <li *ngIf="selectedStakeholderDescription as description">{{description}}</li>
+    </ul>
+  </div>
+
+
+</div>
+
+

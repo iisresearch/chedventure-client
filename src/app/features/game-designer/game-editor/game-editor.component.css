@@ -1,0 +1,15 @@
+#game-editor {
+  padding: 0em 5em 0em 5em;
+}
+
+#game-editor > mat-tab-group {
+  width: 100%;
+}
+
+#game-editor > mat-stepper {
+  width: 100%;
+}
+
+.tab-game-editor {
+  padding: 1em 0em 3em 0em;
+}

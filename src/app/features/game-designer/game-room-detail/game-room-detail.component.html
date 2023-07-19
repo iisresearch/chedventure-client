@@ -1,0 +1,97 @@
+<!--
+<mat-drawer-container>
+  <mat-drawer mode="side" opened fxLayout="column">
+    <h2>Objects</h2>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <h3>Rooms</h3>
+      <button mat-raised-button color="primary"><mat-icon>add</mat-icon>Room</button>
+    </div>
+    <mat-divider></mat-divider>
+    <h3>Characters</h3>
+  </mat-drawer>
+  <mat-drawer-content>
+    <app-game-room-detail></app-game-room-detail>
+  </mat-drawer-content>
+</mat-drawer-container>
+-->
+
+<div fxLayout="row">
+  <mat-card fxFlex="30" fxLayout="column">
+    <mat-card-title>Your Game Assets</mat-card-title>
+
+    <div fxLayout="column">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <h3>Rooms</h3>
+        <button mat-icon-button color="primary" (click)="createRoomToGame()"><mat-icon>add</mat-icon></button>
+      </div>
+      <mat-selection-list #roomsToGameSelection [multiple]="false" (selectionChange)="onChangeRoom($event)"
+                          [(ngModel)]="selectedRoomToGame" [compareWith]="compareRoomToGameFunction">
+        <mat-list-option *ngFor="let roomToGame of this.roomsToGame" [value]="roomToGame" [selected]="roomToGameIsSelected(roomToGame)">
+          {{roomToGame.name}}
+        </mat-list-option>
+      </mat-selection-list>
+      <ng-container *ngIf="roomsToGame === undefined || roomsToGame.length === 0">
+        <mat-card-subtitle>No room created yet</mat-card-subtitle>
+      </ng-container>
+
+
+    </div>
+
+    <div fxLayout="column">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <h3>Characters</h3>
+        <button mat-icon-button color="primary" (click)="createCharacter()"><mat-icon>add</mat-icon></button>
+      </div>
+      <mat-selection-list #charactersToGameSelection [multiple]="false" (selectionChange)="onChangeCharacter($event)"
+                          [(ngModel)]="selectedCharacter" [compareWith]="compareCharactersFunction">
+        <mat-list-option *ngFor="let character of this.characters" [value]="character" [selected]="characterIsSelected(character)">
+          {{character.name}}
+        </mat-list-option>
+      </mat-selection-list>
+      <ng-container *ngIf="characters === undefined || characters.length === 0">
+        <mat-card-subtitle>No character created yet</mat-card-subtitle>
+      </ng-container>
+    </div>
+
+
+
+  </mat-card>
+  <div fxFlex="70" style="padding-left: 3em">
+
+    <!-- Determines which form compoment should be displayed. -->
+
+    <!-- The user clicks on an existing room, which he wants to edit or see the details -->
+    <ng-container *ngIf="selectedRoomToGame && selectedRoomToGame.length !== 0 && roomsToGameSelection.selectedOptions.selected[0]; else createNewRoomToGame">
+      <app-game-room-detail-edit [game]="game" [createNewRoomToGame]="false" [roomToGame]="roomsToGameSelection.selectedOptions.selected[0]!.value" (updatedRoomToGame)="updatedRoomToGame($event)" (deletedRoomToGame)="deletedRoomToGame($event)" (addedNewRoom)="addedNewRoom($event)" [rooms]="this.rooms" [roomsToGame]="this.roomsToGame" [characters]="this.characters"></app-game-room-detail-edit>
+    </ng-container>
+    <ng-template #createNewRoomToGame>
+
+      <!-- The user clicks on create new room button -->
+      <ng-container *ngIf="createNewRoom; else updateCharacter">
+        <app-game-room-detail-edit [game]="game" [createNewRoomToGame]="true" (updatedRoomToGame)="updatedRoomToGame($event)" [rooms]="this.rooms" [roomsToGame]="this.roomsToGame" [characters]="this.characters" (addedNewRoom)="addedNewRoom($event)"></app-game-room-detail-edit>
+      </ng-container>
+
+      <ng-template #updateCharacter>
+
+        <!-- The user clicks on an existing character, which he wants to edit or see the details -->
+        <ng-container *ngIf="selectedCharacter && selectedCharacter.length !== 0 && charactersToGameSelection.selectedOptions.selected[0]; else createNewCharacterInGame">
+          <app-game-character-detail-edit [game]="game" [character]="charactersToGameSelection.selectedOptions.selected[0]!.value" [createNewCharacter]="false" (updatedCharacter)="updatedCharacter($event)" (deletedCharacter)="deletedCharacter($event)"></app-game-character-detail-edit>
+        </ng-container>
+
+        <!-- The user clicks on create new character button -->
+        <ng-template #createNewCharacterInGame>
+          <ng-container *ngIf="createNewCharacter">
+            <app-game-character-detail-edit [game]="game" [createNewCharacter]="true" (updatedCharacter)="updatedCharacter($event)"></app-game-character-detail-edit>
+          </ng-container>
+        </ng-template>
+
+      </ng-template>
+    </ng-template>
+
+
+  </div>
+</div>
+
+<!--
+roomsToGameSelection.selectedOptions.selected[0]?.value
+-->

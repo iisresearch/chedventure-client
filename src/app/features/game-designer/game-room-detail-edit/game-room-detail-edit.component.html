@@ -1,0 +1,153 @@
+
+<!--<form [formGroup]="roomToGameForm" fxLayout="column">
+
+</form>-->
+
+
+<!--<mat-form-field appearance="fill">
+  <mat-label>Image</mat-label>
+  <mat-select [(value)]="selectedRoom">
+    <mat-option *ngFor="let room of rooms" [value]="room">
+      <img [src]="getImageOfRoom(room)" style="max-width: 75px;"/> {{room.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>-->
+
+
+<div fxLayout="column">
+
+  <ng-container *ngIf="createNewRoomToGame; else updateRoomTitle">
+    <h3>Configure new room</h3>
+  </ng-container>
+  <ng-template #updateRoomTitle>
+    <h3 style="margin-bottom: 0">Configure room</h3>
+  </ng-template>
+  <mat-hint *ngIf="selectedRoom !== undefined && selectedRoom !== null"><small>Don't forget to save your changes with the "Save room" button at the bottom of the page!</small></mat-hint>
+
+
+
+  <div fxLayout="row" fxLayoutAlign="start center" style="margin-bottom: 1em; margin-top: 2em">
+    <button fxFlex="nogrow" mat-raised-button (click)="openSelectRoomDialog()">Select image</button>
+    <span style="margin: 0 1em 0 1em;">----- OR -----</span>
+    <button mat-raised-button (click)="openCreateCustomRoomDialog()">Upload custom image</button>
+  </div>
+
+  <form [formGroup]="roomToGameForm" (ngSubmit)="onSubmit()" fxLayout="column" *ngIf="selectedRoom !== undefined && selectedRoom !== null">
+
+    <mat-form-field>
+      <mat-label for="name">Name</mat-label>
+      <input matInput id="name" type="text" formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label for="description">Description</mat-label>
+      <textarea matInput id="description" type="text" formControlName="description"></textarea>
+      <mat-hint align="start">Optional: Describe what the user finds in this room in your game.</mat-hint>
+    </mat-form-field>
+
+    <ng-container formArrayName="instructions">
+      <h3 style="margin-top:2em;">Instructions</h3>
+      <div *ngFor="let _ of this.instructions.controls; index as i" fxLayout="column">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <mat-form-field fxFlex="">
+            <mat-label for="instruction">{{i+1}}.</mat-label>
+            <input matInput id="instruction" type="text" [formControlName]="i"/>
+          </mat-form-field>
+          <button mat-icon-button color="warn" fxFlex="initial" (click)="removeInstruction(i)"><mat-icon>remove_circle</mat-icon></button>
+        </div>
+      </div>
+      <button mat-stroked-button type="button" fxFlex="nogrow" (click)="addInstruction('')">Add instruction</button>
+    </ng-container>
+
+
+    <h3 style="margin-top:2em;">Configure hitboxes in room</h3>
+
+    <ng-container formArrayName="hitboxesToRoomToGame">
+      <div *ngFor="let hitboxFormGroup of hitboxesToRoomToGame.controls; index as i">
+        <ng-container [formGroupName]="i">
+
+          <div fxLayout="row" fxLayoutAlign="start center">
+
+            <mat-card style="margin: 15px; min-width: 550px;" fxLayout="column">
+
+              <h4>{{i + 1}}. Hitbox</h4>
+
+              <div style="margin-bottom: 0.5em" fxLayout="row" fxLayoutAlign="space-between start">
+                <mat-checkbox color="primary" formControlName="active">
+                  Activate
+                </mat-checkbox>
+
+                 <mat-radio-button color="accent"
+                                   [value]="i"
+                                   matTooltip="By selecting this radio button you can view the hitbox in the image at the bottom of this page."
+                                   (change)="changeHitboxToShow($event)">
+                   Highlight in image
+                 </mat-radio-button>
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="space-between center">
+                <mat-form-field>
+                  <mat-label>Target room</mat-label>
+                  <mat-select [disabled]='!hitboxFormGroup.get("active")?.value'
+                              formControlName="targetRoom"
+                              matTooltip="Please define the target of the hitbox when the user clicks on it."
+                              (selectionChange)="onTargetRoomChange($event, i)">
+                    <mat-option *ngFor="let roomToGame of roomsToGame" [value]="roomToGame.id">
+                      {{roomToGame.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <span style="margin: 0 1em 0 1em;">----- OR -----</span>
+                <mat-form-field>
+                  <mat-label>Target character</mat-label>
+                  <mat-select [disabled]='!hitboxFormGroup.get("active")?.value'
+                              formControlName="targetCharacter"
+                              matTooltip="Please define the target of the hitbox when the user clicks on it."
+                              (selectionChange)="onTargetCharacterChange($event, i)">
+                    <mat-option *ngFor="let character of characters" [value]="character.id">
+                      {{character.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="space-between">
+                <mat-checkbox [disabled]='!hitboxFormGroup.get("active")?.value' color="primary" formControlName="displayHitbox">Display hitbox</mat-checkbox>
+                <mat-checkbox [disabled]='!hitboxFormGroup.get("active")?.value' color="primary" formControlName="blink">Animate hitbox with blinking effect</mat-checkbox>
+              </div>
+
+            </mat-card>
+
+          </div>
+
+
+        </ng-container>
+      </div>
+    </ng-container>
+
+    <div fxLayout="row">
+      <div style="margin: 1em 1em 1em 1em;" *ngIf="selectedRoom !== undefined && selectedRoom !== null">
+        <button mat-raised-button color="primary" type="submit">Save room</button>
+      </div>
+      <div style="margin: 1em 1em 1em 1em;" *ngIf="!createNewRoomToGame">
+        <button mat-raised-button color="warn" (click)="deleteRoomToGame()" type="button">Delete room</button>
+      </div>
+    </div>
+
+  </form>
+
+  <ng-container *ngIf="selectedRoom" style="margin-top: 1em; margin-bottom: 0">
+    <h3>Image of <i>{{this.selectedRoom.name}}</i> with all available hitboxes</h3>
+    <app-game-room-detail-canvas [room]="selectedRoom" [showHitboxWithId]="showHitboxWithId"></app-game-room-detail-canvas>
+  </ng-container>
+
+
+
+
+</div>
+
+
+
+<!--<ng-container *ngIf="this.selectedRoom !== undefined && this.selectedRoom !== null">
+  <img [src]="getImageOfRoom(selectedRoom)" style="max-width: 750px;"/>
+</ng-container>-->

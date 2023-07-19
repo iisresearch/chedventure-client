@@ -1,0 +1,38 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+h1 {
+  text-align: center;
+}
+
+.custom-snackbar-error {
+  text-align: center;
+  color: white;
+  background-color: #d32f2f;
+  line-height: 20px;
+  font-size: 14px;
+}
+
+.custom-snackbar-success {
+  text-align: center;
+  color: white;
+  background-color: #4caf50;
+  line-height: 20px;
+  font-size: 14px;
+}
+
+.custom-snackbar-warning {
+  text-align: center;
+  color: white;
+  background-color: #ed6c02;
+  line-height: 20px;
+  font-size: 14px;
+}
+
+.custom-snackbar-warning > button {
+  color: white;
+}
+
+.mat-simple-snackbar-action > button { color: white }

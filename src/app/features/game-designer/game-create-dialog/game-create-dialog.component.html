@@ -1,0 +1,35 @@
+<form [formGroup]="gameForm" (ngSubmit)="onSubmit()">
+  <h2 mat-dialog-title>Create new game</h2>
+
+  <mat-dialog-content fxLayout="column">
+
+
+    <mat-form-field appearance="standard">
+      <mat-label for="name">Game Name</mat-label>
+      <input matInput id="name" type="text" formControlName="name">
+      <mat-error *ngIf="name?.errors?.['required']">Name is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label for="subtitle">Subtitle</mat-label>
+      <input matInput id="subtitle" type="text" formControlName="subtitle">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label for="author">Author</mat-label>
+      <input matInput id="author" type="text" formControlName="author">
+      <mat-error *ngIf="author?.errors?.['required']">Author is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label for="version">Version</mat-label>
+      <input matInput id="version" type="text" formControlName="version">
+      <mat-error *ngIf="version?.errors?.['required']">Version is required</mat-error>
+    </mat-form-field>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close type="button" [disabled]="false">Close</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="false">Save</button>
+  </mat-dialog-actions>
+</form>

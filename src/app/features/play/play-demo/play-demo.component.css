@@ -1,0 +1,23 @@
+.button-row {
+}
+
+#toolBar {
+  margin-top: 4em;
+  position: absolute;
+  left: 900px;
+  min-height: 450px;
+  min-width: 350px;
+  border-left: 1.5px solid #a9a9a9;
+  padding: 1em;
+}
+
+#toolBar > .mat-divider {
+  margin: 1em;
+}
+
+#chat {
+  margin-top: 5em;
+  margin-left: 5em;
+  position: absolute;
+  z-index: 1;
+}

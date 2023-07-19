@@ -1,0 +1,63 @@
+
+
+
+
+<mat-toolbar *ngIf="showNavbar" color="primary" fxLayout="row" fxLayoutAlign="space-between center" >
+  <span>
+    <button mat-button routerLink="/">{{title}}</button>
+    <!-- <button mat-button routerLink="/"><mat-icon>home</mat-icon></button> -->
+  </span>
+
+  <!-- Navbar menu on display sizes greater than small -->
+  <div fxLayout="row" fxShow="false" fxShow.gt-sm>
+    <button mat-button routerLink="/game">
+      <mat-icon>gamepad</mat-icon>
+      My Games
+    </button>
+
+    <ng-container *ngIf="(isAuthenticated$ | async) === false; else signout">
+      <button mat-button (click)="signIn()" > <!-- ; else signout -->
+        <mat-icon>power_settings_new</mat-icon>
+        Login
+      </button>
+    </ng-container>
+    <ng-template #signout>
+      <button mat-button #signout (click)="signOut()">
+        <mat-icon>exit_to_app</mat-icon>
+        Logout
+      </button>
+    </ng-template>
+
+  </div>
+
+  <!-- Menu on small display -->
+  <button mat-button [mat-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm >
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-menu x-position="before" #menu="matMenu">
+  <!--<button mat-menu-item routerLink="/">
+    <mat-icon>home</mat-icon>
+    Home
+  </button>-->
+  <button mat-menu-item routerLink="/game">
+    <mat-icon>gamepad</mat-icon>
+    My Games
+  </button>
+  <ng-container *ngIf="(isAuthenticated$ | async) === false; else signout">
+    <button mat-menu-item (click)="signIn()">
+      <mat-icon>power_settings_new</mat-icon>
+      Login
+    </button>
+  </ng-container>
+  <ng-template #signout>
+    <button mat-menu-item (click)="signOut()">
+      <mat-icon>exit_to_app</mat-icon>
+      Logout
+    </button>
+  </ng-template>
+
+</mat-menu>
+
+<router-outlet></router-outlet>

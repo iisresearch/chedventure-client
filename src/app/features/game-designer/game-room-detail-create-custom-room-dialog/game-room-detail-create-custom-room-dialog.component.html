@@ -1,0 +1,71 @@
+
+
+<div fxLayout="column">
+  <h2 mat-dialog-title style="margin-bottom: 0.5em">Upload image</h2>
+  <div style="color: #747474">You can upload an image and define the hitboxes by entering the coordinates. Please follow the below instructions or open the ChEdventure user manual for even more detailed instructions:
+    <ul>
+      <li>
+        Please make sure your image has an exact width of 750px and a max-height of 750px. Then, upload your image below and give it a name.
+      </li>
+      <li>
+        We recommend you to use the following website to draw hitboxes on your image & retrive the coordinates: "https://www.image-map.net".
+        <ul>
+          <li>
+            Once you are at "https://www.image-map.net" click “Select Image from My PC” to upload your image.
+          </li>
+          <li>
+            Next, <strong>choose the option “Poly”</strong> under the column “Shape” in the table just below your uploaded image. Please note that if you use the option "Rect", the hitboxes will not correctly configure in ChEdventure!
+          </li>
+          <li>
+            Now, you can freely define an area on the image by clicking within the image.
+          </li>
+          <li>
+            Once you are happy with the defined areas, click “Show Me The Code!” to retrieve the coordinates of each area.
+          </li>
+          <li>
+            Copy the coordinates of the first area and paste it in ChEdventure to the input field
+            "hitbox". You can add new hitboxes in ChEdventure by clicking the “Add hitbox” button
+            & repeat for each area you defined
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+  </div>
+  <mat-divider style="margin: 1em 0 1em 0"></mat-divider>
+
+  <mat-dialog-content>
+
+    <form [formGroup]="roomForm" (ngSubmit)="onSubmit()" fxLayout="column">
+
+      <mat-form-field fxLayout="row">
+        <mat-label for="name">Name</mat-label>
+        <input matInput id="name" type="text" formControlName="name">
+      </mat-form-field>
+
+      <input type="file" (change)="onFileChange($event)" accept=".jpg,.png,.jpeg">
+
+      <ng-container formArrayName="hitboxes" *ngIf="this.fileImage?.value">
+        <h3 style="margin-top:2em;">Hitboxes</h3>
+        <div *ngFor="let _ of hitboxes.controls; index as i">
+          <div fxLayout="row">
+            <mat-form-field fxFlex="grow">
+              <mat-label for="hitbox">{{i+1}}. Hitbox, enter comma-separated coordinates. Such as: 100,454,83,404,109,406,126,433</mat-label>
+              <input matInput id="hitbox" type="text" [formControlName]="i"/>
+            </mat-form-field>
+            <button mat-icon-button type="button" color="warn" fxFlex="initial" (click)="removeHitbox(i)"><mat-icon>remove_circle</mat-icon></button>
+          </div>
+        </div>
+        <button mat-stroked-button type="button" fxFlex="initial" (click)="addHitbox('')">Add hitbox</button>
+      </ng-container>
+
+      <div fxLayout="row" style="margin-top: 1em; margin-bottom: 1em;" *ngIf="this.fileImage?.value">
+        <button mat-raised-button color="primary" type="submit">Save image</button>
+      </div>
+    </form>
+
+    <img [src]="this.fileImage?.value" style="width:750px;max-height:750px"/>
+
+  </mat-dialog-content>
+
+</div>

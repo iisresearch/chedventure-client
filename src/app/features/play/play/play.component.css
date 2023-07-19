@@ -1,0 +1,37 @@
+#toolBar {
+  margin-top: 2em;
+  position: absolute;
+  left: 900px;
+  min-height: 450px;
+  width: 450px;
+  /*max-width: 650px;*/
+  border-left: 1.5px solid #a9a9a9;
+  padding: 1em;
+}
+
+#toolBar > .mat-divider {
+  margin: 1em;
+}
+
+#moveButton {
+  padding: 1em;
+  width: 750px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  margin-top: 3em;
+  margin-left: 5em;
+}
+
+#moveButtonRight {
+  padding: 1em;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+#chat {
+  margin-top: 3em;
+  margin-left: 5em;
+  position: absolute;
+  z-index: 1;
+}
+

@@ -1,0 +1,34 @@
+<div fxLayout="column">
+  <h3>Final configuration of your game</h3>
+
+  <form [formGroup]="gameConfigurationForm" (ngSubmit)="onSubmit()" fxLayout="column">
+
+    <mat-form-field>
+      <mat-label>Initial room in game</mat-label>
+      <mat-select formControlName="initialRoom">
+        <mat-option *ngFor="let roomToGame of roomsToGame" [value]="roomToGame.id">
+          {{roomToGame.name}}
+        </mat-option>
+      </mat-select>
+      <mat-hint align="start">Define what the first visible room in your game is. Please refresh the page if not all of your rooms are being displayed.</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label for="documentation">Documentation</mat-label>
+      <textarea matInput id="documentation" type="text" formControlName="documentation"></textarea>
+      <mat-hint align="start">Optional: Give your students a manual/task description for the game.</mat-hint>
+    </mat-form-field>
+
+    <mat-checkbox color="primary" style="margin-top: 1em" formControlName="isPublished">
+      Publish game
+    </mat-checkbox>
+    <mat-hint align="start"><small>Only once the game is published it is publicly accessible.
+      <span *ngIf="this.isPublished?.value">The game will be available under the following link:
+        <br><span>{{baseUrlD}}/play/{{this.game.id}}</span>
+      </span></small></mat-hint>
+
+    <div style="margin: 1em 1em 1em 1em;" *ngIf="initialRoom?.value || documentation?.value">
+      <button mat-raised-button color="primary" type="submit">Save</button>
+    </div>
+  </form>
+</div>
