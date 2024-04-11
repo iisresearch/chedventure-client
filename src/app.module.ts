@@ -49,7 +49,7 @@ import { GameCreateDialogComponent } from './app/features/game-designer/game-cre
 import { GameRoomDetailComponent } from './app/features/game-designer/game-room-detail/game-room-detail.component';
 import { GameRoomDetailEditComponent } from './app/features/game-designer/game-room-detail-edit/game-room-detail-edit.component';
 import { GameRoomDetailSelectDialogComponent } from './app/features/game-designer/game-room-detail-select-dialog/game-room-detail-select-dialog.component';
-import { MessageErrorToastComponent, MessageSuccessToastComponent } from "./app/core/message.service";
+import { MessageErrorToastComponent, MessageWarningToastComponent, MessageSuccessToastComponent } from "./app/core/message.service";
 import { GameRoomDetailCanvasComponent } from './app/features/game-designer/game-room-detail-canvas/game-room-detail-canvas.component';
 import { GameCharacterDetailEditComponent } from './app/features/game-designer/game-character-detail-edit/game-character-detail-edit.component';
 import { GameDetailEditFinalConfigurationComponent } from './app/features/game-designer/game-detail-edit-final-configuration/game-detail-edit-final-configuration.component';
@@ -72,6 +72,9 @@ const oktaAuth = new OktaAuth({
     PlayComponent,
     SafePipe,
     DialogContentExampleDialog,
+    MessageErrorToastComponent,
+    MessageWarningToastComponent,
+    MessageSuccessToastComponent,
     GameEditorComponent,
     GameDetailEditComponent,
     GameCreateDialogComponent,

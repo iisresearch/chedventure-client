@@ -35,4 +35,4 @@ h1 {
   color: white;
 }
 
-.mat-simple-snackbar-action > button { color: white }
+.mat-mdc-snack-bar-action > button { color: white }

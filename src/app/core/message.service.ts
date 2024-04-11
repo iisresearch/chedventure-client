@@ -5,7 +5,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 export interface IMessage {
   text?: string;
 }
-
+// TODO: Find out why toasts are not displayed as defined in styles.css
 export enum MessageStatus {
   Error,
   Success,
