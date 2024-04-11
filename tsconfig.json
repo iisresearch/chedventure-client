@@ -17,13 +17,17 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
-    "target": "es2020",
+    "target": "ES2022",
     "module": "es2020",
-    "types": ["offscreencanvas", "jasmine"],
+    "types": [
+      "offscreencanvas",
+      "jasmine"
+    ],
     "lib": [
       "es2020",
       "dom"
-    ]
+    ],
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
