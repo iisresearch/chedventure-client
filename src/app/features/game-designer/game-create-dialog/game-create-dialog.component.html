@@ -4,13 +4,13 @@
   <mat-dialog-content fxLayout="column">
 
 
-    <mat-form-field appearance="standard">
+    <mat-form-field>
       <mat-label for="name">Game Name</mat-label>
       <input matInput id="name" type="text" formControlName="name">
       <mat-error *ngIf="name?.errors?.['required']">Name is required</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="standard">
+    <mat-form-field>
       <mat-label for="subtitle">Subtitle</mat-label>
       <input matInput id="subtitle" type="text" formControlName="subtitle">
     </mat-form-field>

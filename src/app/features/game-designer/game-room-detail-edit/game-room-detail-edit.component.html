@@ -13,8 +13,8 @@
   </mat-select>
 </mat-form-field>-->
 
-
-<div fxLayout="column">
+<!--TODO: Replace flex-layout with plain CSS: DONE -->
+<div class="column" ><!--fxLayout="column"-->
 
   <ng-container *ngIf="createNewRoomToGame; else updateRoomTitle">
     <h3>Configure new room</h3>
@@ -26,13 +26,13 @@
 
 
 
-  <div fxLayout="row" fxLayoutAlign="start center" style="margin-bottom: 1em; margin-top: 2em">
-    <button fxFlex="nogrow" mat-raised-button (click)="openSelectRoomDialog()">Select image</button>
+  <div class="row" style="justify-content: flex-start; align-items: center; align-content: center; margin-bottom: 1em; margin-top: 2em" ><!--fxLayout="row" fxLayoutAlign="start center">-->
+    <button style="flex-grow: 0;"  mat-raised-button (click)="openSelectRoomDialog()">Select image</button> <!--fxFlex="nogrow"-->
     <span style="margin: 0 1em 0 1em;">----- OR -----</span>
     <button mat-raised-button (click)="openCreateCustomRoomDialog()">Upload custom image</button>
   </div>
 
-  <form [formGroup]="roomToGameForm" (ngSubmit)="onSubmit()" fxLayout="column" *ngIf="selectedRoom !== undefined && selectedRoom !== null">
+  <form [formGroup]="roomToGameForm" (ngSubmit)="onSubmit()" class="column"> <!--fxLayout="column" *ngIf="selectedRoom !== undefined && selectedRoom !== null"-->
 
     <mat-form-field>
       <mat-label for="name">Name</mat-label>
@@ -47,16 +47,16 @@
 
     <ng-container formArrayName="instructions">
       <h3 style="margin-top:2em;">Instructions</h3>
-      <div *ngFor="let _ of this.instructions.controls; index as i" fxLayout="column">
-        <div fxLayout="row" fxLayoutAlign="space-between center">
-          <mat-form-field fxFlex="">
+      <div *ngFor="let _ of this.instructions.controls; index as i" class="column" ><!--fxLayout="column"-->
+        <div class="row" style="justify-content: space-between; align-items: center; align-content: center;"> <!--fxLayout="row" fxLayoutAlign="space-between center">-->
+          <mat-form-field style="flex: 1 1 auto;" fxFlex="">
             <mat-label for="instruction">{{i+1}}.</mat-label>
             <input matInput id="instruction" type="text" [formControlName]="i"/>
           </mat-form-field>
-          <button mat-icon-button color="warn" fxFlex="initial" (click)="removeInstruction(i)"><mat-icon>remove_circle</mat-icon></button>
+          <button mat-icon-button color="warn" style="flex: 0 1 auto;"  (click)="removeInstruction(i)"><mat-icon>remove_circle</mat-icon></button> <!--fxFlex="initial"-->
         </div>
       </div>
-      <button mat-stroked-button type="button" fxFlex="nogrow" (click)="addInstruction('')">Add instruction</button>
+      <button mat-stroked-button type="button" style="flex-grow: 0;"  (click)="addInstruction('')">Add instruction</button> <!--fxFlex="nogrow"-->
     </ng-container>
 
 
@@ -66,13 +66,13 @@
       <div *ngFor="let hitboxFormGroup of hitboxesToRoomToGame.controls; index as i">
         <ng-container [formGroupName]="i">
 
-          <div fxLayout="row" fxLayoutAlign="start center">
+          <div class="row" style="justify-content: flex-start; 	align-items: center; align-content: center;" ><!--fxLayout="row" fxLayoutAlign="start center"> -->
 
-            <mat-card style="margin: 15px; min-width: 550px;" fxLayout="column">
+            <mat-card appearance="outlined" class="column" style="padding: 1em; margin: 15px; min-width: 550px;" ><!--fxLayout="column">-->
 
               <h4>{{i + 1}}. Hitbox</h4>
 
-              <div style="margin-bottom: 0.5em" fxLayout="row" fxLayoutAlign="space-between start">
+              <div class="row" style="justify-content: space-between; align-items: flex-start; align-content: flex-start; margin-bottom: 0.5em;"> <!--fxLayout="row" fxLayoutAlign="space-between start">-->
                 <mat-checkbox color="primary" formControlName="active">
                   Activate
                 </mat-checkbox>
@@ -85,7 +85,7 @@
                  </mat-radio-button>
               </div>
 
-              <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div class="row" style="justify-content: space-between; align-items: center; align-content: center"> <!--fxLayout="row" fxLayoutAlign="space-between center">-->
                 <mat-form-field>
                   <mat-label>Target room</mat-label>
                   <mat-select [disabled]='!hitboxFormGroup.get("active")?.value'
@@ -111,7 +111,7 @@
                 </mat-form-field>
               </div>
 
-              <div fxLayout="row" fxLayoutAlign="space-between">
+              <div class="row" style="justify-content: space-between;"> <!--fxLayout="row" fxLayoutAlign="space-between"> -->
                 <mat-checkbox [disabled]='!hitboxFormGroup.get("active")?.value' color="primary" formControlName="displayHitbox">Display hitbox</mat-checkbox>
                 <mat-checkbox [disabled]='!hitboxFormGroup.get("active")?.value' color="primary" formControlName="blink">Animate hitbox with blinking effect</mat-checkbox>
               </div>
@@ -125,7 +125,7 @@
       </div>
     </ng-container>
 
-    <div fxLayout="row">
+    <div class="row" ><!--fxLayout="row">-->
       <div style="margin: 1em 1em 1em 1em;" *ngIf="selectedRoom !== undefined && selectedRoom !== null">
         <button mat-raised-button color="primary" type="submit">Save room</button>
       </div>
