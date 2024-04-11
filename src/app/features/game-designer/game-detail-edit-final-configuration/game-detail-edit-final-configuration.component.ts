@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {Game, InitialRoom, RoomToGame} from "../../../core/models/game";
 import {baseUrlDomain, GameService} from "../../../core/game.service";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-game-detail-edit-final-configuration',
@@ -14,10 +14,10 @@ export class GameDetailEditFinalConfigurationComponent implements OnInit {
   @Output() gameChange = new EventEmitter<Game>();
   roomsToGame!: RoomToGame[];
 
-  gameConfigurationForm: FormGroup = new FormGroup({
-    initialRoom: new FormControl(),
-    documentation: new FormControl(),
-    isPublished: new FormControl(),
+  gameConfigurationForm: UntypedFormGroup = new UntypedFormGroup({
+    initialRoom: new UntypedFormControl(),
+    documentation: new UntypedFormControl(),
+    isPublished: new UntypedFormControl(),
   })
 
   baseUrlD = baseUrlDomain;
@@ -36,10 +36,10 @@ export class GameDetailEditFinalConfigurationComponent implements OnInit {
   }
 
   ngOnChanges() {
-    this.gameConfigurationForm = new FormGroup({
-      initialRoom: new FormControl(this.game.initialRoom?.id),
-      documentation: new FormControl(this.game.documentation),
-      isPublished: new FormControl(this.game.isPublished)
+    this.gameConfigurationForm = new UntypedFormGroup({
+      initialRoom: new UntypedFormControl(this.game.initialRoom?.id),
+      documentation: new UntypedFormControl(this.game.documentation),
+      isPublished: new UntypedFormControl(this.game.isPublished)
     })
   }
 

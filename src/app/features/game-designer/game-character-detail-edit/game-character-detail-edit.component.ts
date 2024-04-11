@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {Character, Game} from "../../../core/models/game";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {GameService} from "../../../core/game.service";
 
 @Component({
@@ -21,12 +21,12 @@ export class GameCharacterDetailEditComponent implements OnInit {
 
   readonly DUMMY_CHATBOT = "https://creator.voiceflow.com/prototype/626abdde3e2ab5c39626f392";
 
-  characterForm: FormGroup = new FormGroup({
-    name: new FormControl("", [Validators.required]),
-    description: new FormControl(""),
-    title: new FormControl(""),
-    useDummyChatbot: new FormControl(true),
-    chatbotUrl: new FormControl("", [Validators.required]),
+  characterForm: UntypedFormGroup = new UntypedFormGroup({
+    name: new UntypedFormControl("", [Validators.required]),
+    description: new UntypedFormControl(""),
+    title: new UntypedFormControl(""),
+    useDummyChatbot: new UntypedFormControl(true),
+    chatbotUrl: new UntypedFormControl("", [Validators.required]),
   })
 
   constructor(private gameService: GameService) { }
@@ -57,12 +57,12 @@ export class GameCharacterDetailEditComponent implements OnInit {
       chatbotURl = this.character.chatbotUrl
     }
 
-    this.characterForm = new FormGroup({
-      name: new FormControl(this.character.name, [Validators.required]),
-      description: new FormControl(this.character.description),
-      title: new FormControl(this.character.title),
-      useDummyChatbot: new FormControl(chatbotIsDefault),
-      chatbotUrl: new FormControl(chatbotURl, [Validators.required]),
+    this.characterForm = new UntypedFormGroup({
+      name: new UntypedFormControl(this.character.name, [Validators.required]),
+      description: new UntypedFormControl(this.character.description),
+      title: new UntypedFormControl(this.character.title),
+      useDummyChatbot: new UntypedFormControl(chatbotIsDefault),
+      chatbotUrl: new UntypedFormControl(chatbotURl, [Validators.required]),
     })
   }
 

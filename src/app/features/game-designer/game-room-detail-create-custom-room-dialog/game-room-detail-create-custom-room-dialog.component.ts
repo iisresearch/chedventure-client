@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
-import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {GameService} from "../../../core/game.service";
 import {Coordinate, Hitbox, Room} from "../../../core/models/game";
 import {HttpClient} from "@angular/common/http";
@@ -13,14 +13,14 @@ import {MessageService, MessageStatus} from "../../../core/message.service";
 })
 export class GameRoomDetailCreateCustomRoomDialogComponent implements OnInit {
 
-  roomForm: FormGroup = new FormGroup({
-    name: new FormControl("", [Validators.required]),
-    file: new FormControl(null, Validators.required),
-    hitboxes: new FormArray([]),
+  roomForm: UntypedFormGroup = new UntypedFormGroup({
+    name: new UntypedFormControl("", [Validators.required]),
+    file: new UntypedFormControl(null, Validators.required),
+    hitboxes: new UntypedFormArray([]),
   })
 
   addHitbox(hitboxCommaSeperatedCoordinates: string) {
-    this.hitboxes?.push(new FormControl(hitboxCommaSeperatedCoordinates))
+    this.hitboxes?.push(new UntypedFormControl(hitboxCommaSeperatedCoordinates))
   }
 
   removeHitbox(index: number) {
@@ -72,7 +72,7 @@ export class GameRoomDetailCreateCustomRoomDialogComponent implements OnInit {
 
   get name() { return this.roomForm.get('name'); }
   get fileImage() { return this.roomForm.get('file'); }
-  get hitboxes() { return this.roomForm.get('hitboxes') as FormArray; }
+  get hitboxes() { return this.roomForm.get('hitboxes') as UntypedFormArray; }
 
   onSubmit() {
     if (this.roomForm.valid) {

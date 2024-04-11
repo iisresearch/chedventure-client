@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {GameService} from "../../../core/game.service";
 import {Game} from "../../../core/models/game";
 import {MatDialogRef} from "@angular/material/dialog";
@@ -12,14 +12,14 @@ import {Router} from "@angular/router";
 })
 export class GameCreateDialogComponent implements OnInit {
 
-  gameForm!: FormGroup;
+  gameForm!: UntypedFormGroup;
 
   constructor(private gameService: GameService, public dialogRef: MatDialogRef<GameCreateDialogComponent>) {
-    this.gameForm = new FormGroup({
-      name: new FormControl('', [Validators.required]),
-      subtitle: new FormControl(''),
-      author: new FormControl('', [Validators.required]),
-      version: new FormControl('1.0', [Validators.required])
+    this.gameForm = new UntypedFormGroup({
+      name: new UntypedFormControl('', [Validators.required]),
+      subtitle: new UntypedFormControl(''),
+      author: new UntypedFormControl('', [Validators.required]),
+      version: new UntypedFormControl('1.0', [Validators.required])
     })
   }
 
