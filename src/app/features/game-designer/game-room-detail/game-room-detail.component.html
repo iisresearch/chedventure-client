@@ -16,12 +16,15 @@
 -->
 
 <div fxLayout="row">
-  <mat-card appearance="outlined" style="padding: 1em;" fxFlex="30" fxLayout="column">
-    <mat-card-title>Your Game Assets</mat-card-title>
-
+  <mat-card appearance="outlined" fxFlex="30" fxLayout="column">
+    <mat-card-header>
+        <mat-card-title>Your Game Assets</mat-card-title>
+    </mat-card-header>
     <div fxLayout="column">
       <div fxLayout="row" fxLayoutAlign="space-between center">
-        <h3>Rooms</h3>
+        <mat-card-header>
+            <h3>Rooms</h3>
+        </mat-card-header>
         <button mat-icon-button color="primary" (click)="createRoomToGame()"><mat-icon>add</mat-icon></button>
       </div>
       <mat-selection-list #roomsToGameSelection [multiple]="false" (selectionChange)="onChangeRoom($event)"
@@ -39,7 +42,9 @@
 
     <div fxLayout="column">
       <div fxLayout="row" fxLayoutAlign="space-between center">
-        <h3>Characters</h3>
+        <mat-card-header>
+            <h3>Characters</h3>
+        </mat-card-header>
         <button mat-icon-button color="primary" (click)="createCharacter()"><mat-icon>add</mat-icon></button>
       </div>
       <mat-selection-list #charactersToGameSelection [multiple]="false" (selectionChange)="onChangeCharacter($event)"
