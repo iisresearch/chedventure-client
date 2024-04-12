@@ -10,7 +10,7 @@ h1 {
 .custom-snackbar-error {
   text-align: center;
   color: white;
-  background-color: #d32f2f;
+  --mdc-snackbar-container-color: #d32f2f;
   line-height: 20px;
   font-size: 14px;
 }
@@ -18,7 +18,7 @@ h1 {
 .custom-snackbar-success {
   text-align: center;
   color: white;
-  background-color: #4caf50;
+  --mdc-snackbar-container-color: #4caf50;
   line-height: 20px;
   font-size: 14px;
 }
@@ -26,7 +26,7 @@ h1 {
 .custom-snackbar-warning {
   text-align: center;
   color: white;
-  background-color: #ed6c02;
+  --mdc-snackbar-container-color: #ed6c02;
   line-height: 20px;
   font-size: 14px;
 }
