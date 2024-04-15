@@ -1,7 +1,7 @@
 import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
 import {Character, Game, Hitbox, HitboxesToRoomToGame, Room, RoomToGame} from "../../../core/models/game";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
-import {UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
+import {FormArray, FormControl, FormGroup, UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
 import {GameRoomDetailSelectDialogComponent} from "../game-room-detail-select-dialog/game-room-detail-select-dialog.component";
 import {GameService} from "../../../core/game.service";
@@ -33,16 +33,16 @@ export class GameRoomDetailEditComponent implements OnInit {
 
   showHitboxWithId!: number;
 
-  roomToGameForm: UntypedFormGroup = new UntypedFormGroup({
-    name: new UntypedFormControl("", [Validators.required]),
-    description: new UntypedFormControl(""),
-    instructions: new UntypedFormArray([]),
-    room: new UntypedFormControl(null),
-    hitboxesToRoomToGame: new UntypedFormArray([]),
+  roomToGameForm: FormGroup = new FormGroup({
+    name: new FormControl("", [Validators.required]),
+    description: new FormControl(""),
+    instructions: new FormArray([]),
+    room: new FormControl(null),
+    hitboxesToRoomToGame: new FormArray([]),
   })
 
   addInstruction(instruction: String) {
-    this.instructions?.push(new UntypedFormControl(instruction));
+    this.instructions?.push(new FormControl(instruction));
   }
 
   removeInstruction(index: number) {
@@ -51,15 +51,15 @@ export class GameRoomDetailEditComponent implements OnInit {
 
   newHitboxToRoomToGame(id: number|null, active: boolean, hitbox: number,
                         targetRoom: number|null, targetCharacter: number|null,
-                        displayHitbox: boolean, blink: boolean): UntypedFormGroup {
-    return new UntypedFormGroup({
-      id: new UntypedFormControl(id),
-      active: new UntypedFormControl(active),
-      hitbox: new UntypedFormControl(hitbox),
-      targetRoom: new UntypedFormControl(targetRoom),
-      targetCharacter: new UntypedFormControl(targetCharacter),
-      displayHitbox: new UntypedFormControl(displayHitbox),
-      blink: new UntypedFormControl(blink),
+                        displayHitbox: boolean, blink: boolean): FormGroup {
+    return new FormGroup({
+      id: new FormControl(id),
+      active: new FormControl(active),
+      hitbox: new FormControl(hitbox),
+      targetRoom: new FormControl({value: targetRoom, disabled: !active}),
+      targetCharacter: new FormControl({value: targetCharacter, disabled: !active}),
+      displayHitbox: new FormControl({value: displayHitbox, disabled: !active}),
+      blink: new FormControl({value: blink, disabled: !active}),
     })
   }
 
@@ -89,24 +89,23 @@ export class GameRoomDetailEditComponent implements OnInit {
   setupForm(room: Room, name: string, description: string, instructions: String[]) {
     this.selectedRoom = room;
 
-    this.roomToGameForm = new UntypedFormGroup({
-      name: new UntypedFormControl(name, [Validators.required]),
-      description: new UntypedFormControl(description),
-      instructions: new UntypedFormArray([]),
-      room: new UntypedFormControl(this.selectedRoom.id),
-      hitboxesToRoomToGame: new UntypedFormArray([]),
+    this.roomToGameForm = new FormGroup({
+      name: new FormControl(name, [Validators.required]),
+      description: new FormControl(description),
+      instructions: new FormArray([]),
+      room: new FormControl(this.selectedRoom.id),
+      hitboxesToRoomToGame: new FormArray([]),
     })
 
     for (var instruction of instructions) {
       this.addInstruction(instruction);
     }
 
-    for (var hitbox of this.selectedRoom.hitboxes!) {
+    this.selectedRoom.hitboxes!.forEach(hitbox => {
       let formGroupHitboxToRoom = this.hitboxesToRoomToGame;
       let hitboxToRoomToGame = this.getHitboxToRoomToGame(hitbox.id);
 
-      let isActive = false;
-      if(hitboxToRoomToGame) { isActive = true }
+      const isActive = !!hitboxToRoomToGame; // If hitboxToRoomToGame is not null, then it is true
 
       formGroupHitboxToRoom.push(this.newHitboxToRoomToGame(hitboxToRoomToGame?.id ?? null,
         isActive,
@@ -115,7 +114,7 @@ export class GameRoomDetailEditComponent implements OnInit {
         hitboxToRoomToGame?.targetCharacter?.id ?? null,
         hitboxToRoomToGame?.displayHitbox ?? false,
         hitboxToRoomToGame?.blink ?? false))
-    }
+    });
   }
 
   getImageOfRoom(room: Room): SafeUrl {
@@ -201,8 +200,8 @@ export class GameRoomDetailEditComponent implements OnInit {
   get name() { return this.roomToGameForm.get('name'); }
   get description() { return this.roomToGameForm.get('description'); }
   get room() { return this.roomToGameForm.get('room'); }
-  get instructions() { return this.roomToGameForm.get('instructions') as UntypedFormArray; }
-  get hitboxesToRoomToGame() { return this.roomToGameForm.get("hitboxesToRoomToGame") as UntypedFormArray}
+  get instructions() { return this.roomToGameForm.get('instructions') as FormArray; }
+  get hitboxesToRoomToGame() { return this.roomToGameForm.get('hitboxesToRoomToGame') as FormArray; }
 
   onSubmit() {
     if (this.roomToGameForm.valid) {
