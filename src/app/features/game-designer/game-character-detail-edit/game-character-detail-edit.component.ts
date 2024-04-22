@@ -1,7 +1,8 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, ViewChild} from '@angular/core';
 import {Character, Game} from "../../../core/models/game";
-import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {GameService} from "../../../core/game.service";
+import {MatSelectChange} from "@angular/material/select";
 
 @Component({
   selector: 'app-game-character-detail-edit',
@@ -21,17 +22,25 @@ export class GameCharacterDetailEditComponent implements OnInit {
 
   readonly DUMMY_CHATBOT = "https://creator.voiceflow.com/prototype/626abdde3e2ab5c39626f392";
 
-  characterForm: UntypedFormGroup = new UntypedFormGroup({
-    name: new UntypedFormControl("", [Validators.required]),
-    description: new UntypedFormControl(""),
-    title: new UntypedFormControl(""),
-    useDummyChatbot: new UntypedFormControl(true),
-    chatbotUrl: new UntypedFormControl("", [Validators.required]),
+  characterForm: FormGroup = new FormGroup({
+    name: new FormControl("", [Validators.required]),
+    description: new FormControl(""),
+    title: new FormControl(""),
+    history: new FormControl(""),
+    context: new FormControl(""),
+    prompt: new FormControl(""),
+    utterance: new FormControl(""),
+    useDummyChatbot: new FormControl(true),
+    chatbotUrl: new FormControl("", [Validators.required]),
   })
+
+  // Dummy prompt example
+  prompts:string[] = ['None', 'Utterance', 'Continuation'];
 
   constructor(private gameService: GameService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngOnChanges() {
     if (this.character && !this.createNewCharacter) {
@@ -57,20 +66,30 @@ export class GameCharacterDetailEditComponent implements OnInit {
       chatbotURl = this.character.chatbotUrl
     }
 
-    this.characterForm = new UntypedFormGroup({
-      name: new UntypedFormControl(this.character.name, [Validators.required]),
-      description: new UntypedFormControl(this.character.description),
-      title: new UntypedFormControl(this.character.title),
-      useDummyChatbot: new UntypedFormControl(chatbotIsDefault),
-      chatbotUrl: new UntypedFormControl(chatbotURl, [Validators.required]),
+    this.characterForm = new FormGroup({
+      name: new FormControl(this.character.name, [Validators.required]),
+      description: new FormControl(this.character.description),
+      title: new FormControl(this.character.title),
+      history: new FormControl(),
+      context: new FormControl(),
+      prompt: new FormControl(),
+      utterance: new FormControl(),
+      response: new FormControl(),
+      useDummyChatbot: new FormControl(chatbotIsDefault),
+      chatbotUrl: new FormControl(chatbotURl, [Validators.required]),
     })
   }
 
-  get name() { return this.characterForm.get('name')}
-  get description() { return this.characterForm.get('description')}
-  get title() { return this.characterForm.get('title')}
-  get useDummyChatbot() { return this.characterForm.get('useDummyChatbot')}
-  get chatbotUrl() { return this.characterForm.get('chatbotUrl')}
+  get name() { return this.characterForm.get('name') }
+  get description() { return this.characterForm.get('description') }
+  get title() { return this.characterForm.get('title') }
+  get history() { return this.characterForm.get('history') }
+  get context() { return this.characterForm.get('context') }
+  get prompt() { return this.characterForm.get('prompt') }
+  get utterance() { return this.characterForm.get('utterance') }
+  get response() { return this.characterForm.get('response') }
+  get useDummyChatbot() { return this.characterForm.get('useDummyChatbot') }
+  get chatbotUrl() { return this.characterForm.get('chatbotUrl') }
 
   onChangeUseDummyChatbot() {
     if (this.useDummyChatbot?.value === true) {
@@ -126,8 +145,9 @@ export class GameCharacterDetailEditComponent implements OnInit {
     }
   }
 
-
-
-
-
+  onPromptChange($event: MatSelectChange) {
+    if(this.prompt?.value!=="Utterance")
+      this.utterance?.disable();
+    else this.utterance?.enable()
+  }
 }

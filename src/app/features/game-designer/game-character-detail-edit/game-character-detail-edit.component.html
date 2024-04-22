@@ -1,48 +1,96 @@
 <!--TODO: Replace all Flex-Layout classes either with equivalent of CSS flexbox Property or use a library like tailwind-->
 <div fxLayout="column">
   <ng-container *ngIf="!createNewCharacter; else updateCharacterTitle">
-    <h3>Configure character</h3>
+	<h3>Configure character</h3>
   </ng-container>
   <ng-template #updateCharacterTitle>
-    <h3>Configure new character</h3>
+	<h3>Configure new character</h3>
   </ng-template>
 
   <form [formGroup]="characterForm" fxLayout="column" (ngSubmit)="onSubmit()">
 
-    <mat-form-field>
-      <mat-label for="name">Name</mat-label>
-      <input matInput id="name" type="text" formControlName="name">
-    </mat-form-field>
+	<mat-form-field>
+	  <mat-label for="name">Name</mat-label>
+	  <input matInput id="name" type="text" formControlName="name">
+	</mat-form-field>
 
-    <mat-form-field>
-      <mat-label for="title">Title</mat-label>
-      <input matInput id="title" type="text" formControlName="title">
-      <mat-hint align="start">Optional: Description the title or position (e.g. CEO) of this character.</mat-hint>
-    </mat-form-field>
+	<mat-form-field>
+	  <mat-label for="title">Title</mat-label>
+	  <input matInput id="title" type="text" formControlName="title"
+			 placeholder="Ex. CEO, HR, IT, Marketing Specialist">
+	  <mat-hint align="start">Title or position (e.g. CEO) of this character.</mat-hint>
+	</mat-form-field>
 
-    <mat-form-field>
-      <mat-label for="description">Description</mat-label>
-      <textarea matInput id="description" type="text" formControlName="description"></textarea>
-      <mat-hint align="start">Optional: Description of this character.</mat-hint>
-    </mat-form-field>
+	<mat-form-field>
+	  <mat-label for="description">Description</mat-label>
+	  <textarea matInput id="description" type="text" formControlName="description"
+				placeholder="You work at a leading tech company. You expertise lies in designing and developing immersive virtual simulations that empower employees to tackle complex scenarios with confidence."></textarea>
+	  <mat-hint align="start">Optional: Description of this character.</mat-hint>
+	</mat-form-field>
 
-    <mat-checkbox (change)="onChangeUseDummyChatbot()" style="margin-top: 1em" color="primary" formControlName="useDummyChatbot">
-      Use dummy chatbot
-    </mat-checkbox>
+	<mat-form-field>
+	  <mat-label>History</mat-label>
+	  <input matInput id="history" type="number" max="10" min="0" formControlName="history" placeholder="0-10">
+	  <mat-hint align="start">Optional: Number of previous answers this character will remember. e.g. 0 - no answers are
+		remembered, 10 - last answers are remembered.
+	  </mat-hint>
+	</mat-form-field>
 
-    <mat-form-field [class.disabled]="this.useDummyChatbot?.value">
-      <mat-label for="chatbotUrl">Chatbot URL</mat-label>
-      <input matInput id="chatbotUrl" type="text" formControlName="chatbotUrl">
-    </mat-form-field>
+	<mat-divider></mat-divider>
 
-    <div fxLayout="row">
-      <div style="margin: 1em 1em 1em 1em;" *ngIf="character !== undefined && character !== null">
-        <button mat-raised-button color="primary" type="submit">Save</button>
-      </div>
-      <div style="margin: 1em 1em 1em 1em;" *ngIf="!createNewCharacter">
-        <button mat-raised-button color="warn" (click)="deleteCharacter()" type="button">Delete</button>
-      </div>
-    </div>
+	<mat-form-field>
+	  <mat-label>Context</mat-label>
+	  <textarea matInput id="context" type="text" formControlName="context"
+				placeholder="Ex. Start of Conversation; Interview; Discuss the HR department's requirements for the simulation training program, including the desired outcomes, target audience, and any specific features or functionalities needed."></textarea>
+	  <mat-hint align="start">Context of this character. Context refers to the specific situation, environment, or
+		scenario in which the conversation takes place
+	  </mat-hint>
+	</mat-form-field>
+
+	<mat-form-field>
+	  <mat-label>Prompt</mat-label>
+	  <mat-select (selectionChange)="onPromptChange($event)" id="Prompt" type="text" formControlName="prompt">
+		@for (prompt of prompts; track prompt; let isFirst = $first) {
+		  <mat-option [value]="prompt">{{ prompt }}</mat-option>
+		}
+	  </mat-select>
+	  <mat-hint align="start">Optional: Prompt for the character to better understand the Utterance.</mat-hint>
+	</mat-form-field>
+
+	<mat-form-field>
+	  <mat-label for="Utterance">Utterance</mat-label>
+	  <textarea matInput id="utterance" type="text" formControlName="utterance"
+				placeholder="Ex. Hello; I would like to know more about simulation training programs.; "></textarea>
+	  <mat-hint align="start">Optional: Utterance for the character is the expected user input that triggers a response from the character.
+	  </mat-hint>
+	</mat-form-field>
+
+	<mat-form-field>
+	  <mat-label>Response</mat-label>
+	  <textarea matInput id="response" type="text" formControlName="response"
+			 placeholder="Ex. Our programs use immersive simulations to mimic real-world scenarios, allowing employees to practice and perfect their skills in a risk-free environment. We offer customized programs for various industries, including customer service, sales, and leadership development. Would you like to know more about a specific program or industry?.">
+	  </textarea>
+	  <mat-hint align="start">Optional: Response of the character triggered by the utterance.</mat-hint>
+	</mat-form-field>
+
+	<mat-checkbox (change)="onChangeUseDummyChatbot()" style="margin-top: 1em" color="primary"
+				  formControlName="useDummyChatbot">
+	  Use dummy chatbot
+	</mat-checkbox>
+
+	<mat-form-field [class.disabled]="this.useDummyChatbot?.value">
+	  <mat-label for="chatbotUrl">Chatbot URL</mat-label>
+	  <input matInput id="chatbotUrl" type="text" formControlName="chatbotUrl">
+	</mat-form-field>
+
+	<div fxLayout="row">
+	  <div style="margin: 1em 1em 1em 1em;" *ngIf="character !== undefined && character !== null">
+		<button mat-raised-button color="primary" type="submit">Save</button>
+	  </div>
+	  <div style="margin: 1em 1em 1em 1em;" *ngIf="!createNewCharacter">
+		<button mat-raised-button color="warn" (click)="deleteCharacter()" type="button">Delete</button>
+	  </div>
+	</div>
 
 
   </form>
