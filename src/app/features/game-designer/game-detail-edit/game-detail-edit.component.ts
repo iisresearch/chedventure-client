@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-import {FormControl, UntypedFormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {GameService} from "../../../core/game.service";
 import {Game, IGame} from "../../../core/models/game";
 
@@ -10,13 +10,16 @@ import {Game, IGame} from "../../../core/models/game";
 })
 export class GameDetailEditComponent implements OnInit {
 
-  @Input() gameForm!: UntypedFormGroup;
+  @Input() gameForm!: FormGroup;
   @Input() game!: Game;
   @Output() gameChange = new EventEmitter<Game>();
 
   constructor(private gameService: GameService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.gameForm === undefined) {
+    }
+  }
 
   get name() { return this.gameForm.get('name'); }
   get subtitle() { return this.gameForm.get('subtitle'); }

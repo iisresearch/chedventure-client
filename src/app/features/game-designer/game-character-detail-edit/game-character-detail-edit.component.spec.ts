@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GameCharacterDetailEditComponent } from './game-character-detail-edit.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {GameService} from "../../../core/game.service";
 
 describe('GameCharacterDetailEditComponent', () => {
   let component: GameCharacterDetailEditComponent;
@@ -8,7 +10,9 @@ describe('GameCharacterDetailEditComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GameCharacterDetailEditComponent ]
+      imports: [HttpClientTestingModule], // Include HttpClientTestingModule here
+      declarations: [GameCharacterDetailEditComponent],
+      providers: [GameService] // Provide the GameService if not provided globally
     })
     .compileComponents();
   });

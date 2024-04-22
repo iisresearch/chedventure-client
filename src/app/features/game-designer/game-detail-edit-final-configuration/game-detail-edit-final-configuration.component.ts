@@ -25,7 +25,9 @@ export class GameDetailEditFinalConfigurationComponent implements OnInit {
   constructor(private gameService: GameService) { }
 
   ngOnInit(): void {
-    this.getRoomsInGame(this.game.id);
+    if (this.game.id) {
+      this.getRoomsInGame(this.game.id);
+    }
   }
 
   getRoomsInGame(id: string): void {

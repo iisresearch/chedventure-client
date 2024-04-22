@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GameRoomDetailEditComponent } from './game-room-detail-edit.component';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+
 
 describe('GameRoomDetailEditComponent', () => {
   let component: GameRoomDetailEditComponent;
@@ -8,7 +10,8 @@ describe('GameRoomDetailEditComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GameRoomDetailEditComponent ]
+      imports: [ HttpClientTestingModule ],  // Include HttpClientTestingModule here
+      declarations: [ GameRoomDetailEditComponent ],
     })
     .compileComponents();
   });

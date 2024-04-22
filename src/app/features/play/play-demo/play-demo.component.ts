@@ -1,7 +1,7 @@
-import { Component, ViewChild, ElementRef, OnInit, NgZone } from '@angular/core';
+import {Component, ViewChild, ElementRef, OnInit, NgZone} from '@angular/core';
 import {Router} from "@angular/router";
 import * as PIXI from "pixi.js";
-import { Stakeholder } from "../../../core/models/stakeholder";
+import {Stakeholder} from "../../../core/models/stakeholder";
 import {Observable} from "rxjs";
 
 /**
@@ -59,17 +59,18 @@ export class PlayDemoComponent implements OnInit {
 
 
   // Properties to use for toolbar
-  public selectedStakeholderName: string|null|undefined = null;
-  public selectedStakeholderPosition: string|null|undefined = null;
-  public selectedStakeholderDescription: string|null|undefined = null;
+  public selectedStakeholderName: string | null | undefined = null;
+  public selectedStakeholderPosition: string | null | undefined = null;
+  public selectedStakeholderDescription: string | null | undefined = null;
 
   // Stakeholder to chat with
-  selectedStakeholder: Stakeholder|null = null;
+  selectedStakeholder: Stakeholder | null = null;
 
   private groundPlanStage = new PIXI.Container();
   private roomStage1 = new PIXI.Container();
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+  }
 
   ngOnInit(): void {
     document.body.appendChild(this.app.view);
@@ -94,10 +95,10 @@ export class PlayDemoComponent implements OnInit {
     // ROOM NR 1
     // Polygon area room 1
     var floorPlanPolygonHitArea1 = new PIXI.Polygon([
-      new PIXI.Point(11,188),
-      new PIXI.Point(165,188),
-      new PIXI.Point(163,370),
-      new PIXI.Point(13,370)
+      new PIXI.Point(11, 188),
+      new PIXI.Point(165, 188),
+      new PIXI.Point(163, 370),
+      new PIXI.Point(13, 370)
     ])
 
     var room1Hitbox = new PIXI.Graphics();
@@ -222,10 +223,10 @@ export class PlayDemoComponent implements OnInit {
     this.app.stage.addChild(this.roomStage1);
 
     var seconds = 0;
-    this.app.ticker.add( function(delta) {
-      seconds += (0.5/60) * delta;
+    this.app.ticker.add(function (delta) {
+      seconds += (0.5 / 60) * delta;
       // Increase alpha of room highlights on even seconds and decrease on uneven seconds
-      if(Math.ceil(seconds) % 2 == 0) {
+      if (Math.ceil(seconds) % 2 == 0) {
         room1Hitbox.alpha += 0.002;
         room2Hitbox.alpha += 0.002;
       } else {
@@ -237,7 +238,7 @@ export class PlayDemoComponent implements OnInit {
   }
 
   onClickRoom(object: PIXI.Graphics) {
-    if(object.name === "conference-room-hitbox") {
+    if (object.name === "conference-room-hitbox") {
       this.groundPlanStage.visible = false;
       this.roomStage1.visible = true;
       //this.hoverRoom = false;
@@ -254,9 +255,9 @@ export class PlayDemoComponent implements OnInit {
     this.toggleChatIsShown();
   }
 
-  getStakeholderByName(name: string): Stakeholder|null {
+  getStakeholderByName(name: string): Stakeholder | null {
     var stakeholder = this.stakeholders.find(x => x.name == name);
-    if(stakeholder == undefined) {
+    if (stakeholder == undefined) {
       return null
     } else {
       return stakeholder!;
@@ -316,7 +317,7 @@ export class PlayDemoComponent implements OnInit {
   }
 
   toggleHoverStokeholder(i: number) {
-    if(this.hoverStakeholder == true) {
+    if (this.hoverStakeholder == true) {
       this.selectedStakeholderName = null;
       this.selectedStakeholderPosition = null;
       this.selectedStakeholderDescription = null;
