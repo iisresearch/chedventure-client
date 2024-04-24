@@ -30,6 +30,8 @@ export class GameCharacterDetailEditComponent implements OnInit {
     context: new FormControl(""),
     prompt: new FormControl(""),
     utterance: new FormControl(""),
+    response: new FormControl(""),
+
     useDummyChatbot: new FormControl(true),
     chatbotUrl: new FormControl("", [Validators.required]),
   })
