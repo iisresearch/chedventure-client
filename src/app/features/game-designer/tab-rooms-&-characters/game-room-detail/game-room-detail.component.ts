@@ -115,7 +115,7 @@ export class GameRoomDetailComponent implements OnInit {
 
   /**
    * Is called from child component 'game-character-detail-edit' when a character has been updated.
-   * @param roomToGame
+   * @param character
    */
   updatedCharacter(character: Character) {
     let i = this.characters.findIndex(obj => {
@@ -132,7 +132,7 @@ export class GameRoomDetailComponent implements OnInit {
 
   /**
    * Is called from child component 'game-character-detail-edit' when a character has been deleted.
-   * @param roomToGame
+   * @param character
    */
   deletedCharacter(character: Character) {
     let i = this.characters.findIndex(obj => {
