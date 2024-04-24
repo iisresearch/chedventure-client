@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
 import {UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
-import {GameService} from "../../../core/game.service";
-import {Coordinate, Hitbox, Room} from "../../../core/models/game";
+import {GameService} from "../../../../core/game.service";
+import {Coordinate, Hitbox, Room} from "../../../../core/models/game";
 import {HttpClient} from "@angular/common/http";
-import {MessageService, MessageStatus} from "../../../core/message.service";
+import {MessageService, MessageStatus} from "../../../../core/message.service";
 
 @Component({
   selector: 'app-game-room-detail-create-custom-room-dialog',

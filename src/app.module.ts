@@ -44,16 +44,16 @@ import { PlayDemoComponent } from './app/features/play/play-demo/play-demo.compo
 import {DialogContentExampleDialog, PlayComponent} from './app/features/play/play/play.component';
 import { SafePipe } from './app/shared/safe.pipe';
 import { GameEditorComponent } from './app/features/game-designer/game-editor/game-editor.component';
-import { GameDetailEditComponent } from './app/features/game-designer/game-detail-edit/game-detail-edit.component';
+import { GameDetailEditComponent } from './app/features/game-designer/tab-game-setup/game-detail-edit/game-detail-edit.component';
 import { GameCreateDialogComponent } from './app/features/game-designer/game-create-dialog/game-create-dialog.component';
-import { GameRoomDetailComponent } from './app/features/game-designer/game-room-detail/game-room-detail.component';
-import { GameRoomDetailEditComponent } from './app/features/game-designer/game-room-detail-edit/game-room-detail-edit.component';
-import { GameRoomDetailSelectDialogComponent } from './app/features/game-designer/game-room-detail-select-dialog/game-room-detail-select-dialog.component';
+import { GameRoomDetailComponent } from './app/features/game-designer/tab-rooms-&-characters/game-room-detail/game-room-detail.component';
+import { GameRoomDetailEditComponent } from './app/features/game-designer/tab-rooms-&-characters/game-room-detail-edit/game-room-detail-edit.component';
+import { GameRoomDetailSelectDialogComponent } from './app/features/game-designer/tab-rooms-&-characters/game-room-detail-select-dialog/game-room-detail-select-dialog.component';
 import { MessageErrorToastComponent, MessageWarningToastComponent, MessageSuccessToastComponent } from "./app/core/message.service";
-import { GameRoomDetailCanvasComponent } from './app/features/game-designer/game-room-detail-canvas/game-room-detail-canvas.component';
-import { GameCharacterDetailEditComponent } from './app/features/game-designer/game-character-detail-edit/game-character-detail-edit.component';
-import { GameDetailEditFinalConfigurationComponent } from './app/features/game-designer/game-detail-edit-final-configuration/game-detail-edit-final-configuration.component';
-import { GameRoomDetailCreateCustomRoomDialogComponent } from './app/features/game-designer/game-room-detail-create-custom-room-dialog/game-room-detail-create-custom-room-dialog.component';
+import { GameRoomDetailCanvasComponent } from './app/features/game-designer/tab-rooms-&-characters/game-room-detail-canvas/game-room-detail-canvas.component';
+import { GameCharacterDetailEditComponent } from './app/features/game-designer/tab-rooms-&-characters/game-character-detail-edit/game-character-detail-edit.component';
+import { GameDetailEditFinalConfigurationComponent } from './app/features/game-designer/tab-final-configuration/game-detail-edit-final-configuration/game-detail-edit-final-configuration.component';
+import { GameRoomDetailCreateCustomRoomDialogComponent } from './app/features/game-designer/tab-rooms-&-characters/game-room-detail-create-custom-room-dialog/game-room-detail-create-custom-room-dialog.component';
 
 const oktaAuth = new OktaAuth({
   issuer: 'https://dev-06013860.okta.com/oauth2/default',

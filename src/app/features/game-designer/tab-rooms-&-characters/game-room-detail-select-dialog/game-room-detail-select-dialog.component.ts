@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, Output, EventEmitter, Inject } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {Room} from "../../../core/models/game";
+import {Room} from "../../../../core/models/game";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
-import {GameService} from "../../../core/game.service";
+import {GameService} from "../../../../core/game.service";
 
 @Component({
   selector: 'app-game-room-detail-select-dialog',

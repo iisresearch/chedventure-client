@@ -1,10 +1,10 @@
 import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
-import {Character, Game, Hitbox, HitboxesToRoomToGame, Room, RoomToGame} from "../../../core/models/game";
+import {Character, Game, Hitbox, HitboxesToRoomToGame, Room, RoomToGame} from "../../../../core/models/game";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {FormArray, FormControl, FormGroup, UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
 import {GameRoomDetailSelectDialogComponent} from "../game-room-detail-select-dialog/game-room-detail-select-dialog.component";
-import {GameService} from "../../../core/game.service";
+import {GameService} from "../../../../core/game.service";
 import {GameRoomDetailCreateCustomRoomDialogComponent} from "../game-room-detail-create-custom-room-dialog/game-room-detail-create-custom-room-dialog.component";
 
 @Component({

@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output, EventEmitter, ViewChild} from '@angular/core';
-import {Character, Game} from "../../../core/models/game";
+import {Character, Game} from "../../../../core/models/game";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {GameService} from "../../../core/game.service";
+import {GameService} from "../../../../core/game.service";
 import {MatSelectChange} from "@angular/material/select";
 
 @Component({

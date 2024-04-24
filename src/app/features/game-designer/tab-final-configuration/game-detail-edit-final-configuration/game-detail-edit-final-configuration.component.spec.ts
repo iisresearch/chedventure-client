@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GameDetailEditFinalConfigurationComponent } from './game-detail-edit-final-configuration.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {GameService} from "../../../core/game.service";
+import {GameService} from "../../../../core/game.service";
 import {ActivatedRoute} from "@angular/router";
 import {of} from "rxjs";
 

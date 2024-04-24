@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GameCharacterDetailEditComponent } from './game-character-detail-edit.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import {GameService} from "../../../core/game.service";
+import {GameService} from "../../../../core/game.service";
 
 describe('GameCharacterDetailEditComponent', () => {
   let component: GameCharacterDetailEditComponent;

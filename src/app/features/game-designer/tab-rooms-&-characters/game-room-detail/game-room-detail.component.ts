@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Character, Game, IGame, Room, RoomToGame} from "../../../core/models/game";
-import {GameService} from "../../../core/game.service";
+import {Character, Game, IGame, Room, RoomToGame} from "../../../../core/models/game";
+import {GameService} from "../../../../core/game.service";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {MatSelectionListChange} from "@angular/material/list";
 

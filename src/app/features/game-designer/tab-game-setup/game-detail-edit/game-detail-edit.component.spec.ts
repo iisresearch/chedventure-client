@@ -4,7 +4,7 @@ import { GameDetailEditComponent } from './game-detail-edit.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {of} from "rxjs";
-import {GameService} from "../../../core/game.service";
+import {GameService} from "../../../../core/game.service";
 
 describe('GameDetailComponent', () => {
   let component: GameDetailEditComponent;

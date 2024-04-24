@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {Room} from "../../../core/models/game";
+import {Room} from "../../../../core/models/game";
 import * as PIXI from "pixi.js";
 
 @Component({

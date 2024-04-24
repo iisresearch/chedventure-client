@@ -29,6 +29,15 @@
       </ng-template>
     </mat-step>
 
+	<mat-step>
+	  <ng-template matStepLabel>Contexts</ng-template>
+	  <ng-template matStepContent>
+		<div class="tab-game-editor" *ngIf="finishedFetchingData">
+		  <app-game-room-detail [(game)]="game"></app-game-room-detail>
+		</div>
+	  </ng-template>
+	</mat-step>
+
     <mat-step>
       <ng-template matStepLabel>Final Configuration</ng-template>
       <ng-template matStepContent>

@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {GameService} from "../../../core/game.service";
-import {Game, IGame} from "../../../core/models/game";
+import {GameService} from "../../../../core/game.service";
+import {Game, IGame} from "../../../../core/models/game";
 
 @Component({
   selector: 'app-game-detail',

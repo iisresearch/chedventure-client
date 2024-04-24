@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-import {Game, InitialRoom, RoomToGame} from "../../../core/models/game";
-import {baseUrlDomain, GameService} from "../../../core/game.service";
+import {Game, InitialRoom, RoomToGame} from "../../../../core/models/game";
+import {baseUrlDomain, GameService} from "../../../../core/game.service";
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 
 @Component({
