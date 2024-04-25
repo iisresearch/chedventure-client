@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Context, Game} from "../../../../core/models/game";
+import {Character, Context, Game} from "../../../../core/models/game";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
@@ -15,6 +15,8 @@ export class GameContextDetailEditComponent implements OnInit {
   @Output() deletedContext = new EventEmitter<Context>();
 
   @Input() createNewContext!: boolean;
+
+  @Input() characters!: Character[];
 
   contextForm: FormGroup = new FormGroup({
     context: new FormControl("", [Validators.required]),

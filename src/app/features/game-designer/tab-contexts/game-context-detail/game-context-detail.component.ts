@@ -23,7 +23,7 @@ export class GameContextDetailComponent implements OnInit {
 
   createNewContext = false;
 
-  characters!: Character[];
+  @Input() characters!: Character[];
   selectedCharacter!: Character;
 
   constructor(private gameService: GameService) {
@@ -32,10 +32,7 @@ export class GameContextDetailComponent implements OnInit {
   ngOnInit(): void {
     // this.getContextsInGame(this.game.id);
     //this.characters = this.gameService.getCharactersInGame(this.game.id);
-    this.gameService.getCharactersInGame(this.game.id)
-      .subscribe(characters => {
-        this.characters = characters;
-      });
+    //this.getCharactersInGame(this.game.id);
   }
 
   updatedContext(context: Context) {
@@ -77,5 +74,12 @@ export class GameContextDetailComponent implements OnInit {
   createContext() {
     this.createNewContext = true;
     this.selectedContext = [];
+  }
+
+  getCharactersInGame(id: string): void {
+    this.gameService.getCharactersInGame(id)
+      .subscribe(characters => {
+        this.characters = characters;
+      })
   }
 }

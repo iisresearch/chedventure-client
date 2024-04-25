@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {STEPPER_GLOBAL_OPTIONS} from "@angular/cdk/stepper";
-import {Game} from "../../../core/models/game";
+import {Character, Game} from "../../../core/models/game";
 import {ActivatedRoute} from "@angular/router";
 import {GameService} from "../../../core/game.service";
 import {MatStepper} from "@angular/material/stepper";
@@ -22,9 +22,11 @@ export class GameEditorComponent implements OnInit {
 
   game!: Game;
 
-  gameForm!: UntypedFormGroup;
+  gameForm!: FormGroup;
 
   finishedFetchingData = false;
+
+  characters!: Character[];
 
   constructor(private route: ActivatedRoute, private gameService: GameService) {}
 
@@ -39,11 +41,11 @@ export class GameEditorComponent implements OnInit {
     this.gameService.getGame(id)
       .subscribe(game => {
         this.game = game;
-        this.gameForm = new UntypedFormGroup({
-          name: new UntypedFormControl(this.game.name, [Validators.required]),
-          subtitle: new UntypedFormControl(this.game.subtitle),
-          author: new UntypedFormControl(this.game.author, [Validators.required]),
-          version: new UntypedFormControl(this.game.version, [Validators.required])
+        this.gameForm = new FormGroup({
+          name: new FormControl(this.game.name, [Validators.required]),
+          subtitle: new FormControl(this.game.subtitle),
+          author: new FormControl(this.game.author, [Validators.required]),
+          version: new FormControl(this.game.version, [Validators.required])
         });
         this.finishedFetchingData = true;
       });
@@ -57,5 +59,8 @@ export class GameEditorComponent implements OnInit {
     window.open("/draft/"+this.game.id, "_blank")
   }
 
+  onCharactersChange(characters: Character[]) {
+    this.characters = characters;
+  }
 
 }

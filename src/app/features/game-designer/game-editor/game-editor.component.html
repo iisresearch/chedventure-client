@@ -24,7 +24,7 @@
       <ng-template matStepLabel>Rooms & Characters</ng-template>
       <ng-template matStepContent>
         <div class="tab-game-editor" *ngIf="finishedFetchingData">
-          <app-game-room-detail [(game)]="game"></app-game-room-detail>
+          <app-game-room-detail [(game)]="game" (charactersChange)="onCharactersChange($event)"></app-game-room-detail>
         </div>
       </ng-template>
     </mat-step>
@@ -33,7 +33,7 @@
 	  <ng-template matStepLabel>Contexts</ng-template>
 	  <ng-template matStepContent>
 		<div class="tab-game-editor" *ngIf="finishedFetchingData">
-		  <app-game-context-detail [(game)]="game"></app-game-context-detail>
+		  <app-game-context-detail [(game)]="game" [characters]="characters"></app-game-context-detail>
 		</div>
 	  </ng-template>
 	</mat-step>

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef, output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Character, Game, IGame, Room, RoomToGame} from "../../../../core/models/game";
 import {GameService} from "../../../../core/game.service";
@@ -24,6 +24,7 @@ export class GameRoomDetailComponent implements OnInit {
   characters!: Character[];
   selectedCharacter!: Character[];
   compareCharactersFunction = (o1: any, o2: any)=> o1.id===o2.id;
+  @Output() charactersChange = new EventEmitter<Character[]>();
 
   createNewRoom = false;
   createNewCharacter = false;
@@ -128,6 +129,7 @@ export class GameRoomDetailComponent implements OnInit {
     }
     this.selectedCharacter = [character];
     this.createNewCharacter = false;
+    this.charactersChange.emit(this.characters);
   }
 
   /**
@@ -142,7 +144,7 @@ export class GameRoomDetailComponent implements OnInit {
       this.characters.splice(i, 1);
     }
     this.selectedCharacter = [];
-
+    this.charactersChange.emit(this.characters);
   }
 
   characterIsSelected(character: Character): boolean {
@@ -184,6 +186,7 @@ export class GameRoomDetailComponent implements OnInit {
     this.gameService.getCharactersInGame(id)
       .subscribe(characters => {
         this.characters = characters;
+        this.charactersChange.emit(this.characters);
       })
   }
 
