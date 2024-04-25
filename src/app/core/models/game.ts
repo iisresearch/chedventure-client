@@ -42,6 +42,7 @@ export interface IGame {
   initialRoom?: InitialRoom;
   roomToGames?: RoomToGame[];
   characters?: Character[];
+  contexts?: Context[];
   documentation?: string;
   isPublished: boolean;
 }
@@ -97,4 +98,10 @@ export interface Character {
   description?: string;
   title?: string;
   chatbotUrl: string;
+}
+
+export interface Context {
+  id: number;
+  name: string;
+
 }

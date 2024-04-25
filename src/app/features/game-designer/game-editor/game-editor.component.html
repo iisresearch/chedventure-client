@@ -9,7 +9,7 @@
 
 <div id="game-editor" fxLayout="row" fxLayoutAlign="center" fxFill="">
 
-  <mat-stepper #stepper [selectedIndex]="1">
+  <mat-stepper #stepper [selectedIndex]="2">
 
     <mat-step [stepControl]="gameForm" errorMessage="Game has to be saved">
       <ng-template matStepLabel>Game Setup </ng-template>
@@ -33,7 +33,7 @@
 	  <ng-template matStepLabel>Contexts</ng-template>
 	  <ng-template matStepContent>
 		<div class="tab-game-editor" *ngIf="finishedFetchingData">
-		  <app-game-room-detail [(game)]="game"></app-game-room-detail>
+		  <app-game-context-detail [(game)]="game"></app-game-context-detail>
 		</div>
 	  </ng-template>
 	</mat-step>

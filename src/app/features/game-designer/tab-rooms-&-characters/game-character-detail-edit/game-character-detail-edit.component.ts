@@ -23,17 +23,17 @@ export class GameCharacterDetailEditComponent implements OnInit {
   readonly DUMMY_CHATBOT = "https://creator.voiceflow.com/prototype/626abdde3e2ab5c39626f392";
 
   characterForm: FormGroup = new FormGroup({
-    name: new FormControl("", [Validators.required]),
-    description: new FormControl(""),
-    title: new FormControl(""),
-    history: new FormControl(""),
-    context: new FormControl(""),
-    prompt: new FormControl(""),
-    utterance: new FormControl(""),
-    response: new FormControl(""),
-
-    useDummyChatbot: new FormControl(true),
-    chatbotUrl: new FormControl("", [Validators.required]),
+    // name: new FormControl("", [Validators.required]),
+    // description: new FormControl(""),
+    // title: new FormControl(""),
+    // history: new FormControl(""),
+    // context: new FormControl(""),
+    // prompt: new FormControl(""),
+    // utterance: new FormControl(""),
+    // response: new FormControl(""),
+    //
+    // useDummyChatbot: new FormControl(true),
+    // chatbotUrl: new FormControl("", [Validators.required]),
   })
 
   // Dummy prompt example
