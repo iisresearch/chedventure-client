@@ -146,10 +146,4 @@ export class GameCharacterDetailEditComponent implements OnInit {
       }
     }
   }
-
-  onPromptChange($event: MatSelectChange) {
-    if(this.prompt?.value!=="Utterance")
-      this.utterance?.disable();
-    else this.utterance?.enable()
-  }
 }

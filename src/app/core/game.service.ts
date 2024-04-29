@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { tap, map, catchError } from "rxjs/operators";
-import {Character, IGame, Room, RoomToGame} from "./models/game";
+import {Character, Context, IGame, Room, RoomToGame} from "./models/game";
 import {MessageService, MessageStatus} from "./message.service";
 import { environment } from '../../environments/environment';
 
@@ -154,6 +154,31 @@ export class GameService {
         tap(_ => console.log("Custom room deleted")),
         tap(_ => this.messageService.Show("Room has been deleted", MessageStatus.Success)),
         catchError(this.handleError('deleteCharacter'))
+      )
+  }
+
+  createContext(gameId: string, context: Context): Observable<Context> {
+    return this.httpClient.post<Context>(`${baseUrl}/contexts/game/${gameId}`, context)
+      .pipe(
+        tap(_ => this.messageService.Show("Context has been created", MessageStatus.Success)),
+        catchError(this.handleError<Context>('createContext', context))
+      )
+  }
+
+  updateContext(id: number, context: Context): Observable<Context> {
+    return this.httpClient.put<Context>(`${baseUrl}/contexts/game/${id}`, context)
+      .pipe(
+        tap(context => this.messageService.Show("Context" + context.name + " has been updated", MessageStatus.Success)),
+        catchError(this.handleError<Context>('updateContext', context))
+      )
+  }
+
+  deleteContext(id: number) {
+    return this.httpClient.delete(`${baseUrl}/contexts/game/${id}`)
+      .pipe(
+        tap(_ => console.log("Context " + _ + " deleted")),
+        tap(_ => this.messageService.Show("Context has been deleted", MessageStatus.Success)),
+        catchError(this.handleError('deleteContext'))
       )
   }
 

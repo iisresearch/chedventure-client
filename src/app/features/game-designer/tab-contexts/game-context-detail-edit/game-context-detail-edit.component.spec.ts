@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GameContextDetailEditComponent } from './game-context-detail-edit.component';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('GameContextDetailEditComponent', () => {
   let component: GameContextDetailEditComponent;
@@ -8,7 +9,8 @@ describe('GameContextDetailEditComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GameContextDetailEditComponent]
+      declarations: [GameContextDetailEditComponent],
+      imports: [HttpClientTestingModule], // Include HttpClientTestingModule here
     })
     .compileComponents();
     

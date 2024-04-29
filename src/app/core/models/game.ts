@@ -10,8 +10,8 @@ export class Game implements IGame {
   public documentation?: string;
   public isPublished: boolean
 
-  constructor(id: string, name: string, subtitle: string|undefined, author: string,
-              version: string, createdAt: string|undefined, updatedAt: string|undefined, initialRoom: InitialRoom|undefined, documentation: string|undefined, isPublished: boolean|undefined) {
+  constructor(id: string, name: string, subtitle: string | undefined, author: string,
+              version: string, createdAt: string | undefined, updatedAt: string | undefined, initialRoom: InitialRoom | undefined, documentation: string | undefined, isPublished: boolean | undefined) {
     this.id = id;
     this.name = name;
     this.subtitle = subtitle;
@@ -103,5 +103,7 @@ export interface Character {
 export interface Context {
   id: number;
   name: string;
-
+  prompt: string[];
+  utterance: string;
+  response: string;
 }

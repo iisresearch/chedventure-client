@@ -1,7 +1,5 @@
 <div fxLayout="row">
 	<mat-card appearance="outlined" fxFlex="25" fxLayout="column">
-
-
 		<mat-card-header>
 			<mat-card-title>
 				<mat-form-field appearance="outline" style="width: 100%;">
@@ -24,13 +22,16 @@
 						<mat-icon>add</mat-icon>
 					</button>
 				</div>
-				<mat-selection-list #contextsToGameSelection [multiple]="false" (selectionChange)="onChangeContext($event)"
-														[(ngModel)]="selectedContext" [compareWith]="compareContextsFunction">
-					<mat-list-option *ngFor="let context of this.contexts" [value]="context"
-													 [selected]="contextIsSelected(context)">
-						{{ context.name }}
-					</mat-list-option>
-				</mat-selection-list>
+
+					<mat-selection-list #contextsToGameSelection [multiple]="false" (selectionChange)="onChangeContext($event)"
+															[(ngModel)]="selectedContext" [compareWith]="compareContextsFunction">
+						@for (context of this.contexts; track context;) {
+							<mat-list-option  [value]="context" [selected]="contextIsSelected(context)"> <!--*ngFor="let context of this.contexts"-->
+								{{ context.name }}
+							</mat-list-option>
+						}
+					</mat-selection-list>
+
 				<ng-container *ngIf="contexts === undefined || contexts.length === 0">
 					<mat-card-subtitle>
 						No context created yet
@@ -42,11 +43,7 @@
 
 	</mat-card>
 	<div fxFlex="70" style="padding-left: 3em">
-
-		<!-- Determines which form compoment should be displayed. -->
-		<ng-template #updateContext>
-
-			<!-- The user clicks on an existing context, which he wants to edit or see the details -->
+		<!-- The user clicks on an existing context, which he wants to edit or see the details -->
 			<ng-container
 					*ngIf="selectedContext && selectedContext.length !== 0 && contextsToGameSelection.selectedOptions.selected[0]; else createNewContextInGame">
 				<app-game-context-detail-edit [game]="game"
@@ -64,8 +61,6 @@
 																				(updatedContext)="updatedContext($event)"></app-game-context-detail-edit>
 				</ng-container>
 			</ng-template>
-
-		</ng-template>
 
 	</div>
 </div>

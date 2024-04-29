@@ -2,9 +2,6 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Character, Context, Game} from "../../../../core/models/game";
 import {GameService} from "../../../../core/game.service";
 import {MatSelectionListChange} from "@angular/material/list";
-import {Observable, startWith} from "rxjs";
-import {map} from "rxjs/operators";
-import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-game-context-detail',
@@ -17,21 +14,26 @@ export class GameContextDetailComponent implements OnInit {
   @Input() game!: Game;
   @Output() gameChange = new EventEmitter<Game>();
 
-  contexts!: Context[];
+  contexts: Context[] = [{id: 1, name: 'context1', prompt: [], utterance: 'utterance1', response: 'response1'}];
   selectedContext!: Context[];
-  compareContextsFunction = (o1: any, o2: any)=> o1.id===o2.id;
+  compareContextsFunction = (o1: any, o2: any) => o1.id === o2.id;
+  @Output() contextsChange = new EventEmitter<Context[]>();
 
   createNewContext = false;
 
   @Input() characters!: Character[];
-  selectedCharacter!: Character;
+  selectedCharacter!: Character[];
 
+  //compareCharactersFunction = (o1: any, o2: any)=> o1.id===o2.id;
   constructor(private gameService: GameService) {
 
   }
+
   ngOnInit(): void {
-    // this.getContextsInGame(this.game.id);
-    //this.characters = this.gameService.getCharactersInGame(this.game.id);
+    this.getCharactersInGame(this.game.id);
+    this.getContextsInGame(this.game.id);
+
+
     //this.getCharactersInGame(this.game.id);
   }
 
@@ -45,7 +47,7 @@ export class GameContextDetailComponent implements OnInit {
       this.contexts[i] = context;
     }
     this.selectedContext = [context];
-    // this.createNewContext = false;
+    this.createNewContext = false;
   }
 
   deletedContext(context: Context) {
@@ -76,10 +78,26 @@ export class GameContextDetailComponent implements OnInit {
     this.selectedContext = [];
   }
 
-  getCharactersInGame(id: string): void {
+  getCharactersInGame(id: string) {
     this.gameService.getCharactersInGame(id)
       .subscribe(characters => {
         this.characters = characters;
-      })
+      });
+  }
+
+  // characterIsSelected(character: Character): boolean {
+  //   if (this.selectedCharacter && this.selectedCharacter.length !== 0 && character) {
+  //     return this.compareCharactersFunction(character, this.selectedCharacter[0].id);
+  //   } else {
+  //     return false;
+  //   }
+  // }
+
+  private getContextsInGame(id: string) {
+    // this.gameService.getContextsInGame(id)
+    //   .subscribe(contexts => {
+    //     this.contexts = contexts;
+    //     this.contextsChange.emit(this.contexts);
+    //   });
   }
 }
