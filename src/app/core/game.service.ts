@@ -182,6 +182,14 @@ export class GameService {
       )
   }
 
+  getContextsInGame(id: string): Observable<Context[]> {
+    return this.httpClient.get<Context[]>(`${baseUrl}/contexts/game/${id}`)
+        .pipe(
+            tap(_ => console.log("fetched contexts")),
+            catchError(this.handleError<Context[]>('getContextsInGame', []))
+        );
+  }
+
 
 
 

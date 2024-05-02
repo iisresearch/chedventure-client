@@ -9,7 +9,7 @@
 	<form [formGroup]="contextForm" fxLayout="column" (ngSubmit)="onSubmit()">
 
 		<mat-form-field>
-			<mat-label>Context</mat-label>
+			<mat-label>Sub-dialogues</mat-label>
 			<input matInput id="name" type="text" formControlName="name" placeholder="Ex. Start; Interview; Option;">
 			<mat-hint align="start">Context of this context. Context refers to the specific situation, environment, or
 				scenario in which the conversation takes place
@@ -50,7 +50,6 @@
 				<button mat-raised-button color="warn" (click)="deleteContext()" type="button">Delete</button>
 			</div>
 		</div>
-
 
 	</form>
 

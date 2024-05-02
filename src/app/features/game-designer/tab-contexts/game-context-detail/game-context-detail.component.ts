@@ -94,10 +94,10 @@ export class GameContextDetailComponent implements OnInit {
   // }
 
   private getContextsInGame(id: string) {
-    // this.gameService.getContextsInGame(id)
-    //   .subscribe(contexts => {
-    //     this.contexts = contexts;
-    //     this.contextsChange.emit(this.contexts);
-    //   });
+    this.gameService.getContextsInGame(id)
+      .subscribe((contexts: Context[]) => {
+        this.contexts = contexts;
+        this.contextsChange.emit(this.contexts);
+      });
   }
 }
