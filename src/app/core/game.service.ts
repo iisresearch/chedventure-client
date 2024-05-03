@@ -157,8 +157,8 @@ export class GameService {
       )
   }
 
-  createContext(gameId: string, context: Context): Observable<Context> {
-    return this.httpClient.post<Context>(`${baseUrl}/contexts/game/${gameId}`, context)
+  createContext(characterId: number, context: Context): Observable<Context> {
+    return this.httpClient.post<Context>(`${baseUrl}/contexts/character/${characterId}`, context)
       .pipe(
         tap(_ => this.messageService.Show("Context has been created", MessageStatus.Success)),
         catchError(this.handleError<Context>('createContext', context))

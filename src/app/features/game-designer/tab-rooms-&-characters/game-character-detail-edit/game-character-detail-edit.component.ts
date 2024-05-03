@@ -36,9 +36,6 @@ export class GameCharacterDetailEditComponent implements OnInit {
     // chatbotUrl: new FormControl("", [Validators.required]),
   })
 
-  // Dummy prompt example
-  prompts:string[] = ['None', 'Utterance', 'Continuation'];
-
   constructor(private gameService: GameService) { }
 
   ngOnInit(): void {
@@ -53,6 +50,7 @@ export class GameCharacterDetailEditComponent implements OnInit {
         name: "",
         description: "",
         title: "",
+        history: 0,
         chatbotUrl: this.DUMMY_CHATBOT,
       }
       this.character = ch;
@@ -72,11 +70,7 @@ export class GameCharacterDetailEditComponent implements OnInit {
       name: new FormControl(this.character.name, [Validators.required]),
       description: new FormControl(this.character.description),
       title: new FormControl(this.character.title),
-      history: new FormControl(),
-      context: new FormControl(),
-      prompt: new FormControl(),
-      utterance: new FormControl(),
-      response: new FormControl(),
+      history: new FormControl(this.character.history, [Validators.required]),
       useDummyChatbot: new FormControl(chatbotIsDefault),
       chatbotUrl: new FormControl(chatbotURl, [Validators.required]),
     })
@@ -86,7 +80,6 @@ export class GameCharacterDetailEditComponent implements OnInit {
   get description() { return this.characterForm.get('description') }
   get title() { return this.characterForm.get('title') }
   get history() { return this.characterForm.get('history') }
-  get context() { return this.characterForm.get('context') }
   get useDummyChatbot() { return this.characterForm.get('useDummyChatbot') }
   get chatbotUrl() { return this.characterForm.get('chatbotUrl') }
 
@@ -107,6 +100,7 @@ export class GameCharacterDetailEditComponent implements OnInit {
         name: this.name?.value,
         description: this.description?.value,
         title: this.title?.value,
+        history: this.history?.value,
         chatbotUrl: this.chatbotUrl?.value,
       }
 

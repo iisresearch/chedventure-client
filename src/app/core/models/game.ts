@@ -97,6 +97,7 @@ export interface Character {
   name: string;
   description?: string;
   title?: string;
+  history?: number;
   chatbotUrl: string;
 }
 
@@ -104,10 +105,10 @@ export interface Context {
   id: number;
   name: string;
   prompt: string[];
-  dialogues: Dialog[];
+  dialogues: Dialogue[];
 }
 
-export interface Dialog {
+export interface Dialogue {
     id: number;
     utterance: string;
     response: string;

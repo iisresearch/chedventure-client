@@ -3,16 +3,16 @@
         <h3>Configure context</h3>
     </ng-container>
     <ng-template #updateContextTitle>
-        <h3>Configure new context</h3>
+        <h3>Configure new dialogue</h3>
     </ng-template>
 
     <form [formGroup]="contextForm" fxLayout="column" (ngSubmit)="onSubmit()">
 
         <mat-form-field>
-            <mat-label>Sub-dialogues</mat-label>
+            <mat-label>Name</mat-label>
             <input matInput id="name" type="text" formControlName="name" placeholder="Ex. Start; Interview; Option;">
-            <mat-hint align="start">Context of this context. Context refers to the specific situation, environment, or
-                scenario in which the conversation takes place
+            <mat-hint align="start">A dialogue is a conversation between a stakeholder and a student. A dialogue refers to the specific situation, environment, or
+                scenario in which the conversation takes place.
             </mat-hint>
         </mat-form-field>
 

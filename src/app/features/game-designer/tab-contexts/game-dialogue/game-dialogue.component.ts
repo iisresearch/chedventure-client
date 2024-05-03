@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {GameService} from "../../../../core/game.service";
-import {Character, Dialog} from "../../../../core/models/game";
+import {Character, Dialogue} from "../../../../core/models/game";
 
 @Component({
     selector: 'app-game-dialogue',
@@ -10,7 +10,7 @@ import {Character, Dialog} from "../../../../core/models/game";
 })
 export class GameDialogueComponent implements OnInit {
 
-    DIALOGUE: Dialog[] = [
+    DIALOGUE: Dialogue[] = [
         {
             id: 1,
             utterance: 'Hello, im bot!',
@@ -46,7 +46,7 @@ export class GameDialogueComponent implements OnInit {
     }
 
     addMessage(botMessage: string, userMessage: string) {
-        const newDialog: Dialog = {
+        const newDialog: Dialogue = {
             id: this.DIALOGUE.length + 1,
             utterance: botMessage,
             response: userMessage,
