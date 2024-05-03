@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Character, Context, Game} from "../../../../core/models/game";
 import {GameService} from "../../../../core/game.service";
 import {MatSelectionListChange} from "@angular/material/list";
+import {MatSelectChange} from "@angular/material/select";
 
 @Component({
   selector: 'app-game-context-detail',
@@ -14,7 +15,7 @@ export class GameContextDetailComponent implements OnInit {
   @Input() game!: Game;
   @Output() gameChange = new EventEmitter<Game>();
 
-  contexts: Context[] = [{id: 1, name: 'context1', prompt: [], utterance: 'utterance1', response: 'response1'}];
+  contexts: Context[] = [{id: 1, name: 'context1', prompt: [], dialogues: [], }];
   selectedContext!: Context[];
   compareContextsFunction = (o1: any, o2: any) => o1.id === o2.id;
   @Output() contextsChange = new EventEmitter<Context[]>();
@@ -22,19 +23,15 @@ export class GameContextDetailComponent implements OnInit {
   createNewContext = false;
 
   @Input() characters!: Character[];
-  selectedCharacter!: Character[];
+  selectedCharacter!: Character;
+  compareCharacterToGameFunction = (c1: any, c2: any)=> c1.id===c2.id;
 
-  //compareCharactersFunction = (o1: any, o2: any)=> o1.id===o2.id;
   constructor(private gameService: GameService) {
-
   }
 
   ngOnInit(): void {
     this.getCharactersInGame(this.game.id);
     this.getContextsInGame(this.game.id);
-
-
-    //this.getCharactersInGame(this.game.id);
   }
 
   updatedContext(context: Context) {
@@ -58,7 +55,6 @@ export class GameContextDetailComponent implements OnInit {
       this.contexts.splice(i, 1);
     }
     this.selectedContext = [];
-
   }
 
   contextIsSelected(context: Context): boolean {
@@ -82,16 +78,17 @@ export class GameContextDetailComponent implements OnInit {
     this.gameService.getCharactersInGame(id)
       .subscribe(characters => {
         this.characters = characters;
+        // Set to the first character by default
+        if(this.characters && this.characters.length > 0){
+          this.selectedCharacter = this.characters[0]; // Set the selected character to the first character
+        }
       });
   }
 
-  // characterIsSelected(character: Character): boolean {
-  //   if (this.selectedCharacter && this.selectedCharacter.length !== 0 && character) {
-  //     return this.compareCharactersFunction(character, this.selectedCharacter[0].id);
-  //   } else {
-  //     return false;
-  //   }
-  // }
+  onChangeCharacter($event: MatSelectChange) {
+    this.selectedCharacter = $event.value;
+    console.log(`Selected ${this.selectedCharacter.name}: `, this.selectedCharacter);
+  }
 
   private getContextsInGame(id: string) {
     this.gameService.getContextsInGame(id)

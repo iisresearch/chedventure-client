@@ -20,8 +20,10 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
 
   @Input() characters!: Character[];
 
-  contextForm: FormGroup = new FormGroup({});
 
+  @Input() selectedCharacter!: Character;
+
+  contextForm: FormGroup = new FormGroup({});
   prompts:string[] = ['None', 'Utterance', 'Continuation'];
 
   constructor(private gameService: GameService) { }
@@ -37,8 +39,7 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
         id: -1,
         name: "",
         prompt: [],
-        utterance: "",
-        response: "",
+        dialogues: [],
       };
       this.setupForm();
     }
@@ -46,15 +47,13 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
 
   get name() { return this.contextForm.get('name') }
   get prompt() { return this.contextForm.get('prompt') }
-  get utterance() { return this.contextForm.get('utterance') }
-  get response() { return this.contextForm.get('response') }
+  get dialogues() { return this.contextForm.get('dialogues') }
 
   setupForm() {
     this.contextForm = new FormGroup({
       name: new FormControl(this.context.name, [Validators.required]),
       prompt: new FormControl(this.context.prompt),
-      utterance: new FormControl(this.context.utterance),
-      response: new FormControl(this.context.response),
+      dialogue: new FormControl(this.context.dialogues)
     })
   }
 
@@ -64,8 +63,7 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
         id: this.context.id,
         name: this.name?.value,
         prompt: this.prompt?.value,
-        utterance: this.utterance?.value,
-        response: this.response?.value,
+        dialogues: this.dialogues?.value
       }
 
       // If a new character is being created, send POST Request
@@ -105,8 +103,11 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
   }
 
   onPromptChange($event: MatSelectChange) {
-    if(this.prompt?.value!=="Utterance")
-      this.utterance?.disable();
-    else this.utterance?.enable()
+    // This changes the form based on the prompt selected
+    // if it's not utternace than disable the utterance form
+
+    // if(this.prompt?.value!=="Utterance")
+    //   this.utterance?.disable();
+    // else this.utterance?.enable()
   }
 }

@@ -87,9 +87,6 @@ export class GameCharacterDetailEditComponent implements OnInit {
   get title() { return this.characterForm.get('title') }
   get history() { return this.characterForm.get('history') }
   get context() { return this.characterForm.get('context') }
-  get prompt() { return this.characterForm.get('prompt') }
-  get utterance() { return this.characterForm.get('utterance') }
-  get response() { return this.characterForm.get('response') }
   get useDummyChatbot() { return this.characterForm.get('useDummyChatbot') }
   get chatbotUrl() { return this.characterForm.get('chatbotUrl') }
 

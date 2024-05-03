@@ -104,6 +104,11 @@ export interface Context {
   id: number;
   name: string;
   prompt: string[];
-  utterance: string;
-  response: string;
+  dialogues: Dialog[];
+}
+
+export interface Dialog {
+    id: number;
+    utterance: string;
+    response: string;
 }

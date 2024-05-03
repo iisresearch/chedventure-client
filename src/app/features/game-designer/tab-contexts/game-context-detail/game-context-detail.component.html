@@ -1,66 +1,71 @@
 <div fxLayout="row">
-	<mat-card appearance="outlined" fxFlex="25" fxLayout="column">
-		<mat-card-header>
-			<mat-card-title>
-				<mat-form-field appearance="outline" style="width: 100%;">
-					<mat-label>Character</mat-label>
-					<mat-select [(value)]="selectedCharacter">
-						@for (character of characters; track character; ) {
-							<mat-option [value]="character">{{ character.name }}</mat-option>
-						}
-					</mat-select>
-				</mat-form-field>
-			</mat-card-title>
-			<mat-card-title>Your Game Dialogues</mat-card-title>
-		</mat-card-header>
-		<mat-card-content>
+    <mat-card appearance="outlined" fxFlex="25" fxLayout="column">
+        <mat-card-header>
+            <mat-card-title>
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Character</mat-label>
+                    <mat-select #charactersToGameSelection [(ngModel)]="selectedCharacter"
+                                (selectionChange)="onChangeCharacter($event)"
+                                [compareWith]="compareCharacterToGameFunction">
+                        @for (character of characters; track character; ) {
+                            <mat-option [value]="character">{{ character.name }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </mat-card-title>
+            <mat-card-title>Your Game Dialogues</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
 
-			<div fxLayout="column">
-				<div fxLayout="row" fxLayoutAlign="space-between center">
-					<h3>Contexts</h3>
-					<button mat-icon-button color="primary" (click)="createContext()">
-						<mat-icon>add</mat-icon>
-					</button>
-				</div>
+            <div fxLayout="column">
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <h3>Contexts</h3>
+                    <button mat-icon-button color="primary" (click)="createContext()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
 
-					<mat-selection-list #contextsToGameSelection [multiple]="false" (selectionChange)="onChangeContext($event)"
-															[(ngModel)]="selectedContext" [compareWith]="compareContextsFunction">
-						@for (context of this.contexts; track context;) {
-							<mat-list-option  [value]="context" [selected]="contextIsSelected(context)"> <!--*ngFor="let context of this.contexts"-->
-								{{ context.name }}
-							</mat-list-option>
-						}
-					</mat-selection-list>
+                <mat-selection-list #contextsToGameSelection [multiple]="false"
+                                    (selectionChange)="onChangeContext($event)"
+                                    [(ngModel)]="selectedContext" [compareWith]="compareContextsFunction">
+                    @for (context of this.contexts; track context; ) {
+                        <mat-list-option [value]="context" [selected]="contextIsSelected(context)">
+                            <!--*ngFor="let context of this.contexts"-->
+                            {{ context.name }}
+                        </mat-list-option>
+                    }
+                </mat-selection-list>
 
-				<ng-container *ngIf="contexts === undefined || contexts.length === 0">
-					<mat-card-subtitle>
-						No context created yet
-					</mat-card-subtitle>
-				</ng-container>
-			</div>
+                <ng-container *ngIf="contexts === undefined || contexts.length === 0">
+                    <mat-card-subtitle>
+                        No context created yet
+                    </mat-card-subtitle>
+                </ng-container>
+            </div>
 
-		</mat-card-content>
+        </mat-card-content>
 
-	</mat-card>
-	<div fxFlex="70" style="padding-left: 3em">
-		<!-- The user clicks on an existing context, which he wants to edit or see the details -->
-			<ng-container
-					*ngIf="selectedContext && selectedContext.length !== 0 && contextsToGameSelection.selectedOptions.selected[0]; else createNewContextInGame">
-				<app-game-context-detail-edit [game]="game"
-																			[context]="contextsToGameSelection.selectedOptions.selected[0]!.value"
-																			[createNewContext]="false"
-																			(updatedContext)="updatedContext($event)"
-																			(deletedContext)="deletedContext($event)"
-																			[characters]="characters"></app-game-context-detail-edit>
-			</ng-container>
+    </mat-card>
+    <div fxFlex="70" style="padding-left: 3em">
+        <!-- The user clicks on an existing context, which he wants to edit or see the details -->
+        <ng-container
+                *ngIf="selectedContext && selectedContext.length !== 0 && contextsToGameSelection.selectedOptions.selected[0]; else createNewContextInGame">
+            <app-game-context-detail-edit [game]="game"
+                                          [selectedCharacter]="charactersToGameSelection.value"
+                                          [context]="contextsToGameSelection.selectedOptions.selected[0]!.value"
+                                          [createNewContext]="false"
+                                          (updatedContext)="updatedContext($event)"
+                                          (deletedContext)="deletedContext($event)"
+                                          [characters]="characters"></app-game-context-detail-edit>
+        </ng-container>
 
-			<!-- The user clicks on create new context button -->
-			<ng-template #createNewContextInGame>
-				<ng-container *ngIf="createNewContext">
-					<app-game-context-detail-edit [game]="game" [createNewContext]="true"
-																				(updatedContext)="updatedContext($event)"></app-game-context-detail-edit>
-				</ng-container>
-			</ng-template>
+        <!-- The user clicks on create new context button -->
+        <ng-template #createNewContextInGame>
+            <ng-container *ngIf="createNewContext">
+                <app-game-context-detail-edit [game]="game" [createNewContext]="true"
+                                              (updatedContext)="updatedContext($event)"></app-game-context-detail-edit>
+            </ng-container>
+        </ng-template>
 
-	</div>
+    </div>
 </div>
