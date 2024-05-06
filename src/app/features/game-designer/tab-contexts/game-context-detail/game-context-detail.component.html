@@ -1,18 +1,18 @@
 <div fxLayout="row">
     <mat-card appearance="outlined" fxFlex="25" fxLayout="column">
         <mat-card-header>
-            <mat-card-title>
-                <mat-form-field appearance="outline" style="width: 100%;">
-                    <mat-label>Character</mat-label>
-                    <mat-select #charactersToGameSelection [(ngModel)]="selectedCharacter"
-                                (selectionChange)="onChangeCharacter($event)"
-                                [compareWith]="compareCharacterToGameFunction">
-                        @for (character of characters; track character; ) {
-                            <mat-option [value]="character">{{ character.name }}</mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
-            </mat-card-title>
+            <mat-form-field appearance="outline">
+                <mat-label>Character</mat-label>
+                <mat-select [(ngModel)]="selectedCharacter"
+                            (selectionChange)="onChangeCharacter($event)"
+                            [compareWith]="compareCharacterToGameFunction">
+                    @for (character of characters; track character; ) {
+                        <mat-option [value]="character">{{ character.name }}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </mat-card-header>
+        <mat-card-header>
             <mat-card-title>Your Game Dialogues</mat-card-title>
         </mat-card-header>
         <mat-card-content>
@@ -51,19 +51,24 @@
         <ng-container
                 *ngIf="selectedContext && selectedContext.length !== 0 && contextsToGameSelection.selectedOptions.selected[0]; else createNewContextInGame">
             <app-game-context-detail-edit [game]="game"
-                                          [selectedCharacter]="charactersToGameSelection.value"
+                                          [selectedCharacter]="this.selectedCharacter"
+                                          [characters]="this.characters"
                                           [context]="contextsToGameSelection.selectedOptions.selected[0]!.value"
                                           [createNewContext]="false"
                                           (updatedContext)="updatedContext($event)"
-                                          (deletedContext)="deletedContext($event)"
-                                          [characters]="characters"></app-game-context-detail-edit>
+                                          (deletedContext)="deletedContext($event)">
+            </app-game-context-detail-edit>
         </ng-container>
 
         <!-- The user clicks on create new context button -->
         <ng-template #createNewContextInGame>
             <ng-container *ngIf="createNewContext">
                 <app-game-context-detail-edit [game]="game" [createNewContext]="true"
-                                              (updatedContext)="updatedContext($event)"></app-game-context-detail-edit>
+                                              [selectedCharacter]="this.selectedCharacter"
+                                              [characters]="this.characters"
+                                              (updatedContext)="updatedContext($event)"
+                                              (deletedContext)="deletedContext($event)">
+                </app-game-context-detail-edit>
             </ng-container>
         </ng-template>
 

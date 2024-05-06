@@ -11,7 +11,8 @@
         <mat-form-field>
             <mat-label>Name</mat-label>
             <input matInput id="name" type="text" formControlName="name" placeholder="Ex. Start; Interview; Option;">
-            <mat-hint align="start">A dialogue is a conversation between a stakeholder and a student. A dialogue refers to the specific situation, environment, or
+            <mat-hint align="start">A dialogue is a conversation between a stakeholder and a student. A dialogue refers
+                to the specific situation, environment, or
                 scenario in which the conversation takes place.
             </mat-hint>
         </mat-form-field>
@@ -34,15 +35,15 @@
         <!--			</mat-hint>-->
         <!--		</mat-form-field>-->
 
-<!--        <mat-form-field>-->
-<!--            <mat-label>Response</mat-label>-->
-<!--            <textarea matInput id="response" type="text" formControlName="response"-->
-<!--                      placeholder="Ex. Our programs use immersive simulations to mimic real-world scenarios, allowing employees to practice and perfect their skills in a risk-free environment. We offer customized programs for various industries, including customer service, sales, and leadership development. Would you like to know more about a specific program or industry?.">-->
-<!--	  </textarea>-->
-<!--            <mat-hint align="start">Optional: Response of the context triggered by the utterance.</mat-hint>-->
-<!--        </mat-form-field>-->
+        <!--        <mat-form-field>-->
+        <!--            <mat-label>Response</mat-label>-->
+        <!--            <textarea matInput id="response" type="text" formControlName="response"-->
+        <!--                      placeholder="Ex. Our programs use immersive simulations to mimic real-world scenarios, allowing employees to practice and perfect their skills in a risk-free environment. We offer customized programs for various industries, including customer service, sales, and leadership development. Would you like to know more about a specific program or industry?.">-->
+        <!--	  </textarea>-->
+        <!--            <mat-hint align="start">Optional: Response of the context triggered by the utterance.</mat-hint>-->
+        <!--        </mat-form-field>-->
 
-        <app-game-dialogue></app-game-dialogue>
+        <app-game-dialogue (dialogueChange)="updateDialogue($event)" [dialogues]="dialogues"></app-game-dialogue>
 
         <div fxLayout="row">
             <div style="margin: 1em 1em 1em 1em;" *ngIf="context !== undefined && context !== null">

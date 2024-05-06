@@ -1,6 +1,6 @@
 <form style="display: inline; margin: 1rem" id="">
     <mat-card class="chat-container">
-        @for (dialogue of this.DIALOGUE; track dialogue) {
+        @for (dialogue of this.dialogues; track dialogue) {
             <mat-card-content class="chat-message bot-message">
                 <mat-icon>smart_toy</mat-icon>
                 {{ dialogue.utterance }}
@@ -12,24 +12,31 @@
 
                 {{ dialogue.response }}
             </mat-card-content>
-
         } @empty {
-            <mat-card-subtitle>No messages yet</mat-card-subtitle>
+            <mat-card-content>
+                <mat-card-subtitle>No dialogue created yet</mat-card-subtitle>
+            </mat-card-content>
         }
+
         <!-- Add more chat messages here -->
         <div class="chat-input">
             <mat-form-field appearance="fill"
                             style="align-self: flex-start; ">
-                <mat-label>Bot Says</mat-label>
+
+                <mat-label>
+                    <mat-icon>smart_toy</mat-icon>
+                    Bot Says
+                </mat-label>
                 <input matInput #botMessage>
             </mat-form-field>
-            <mat-form-field appearance="fill" style=" align-content: flex-end;
-    align-self: flex-end; max-width: 70%;">
-                <mat-label>User answers</mat-label>
+            <mat-form-field appearance="fill" style=" align-content: flex-end; align-self: flex-end; max-width: 70%;">
+
+
+                <mat-label> <mat-icon>person</mat-icon> User answers</mat-label>
                 <input matInput #userMessage>
             </mat-form-field>
 
-            <button mat-icon-button color="primary" (click)="addMessage(botMessage.value, userMessage.value)">
+            <button mat-icon-button color="primary" (click)="addDialogue(botMessage.value, userMessage.value)">
                 <mat-icon>send</mat-icon>
             </button>
         </div>

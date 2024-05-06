@@ -15,7 +15,7 @@ export class GameContextDetailComponent implements OnInit {
   @Input() game!: Game;
   @Output() gameChange = new EventEmitter<Game>();
 
-  contexts: Context[] = [{id: 1, name: 'context1', prompt: [], dialogues: [], }];
+  contexts!: Context[];
   selectedContext!: Context[];
   compareContextsFunction = (o1: any, o2: any) => o1.id === o2.id;
   @Output() contextsChange = new EventEmitter<Context[]>();
@@ -25,6 +25,7 @@ export class GameContextDetailComponent implements OnInit {
   @Input() characters!: Character[];
   selectedCharacter!: Character;
   compareCharacterToGameFunction = (c1: any, c2: any)=> c1.id===c2.id;
+  @Output() charactersChange = new EventEmitter<Character>();
 
   constructor(private gameService: GameService) {
   }
@@ -81,6 +82,8 @@ export class GameContextDetailComponent implements OnInit {
         // Set to the first character by default
         if(this.characters && this.characters.length > 0){
           this.selectedCharacter = this.characters[0]; // Set the selected character to the first character
+          console.log(`Fetched Selected ${this.selectedCharacter.name}: `, this.selectedCharacter);
+          this.charactersChange.emit(this.selectedCharacter);
         }
       });
   }
@@ -94,6 +97,7 @@ export class GameContextDetailComponent implements OnInit {
     this.gameService.getContextsInGame(id)
       .subscribe((contexts: Context[]) => {
         this.contexts = contexts;
+        console.log(`Fetched Contexts ${this.selectedCharacter.name}: `, this.contexts);
         this.contextsChange.emit(this.contexts);
       });
   }

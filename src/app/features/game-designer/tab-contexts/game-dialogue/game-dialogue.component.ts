@@ -1,7 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {GameService} from "../../../../core/game.service";
-import {Character, Dialogue} from "../../../../core/models/game";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Dialogue} from "../../../../core/models/game";
 
 @Component({
     selector: 'app-game-dialogue',
@@ -9,49 +7,22 @@ import {Character, Dialogue} from "../../../../core/models/game";
     styleUrl: './game-dialogue.component.css'
 })
 export class GameDialogueComponent implements OnInit {
+    @Input() dialogues!: Dialogue[];
+    @Output() dialogueChange = new EventEmitter<Dialogue>();
 
-    DIALOGUE: Dialogue[] = [
-        {
-            id: 1,
-            utterance: 'Hello, im bot!',
-            response: 'Hi there, im user!'
-        },
-        {
-            id: 2,
-            utterance: 'How are you?',
-            response: 'I am fine, thank you!'
-        },
-        {
-            id: 3,
-            utterance: 'What is your name?',
-            response: 'My name is bot!'
-        },
-        {
-            id: 4,
-            utterance: 'What is your favorite color?',
-            response: 'My favorite color is blue!'
-        },
-        {
-            id: 5,
-            utterance: 'What is your favorite food?',
-            response: 'My favorite food is pizza!'
-        },
-
-    ];
-
-    constructor(gameService: GameService) {
+    constructor() {
     }
 
     ngOnInit(): void {
     }
 
-    addMessage(botMessage: string, userMessage: string) {
-        const newDialog: Dialogue = {
-            id: this.DIALOGUE.length + 1,
+    addDialogue(botMessage: string, userMessage: string) {
+        const newDialogue: Dialogue = {
+            id: this.dialogues.length + 1,
             utterance: botMessage,
             response: userMessage,
         };
-        this.DIALOGUE.push(newDialog);
+        this.dialogueChange.emit(newDialogue);
     }
 
 }
