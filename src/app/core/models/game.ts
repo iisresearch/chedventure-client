@@ -105,10 +105,10 @@ export interface Context {
   id: number;
   name: string;
   prompt: string[];
-  dialogues: Dialogue[];
+  messages: Message[];
 }
 
-export interface Dialogue {
+export interface Message {
     id: number;
     utterance: string;
     response: string;
