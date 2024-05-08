@@ -1,20 +1,20 @@
 <form style="display: inline; margin: 1rem" id="">
     <mat-card class="chat-container">
-        @for (dialogue of this.dialogues; track dialogue) {
+        @for (message of this.messages; track message) {
             <mat-card-content class="chat-message bot-message">
                 <mat-icon>smart_toy</mat-icon>
-                {{ dialogue.utterance }}
+                {{ message.utterance }}
             </mat-card-content>
             <mat-card-content class="chat-message user-message">
                 <mat-label>
                     <mat-icon>person</mat-icon>
                 </mat-label>
 
-                {{ dialogue.response }}
+                {{ message.response }}
             </mat-card-content>
         } @empty {
             <mat-card-content>
-                <mat-card-subtitle>No dialogue created yet</mat-card-subtitle>
+                <mat-card-subtitle>No messages created yet</mat-card-subtitle>
             </mat-card-content>
         }
 

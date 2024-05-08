@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Dialogue} from "../../../../core/models/game";
+import {Message} from "../../../../core/models/game";
 
 @Component({
     selector: 'app-game-dialogue',
@@ -7,8 +7,8 @@ import {Dialogue} from "../../../../core/models/game";
     styleUrl: './game-dialogue.component.css'
 })
 export class GameDialogueComponent implements OnInit {
-    @Input() dialogues!: Dialogue[];
-    @Output() dialogueChange = new EventEmitter<Dialogue>();
+    @Input() messages!: Message[];
+    @Output() messageChange = new EventEmitter<Message>();
 
     constructor() {
     }
@@ -17,12 +17,12 @@ export class GameDialogueComponent implements OnInit {
     }
 
     addDialogue(botMessage: string, userMessage: string) {
-        const newDialogue: Dialogue = {
-            id: this.dialogues.length + 1,
+        const newMessage: Message = {
+            id: this.messages.length + 1,
             utterance: botMessage,
             response: userMessage,
         };
-        this.dialogueChange.emit(newDialogue);
+        this.messageChange.emit(newMessage);
     }
 
 }

@@ -43,7 +43,7 @@
         <!--            <mat-hint align="start">Optional: Response of the context triggered by the utterance.</mat-hint>-->
         <!--        </mat-form-field>-->
 
-        <app-game-dialogue (dialogueChange)="updateDialogue($event)" [dialogues]="dialogues"></app-game-dialogue>
+        <app-game-dialogue (messageChange)="updateDialogue($event)" [messages]="messages"></app-game-dialogue>
 
         <div fxLayout="row">
             <div style="margin: 1em 1em 1em 1em;" *ngIf="context !== undefined && context !== null">
