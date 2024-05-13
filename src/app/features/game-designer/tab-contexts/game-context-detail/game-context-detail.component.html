@@ -63,7 +63,8 @@
         <!-- The user clicks on create new context button -->
         <ng-template #createNewContextInGame>
             <ng-container *ngIf="createNewContext">
-                <app-game-context-detail-edit [game]="game" [createNewContext]="true"
+                <app-game-context-detail-edit [game]="game"
+                                              [createNewContext]="true"
                                               [selectedCharacter]="this.selectedCharacter"
                                               [characters]="this.characters"
                                               (updatedContext)="updatedContext($event)"

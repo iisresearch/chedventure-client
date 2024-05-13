@@ -109,7 +109,9 @@ export interface Context {
 }
 
 export interface Message {
-    id: number;
+    intent: number;
+    continuation?: Message;
+    contextualisation?: Context;
     utterance: string;
     response: string;
 }

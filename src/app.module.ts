@@ -56,7 +56,7 @@ import { GameDetailEditFinalConfigurationComponent } from './app/features/game-d
 import { GameRoomDetailCreateCustomRoomDialogComponent } from './app/features/game-designer/tab-rooms-&-characters/game-room-detail-create-custom-room-dialog/game-room-detail-create-custom-room-dialog.component';
 import { GameContextDetailComponent } from "./app/features/game-designer/tab-contexts/game-context-detail/game-context-detail.component";
 import { GameContextDetailEditComponent } from './app/features/game-designer/tab-contexts/game-context-detail-edit/game-context-detail-edit.component';
-import { GameDialogueComponent } from './app/features/game-designer/tab-contexts/game-dialogue/game-dialogue.component';
+import { GameContextMessageComponent } from './app/features/game-designer/tab-contexts/game-context-message/game-context-message.component';
 
 const oktaAuth = new OktaAuth({
   issuer: 'https://dev-06013860.okta.com/oauth2/default',
@@ -90,7 +90,7 @@ const oktaAuth = new OktaAuth({
     GameRoomDetailCreateCustomRoomDialogComponent,
     GameContextDetailComponent,
     GameContextDetailEditComponent,
-    GameDialogueComponent,
+    GameContextMessageComponent,
   ],
   imports: [
     BrowserModule,

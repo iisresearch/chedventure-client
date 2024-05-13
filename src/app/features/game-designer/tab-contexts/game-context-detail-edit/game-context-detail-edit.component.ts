@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Character, Context, Message, Game} from "../../../../core/models/game";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {GameService} from "../../../../core/game.service";
 import {MatSelectChange} from "@angular/material/select";
 
@@ -35,7 +35,7 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
 
     ngOnChanges() {
         console.log("selectedCharacter: ", this.selectedCharacter)
-        console.log("AllCharacters: ", this.characters)
+        console.log("All Characters: ", this.characters)
         if (this.context && !this.createNewContext) {
             this.setupForm();
         } else {
@@ -50,18 +50,26 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
         }
     }
 
-    get name() { return this.contextForm.get('name') }
+    get name() {
+        return this.contextForm.get('name')
+    }
 
-    get prompt() { return this.contextForm.get('prompt') }
+    get prompt() {
+        return this.contextForm.get('prompt')
+    }
 
-    //get dialogues() { return this.contextForm.get('dialogues') }
+    //get messages() { return this.contextForm.get('messages') }
 
     setupForm() {
         this.contextForm = new FormGroup({
             name: new FormControl(this.context.name, [Validators.required]),
             prompt: new FormControl(this.context.prompt),
-            dialogue: new FormControl(this.context.messages),
-        })
+            messages: new FormArray(this.context.messages.map(message => new FormGroup({
+                //intent: new FormControl(message.intent),
+                utterance: new FormControl(message.utterance),
+                response: new FormControl(message.response),
+            }))),
+        });
     }
 
     onSubmit() {
@@ -120,23 +128,23 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
         // else this.utterance?.enable()
     }
 
-    addDialogue(newDialogue: Message) {
-        this.messages.push(newDialogue);
+    addMessage(newMessage: Message) {
+        this.messages.push(newMessage);
     }
 
     /**
-     * Is called from child component 'game-dialogue' when a dialogue has been updated/added.
-     * @param dialogue
+     * Is called from child component 'game-context-message' when a message has been updated/added.
+     * @param message
      */
-    updateDialogue(dialogue: Message) {
+    updateMessage(message: Message) {
 
-        let i = this.messages.findIndex(obj => {
-            return obj.id === dialogue.id;
+        let i = this.messages.findIndex(msg => {
+            return msg.intent === message.intent;
         })
         if (i === -1) {
-            this.messages.push(dialogue);
+            this.messages.push(message);
         } else {
-            this.messages[i] = dialogue;
+            this.messages[i] = message;
         }
         //this.dialoguesChange.emit(this.dialogues);
     }

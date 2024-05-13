@@ -24,8 +24,8 @@ export class GameContextDetailComponent implements OnInit {
 
   @Input() characters!: Character[];
   selectedCharacter!: Character;
-  compareCharacterToGameFunction = (c1: any, c2: any)=> c1.id===c2.id;
-  @Output() charactersChange = new EventEmitter<Character>();
+  compareCharacterToGameFunction = (c1: Character, c2: Character) => c1.id === c2.id;
+  @Output() characterChange = new EventEmitter<Character>();
 
   constructor(private gameService: GameService) {
   }
@@ -60,6 +60,7 @@ export class GameContextDetailComponent implements OnInit {
 
   contextIsSelected(context: Context): boolean {
     if (this.selectedContext && this.selectedContext.length !== 0 && context) {
+      //console.log("Selected Context: ", this.selectedContext[0], " Context: ", context);
       return this.compareContextsFunction(context, this.selectedContext[0].id);
     } else {
       return false;
@@ -83,7 +84,7 @@ export class GameContextDetailComponent implements OnInit {
         if(this.characters && this.characters.length > 0){
           this.selectedCharacter = this.characters[0]; // Set the selected character to the first character
           console.log(`Fetched Selected ${this.selectedCharacter.name}: `, this.selectedCharacter);
-          this.charactersChange.emit(this.selectedCharacter);
+          this.characterChange.emit(this.selectedCharacter);
         }
       });
   }
@@ -97,7 +98,12 @@ export class GameContextDetailComponent implements OnInit {
     this.gameService.getContextsInGame(id)
       .subscribe((contexts: Context[]) => {
         this.contexts = contexts;
-        console.log(`Fetched Contexts ${this.selectedCharacter.name}: `, this.contexts);
+        console.log(`Fetched Contexts : `, this.contexts);
+
+        // Set to the first context by default
+        // if (this.contexts && this.contexts.length > 0) {
+        //   this.selectedContext[] = this.contexts[0]; // Set the selected context to the first context
+        // }
         this.contextsChange.emit(this.contexts);
       });
   }

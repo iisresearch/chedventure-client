@@ -1,14 +1,16 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Message} from "../../../../core/models/game";
+import {FormGroup} from "@angular/forms";
 
 @Component({
-    selector: 'app-game-dialogue',
-    templateUrl: './game-dialogue.component.html',
-    styleUrl: './game-dialogue.component.css'
+    selector: 'app-game-context-message',
+    templateUrl: './game-context-message.component.html',
+    styleUrl: './game-context-message.component.css'
 })
-export class GameDialogueComponent implements OnInit {
+export class GameContextMessageComponent implements OnInit {
     @Input() messages!: Message[];
     @Output() messageChange = new EventEmitter<Message>();
+    @Input() contextForm!: FormGroup;
 
     constructor() {
     }
@@ -16,9 +18,9 @@ export class GameDialogueComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    addDialogue(botMessage: string, userMessage: string) {
+    addMessage(botMessage: string, userMessage: string) {
         const newMessage: Message = {
-            id: this.messages.length + 1,
+            intent: -1,
             utterance: botMessage,
             response: userMessage,
         };
