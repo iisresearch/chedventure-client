@@ -17,15 +17,15 @@
             </mat-hint>
         </mat-form-field>
 
-        <mat-form-field>
-            <mat-label>Prompt</mat-label>
-            <mat-select (selectionChange)="onPromptChange($event)" id="prompt" type="text" formControlName="prompt">
-                @for (prompt of prompts; track prompt; let isFirst = $first) {
-                    <mat-option [value]="prompt">{{ prompt }}</mat-option>
-                }
-            </mat-select>
-            <mat-hint align="start">Optional: Prompt for the context to better understand the Utterance.</mat-hint>
-        </mat-form-field>
+<!--        <mat-form-field>-->
+<!--            <mat-label>Prompt</mat-label>-->
+<!--            <mat-select (selectionChange)="onPromptChange($event)" id="prompt" type="text" formControlName="prompt">-->
+<!--                @for (prompt of prompts; track prompt; let isFirst = $first) {-->
+<!--                    <mat-option [value]="prompt">{{ prompt }}</mat-option>-->
+<!--                }-->
+<!--            </mat-select>-->
+<!--            <mat-hint align="start">Optional: Prompt for the context to better understand the Utterance.</mat-hint>-->
+<!--        </mat-form-field>-->
 
         <!--		<mat-form-field>-->
         <!--			<mat-label for="Utterance">Utterance</mat-label>-->
