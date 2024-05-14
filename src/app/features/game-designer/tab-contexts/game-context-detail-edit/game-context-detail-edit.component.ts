@@ -22,7 +22,6 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
     @Input() selectedCharacter!: Character;
 
     contextForm!: FormGroup;
-    prompts: string[] = ['None', 'Utterance', 'Continuation'];
 
     messages!: Message[];
 
@@ -42,7 +41,7 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
             this.context = {
                 id: -1,
                 name: "",
-                prompt: [],
+                //prompt: [],
                 messages: [],
             };
             this.messages = this.context.messages;
@@ -50,20 +49,16 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
         }
     }
 
-    get name() {
-        return this.contextForm.get('name')
-    }
+    get name() { return this.contextForm.get('name') }
 
-    get prompt() {
-        return this.contextForm.get('prompt')
-    }
+    //get prompt() { return this.contextForm.get('prompt') }
 
     //get messages() { return this.contextForm.get('messages') }
 
     setupForm() {
         this.contextForm = new FormGroup({
             name: new FormControl(this.context.name, [Validators.required]),
-            prompt: new FormControl(this.context.prompt),
+            //prompt: new FormControl(this.context.prompt),
             messages: new FormArray(this.context.messages.map(message => new FormGroup({
                 //intent: new FormControl(message.intent),
                 utterance: new FormControl(message.utterance),
@@ -78,7 +73,7 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
             let contextToSend: Context = {
                 id: this.context.id,
                 name: this.name?.value,
-                prompt: this.prompt?.value,
+                //prompt: this.prompt?.value,
                 messages: this.messages,
             }
 

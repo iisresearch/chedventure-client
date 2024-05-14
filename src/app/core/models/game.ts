@@ -104,7 +104,7 @@ export interface Character {
 export interface Context {
   id: number;
   name: string;
-  prompt: string[];
+  prompt?: string;
   messages: Message[];
 }
 
