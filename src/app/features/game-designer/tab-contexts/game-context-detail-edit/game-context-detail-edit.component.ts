@@ -21,21 +21,33 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
     @Input() characters!: Character[];
     @Input() selectedCharacter!: Character;
 
-    contextForm!: FormGroup;
+    contextForm: FormGroup = new FormGroup({
+        // name: new FormControl(this.context.name, [Validators.required]),
+        // //prompt: new FormControl(this.context.prompt),
+        // messages: new FormArray([]),
+    });
 
-    messages!: Message[];
+    //messages!: Message[];
+
+    newMessageToContext(intent: number | undefined, utterance: string | undefined, response: string | undefined) {
+        return new FormGroup({
+            intent: new FormControl(intent),
+            utterance: new FormControl(utterance),
+            response: new FormControl(response),
+        });
+    }
 
     constructor(private gameService: GameService) {
     }
 
     ngOnInit(): void {
-
+        //this.messages = this.context.messages;
     }
 
     ngOnChanges() {
         console.log("selectedCharacter: ", this.selectedCharacter)
         console.log("All Characters: ", this.characters)
-        if (this.context && !this.createNewContext) {
+        if (this.context && this.selectedCharacter && !this.createNewContext) {
             this.setupForm();
         } else {
             this.context = {
@@ -43,28 +55,38 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
                 name: "",
                 //prompt: [],
                 messages: [],
+                character: this.selectedCharacter,
             };
-            this.messages = this.context.messages;
             this.setupForm();
         }
     }
 
-    get name() { return this.contextForm.get('name') }
+    get name() {
+        return this.contextForm.get('name');
+    }
 
     //get prompt() { return this.contextForm.get('prompt') }
 
-    //get messages() { return this.contextForm.get('messages') }
+    get messagesToContext() { return this.contextForm.get('messagesToContext') as FormArray; }
 
     setupForm() {
         this.contextForm = new FormGroup({
             name: new FormControl(this.context.name, [Validators.required]),
             //prompt: new FormControl(this.context.prompt),
-            messages: new FormArray(this.context.messages.map(message => new FormGroup({
-                //intent: new FormControl(message.intent),
-                utterance: new FormControl(message.utterance),
-                response: new FormControl(message.response),
-            }))),
+            messagesToContext: new FormArray([]),
         });
+        console.log("messages",this.context.messages)
+        this.context.messages!.forEach(message => {
+            let formGroupMessages = this.messagesToContext;
+            let messageToContext = this.getMessageToContext(message.intent);
+
+            formGroupMessages.push(this.newMessageToContext(messageToContext?.intent,
+                messageToContext?.utterance,
+                messageToContext?.response,))
+        });
+
+        console.log("contextForm: ", this.contextForm)
+        console.log("messagesToContext: ", this.messagesToContext)
     }
 
     onSubmit() {
@@ -74,7 +96,8 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
                 id: this.context.id,
                 name: this.name?.value,
                 //prompt: this.prompt?.value,
-                messages: this.messages,
+                messages: this.context.messages,
+                character: this.selectedCharacter,
             }
 
             // If a new Context is being created, send POST Request
@@ -108,6 +131,7 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
                 this.gameService
                     .deleteContext(this.context.id)
                     .subscribe(result => {
+                        console.log("ContextDeleted ", result);
                         this.deletedContext.emit(this.context);
                     })
             }
@@ -123,24 +147,32 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
         // else this.utterance?.enable()
     }
 
-    addMessage(newMessage: Message) {
-        this.messages.push(newMessage);
-    }
-
     /**
      * Is called from child component 'game-context-message' when a message has been updated/added.
      * @param message
      */
     updateMessage(message: Message) {
 
-        let i = this.messages.findIndex(msg => {
+        let i = this.context.messages.findIndex(msg => {
             return msg.intent === message.intent;
         })
+        console.log("i findindex: ", i)
         if (i === -1) {
-            this.messages.push(message);
+            this.context.messages.push(message);
         } else {
-            this.messages[i] = message;
+            this.context.messages[i] = message;
         }
         //this.dialoguesChange.emit(this.dialogues);
+    }
+
+    getMessageToContext(intent: number): Message|null {
+        if(this.context.messages.length !== 0) {
+            for (let messageToContext of this.context.messages) {
+                if (messageToContext.intent === intent) {
+                    return messageToContext;
+                }
+            }
+        }
+        return null
     }
 }

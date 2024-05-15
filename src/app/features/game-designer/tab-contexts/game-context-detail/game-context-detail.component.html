@@ -29,10 +29,12 @@
                                     (selectionChange)="onChangeContext($event)"
                                     [(ngModel)]="selectedContext" [compareWith]="compareContextsFunction">
                     @for (context of this.contexts; track context; ) {
+											@if (selectedCharacter.id == context.character.id) {
                         <mat-list-option [value]="context" [selected]="contextIsSelected(context)">
                             <!--*ngFor="let context of this.contexts"-->
                             {{ context.name }}
                         </mat-list-option>
+											}
                     }
                 </mat-selection-list>
 
@@ -53,7 +55,7 @@
             <app-game-context-detail-edit [game]="game"
                                           [selectedCharacter]="this.selectedCharacter"
                                           [characters]="this.characters"
-                                          [context]="contextsToGameSelection.selectedOptions.selected[0]!.value"
+                                          [context]="this.selectedContext[0]"
                                           [createNewContext]="false"
                                           (updatedContext)="updatedContext($event)"
                                           (deletedContext)="deletedContext($event)">

@@ -20,10 +20,12 @@ export class GameContextMessageComponent implements OnInit {
 
     addMessage(botMessage: string, userMessage: string) {
         const newMessage: Message = {
-            intent: -1,
+            intent: this.messages.length,
             utterance: botMessage,
             response: userMessage,
         };
+        console.log("newMessage: ", newMessage);
+        //addMessage(newMessage);
         this.messageChange.emit(newMessage);
     }
 

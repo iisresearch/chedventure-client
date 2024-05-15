@@ -7,10 +7,11 @@
 }
 
 .chat-message {
+    display: flex;
     margin: 10px 5px;
     padding: 10px;
-    border-radius: 5px;
-    max-width: 70%;
+    border-radius: 10px;
+    max-width: 100%;
 }
 
 .bot-message {
@@ -29,7 +30,7 @@
     display: flex;
     /*justify-content: space-between;*/
     margin: 20px 5px 0 5px;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 .chat-input mat-form-field {

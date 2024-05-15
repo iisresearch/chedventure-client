@@ -106,6 +106,7 @@ export interface Context {
   name: string;
   prompt?: string;
   messages: Message[];
+  character: Character;
 }
 
 export interface Message {

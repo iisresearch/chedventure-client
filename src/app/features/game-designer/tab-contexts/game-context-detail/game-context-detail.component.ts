@@ -91,6 +91,8 @@ export class GameContextDetailComponent implements OnInit {
 
   onChangeCharacter($event: MatSelectChange) {
     this.selectedCharacter = $event.value;
+
+    this.characterChange.emit(this.selectedCharacter);
     console.log(`Selected ${this.selectedCharacter.name}: `, this.selectedCharacter);
   }
 
