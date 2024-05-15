@@ -3,6 +3,7 @@ import {Character, Context, Game} from "../../../../core/models/game";
 import {GameService} from "../../../../core/game.service";
 import {MatSelectionListChange} from "@angular/material/list";
 import {MatSelectChange} from "@angular/material/select";
+import {switchMap} from "rxjs";
 
 @Component({
   selector: 'app-game-context-detail',
@@ -31,8 +32,8 @@ export class GameContextDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getCharactersInGame(this.game.id);
-    this.getContextsInGame(this.game.id);
+    //this.getCharactersInGame(this.game.id);
+    this.getContextsFromCharactersInGame(this.game.id);
   }
 
   updatedContext(context: Context) {
@@ -69,6 +70,7 @@ export class GameContextDetailComponent implements OnInit {
 
   onChangeContext(change: MatSelectionListChange) {
     this.createNewContext = false;
+
   }
 
   createContext() {
@@ -76,37 +78,48 @@ export class GameContextDetailComponent implements OnInit {
     this.selectedContext = [];
   }
 
-  getCharactersInGame(id: string) {
-    this.gameService.getCharactersInGame(id)
-      .subscribe(characters => {
-        this.characters = characters;
-        // Set to the first character by default
-        if(this.characters && this.characters.length > 0){
-          this.selectedCharacter = this.characters[0]; // Set the selected character to the first character
-          console.log(`Fetched Selected ${this.selectedCharacter.name}: `, this.selectedCharacter);
-          this.characterChange.emit(this.selectedCharacter);
-        }
-      });
-  }
+  // getCharactersInGame(id: string) {
+  //   this.gameService.getCharactersInGame(id)
+  //     .subscribe(characters => {
+  //       this.characters = characters;
+  //       // Set to the first character by default
+  //       if(this.characters && this.characters.length > 0){
+  //         this.selectedCharacter = this.characters[0]; // Set the selected character to the first character
+  //         console.log(`Fetched Selected ${this.selectedCharacter.name}: `, this.selectedCharacter);
+  //         this.characterChange.emit(this.selectedCharacter);
+  //       }
+  //     });
+  // }
 
   onChangeCharacter($event: MatSelectChange) {
     this.selectedCharacter = $event.value;
-
-    this.characterChange.emit(this.selectedCharacter);
+    //this.characterChange.emit(this.selectedCharacter);
     console.log(`Selected ${this.selectedCharacter.name}: `, this.selectedCharacter);
   }
 
-  private getContextsInGame(id: string) {
-    this.gameService.getContextsInGame(id)
-      .subscribe((contexts: Context[]) => {
-        this.contexts = contexts;
-        console.log(`Fetched Contexts : `, this.contexts);
+  private getContextsFromCharactersInGame(id: string) {
+    this.contexts = [];
+    this.gameService.getCharactersInGame(id)
+        .subscribe((characters: Character[]) => {
+          this.characters = characters;
+          for (const character of characters) {
+            if (character.contexts && character.contexts.length > 0) {
+              for (const context of character.contexts) {
+                this.contexts.push(context);
+              }
+            }
+          }
 
-        // Set to the first context by default
-        // if (this.contexts && this.contexts.length > 0) {
-        //   this.selectedContext[] = this.contexts[0]; // Set the selected context to the first context
-        // }
-        this.contextsChange.emit(this.contexts);
-      });
+          if (this.characters && this.characters.length > 0){
+              this.selectedCharacter = this.characters[0]; // Set the selected character to the first character
+              console.log(`Fetched Selected ${this.selectedCharacter.name}: `, this.selectedCharacter);
+              this.characterChange.emit(this.selectedCharacter);
+          }
+          if (this.contexts && this.contexts.length > 0){
+            this.contextsChange.emit(this.contexts);
+            console.log(`Fetched Contexts : `, this.contexts);
+
+          }
+        });
   }
 }

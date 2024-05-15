@@ -99,6 +99,7 @@ export interface Character {
   title?: string;
   history?: number;
   chatbotUrl: string;
+  contexts?: Context[];
 }
 
 export interface Context {

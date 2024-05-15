@@ -52,6 +52,7 @@ export class GameCharacterDetailEditComponent implements OnInit {
         title: "",
         history: 0,
         chatbotUrl: this.DUMMY_CHATBOT,
+        contexts: [],
       }
       this.character = ch;
       this.setupForm();
@@ -102,6 +103,7 @@ export class GameCharacterDetailEditComponent implements OnInit {
         title: this.title?.value,
         history: this.history?.value,
         chatbotUrl: this.chatbotUrl?.value,
+        contexts: this.character?.contexts,
       }
 
       // If a new character is being created, send POST Request
