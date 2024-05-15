@@ -1,62 +1,62 @@
 <div fxLayout="column">
-    <ng-container *ngIf="!createNewContext; else updateContextTitle">
-        <h3>Configure context</h3>
-    </ng-container>
-    <ng-template #updateContextTitle>
-        <h3>Configure new dialogue</h3>
-    </ng-template>
+	<ng-container *ngIf="!createNewContext; else updateContextTitle">
+		<h3>Configure context</h3>
+	</ng-container>
+	<ng-template #updateContextTitle>
+		<h3>Configure new dialogue</h3>
+	</ng-template>
 
-    <form [formGroup]="contextForm" fxLayout="column" (ngSubmit)="onSubmit()">
+	<form [formGroup]="contextForm" fxLayout="column" (ngSubmit)="onSubmit()">
 
-        <mat-form-field>
-            <mat-label>Name</mat-label>
-            <input matInput id="name" type="text" formControlName="name" placeholder="Ex. Start; Interview; Option;">
-            <mat-hint align="start">A dialogue is a conversation between a stakeholder and a student. A dialogue refers
-                to the specific situation, environment, or
-                scenario in which the conversation takes place.
-            </mat-hint>
-        </mat-form-field>
+		<mat-form-field>
+			<mat-label>Name</mat-label>
+			<input matInput id="name" type="text" formControlName="name" placeholder="Ex. Start; Interview; Option;">
+			<mat-hint align="start">A dialogue is a conversation between a stakeholder and a student. A dialogue refers
+				to the specific situation, environment, or
+				scenario in which the conversation takes place.
+			</mat-hint>
+		</mat-form-field>
 
-<!--        <mat-form-field>-->
-<!--            <mat-label>Prompt</mat-label>-->
-<!--            <mat-select (selectionChange)="onPromptChange($event)" id="prompt" type="text" formControlName="prompt">-->
-<!--                @for (prompt of prompts; track prompt; let isFirst = $first) {-->
-<!--                    <mat-option [value]="prompt">{{ prompt }}</mat-option>-->
-<!--                }-->
-<!--            </mat-select>-->
-<!--            <mat-hint align="start">Optional: Prompt for the context to better understand the Utterance.</mat-hint>-->
-<!--        </mat-form-field>-->
+		<!--        <mat-form-field>-->
+		<!--            <mat-label>Prompt</mat-label>-->
+		<!--            <mat-select (selectionChange)="onPromptChange($event)" id="prompt" type="text" formControlName="prompt">-->
+		<!--                @for (prompt of prompts; track prompt; let isFirst = $first) {-->
+		<!--                    <mat-option [value]="prompt">{{ prompt }}</mat-option>-->
+		<!--                }-->
+		<!--            </mat-select>-->
+		<!--            <mat-hint align="start">Optional: Prompt for the context to better understand the Utterance.</mat-hint>-->
+		<!--        </mat-form-field>-->
 
-        <!--		<mat-form-field>-->
-        <!--			<mat-label for="Utterance">Utterance</mat-label>-->
-        <!--			<textarea matInput id="utterance" type="text" formControlName="utterance"-->
-        <!--								placeholder="Ex. Hello; I would like to know more about simulation training programs.; "></textarea>-->
-        <!--			<mat-hint align="start">Optional: Utterance for the context is the expected user input that triggers a response from the context.-->
-        <!--			</mat-hint>-->
-        <!--		</mat-form-field>-->
+		<!--		<mat-form-field>-->
+		<!--			<mat-label for="Utterance">Utterance</mat-label>-->
+		<!--			<textarea matInput id="utterance" type="text" formControlName="utterance"-->
+		<!--								placeholder="Ex. Hello; I would like to know more about simulation training programs.; "></textarea>-->
+		<!--			<mat-hint align="start">Optional: Utterance for the context is the expected user input that triggers a response from the context.-->
+		<!--			</mat-hint>-->
+		<!--		</mat-form-field>-->
 
-        <!--        <mat-form-field>-->
-        <!--            <mat-label>Response</mat-label>-->
-        <!--            <textarea matInput id="response" type="text" formControlName="response"-->
-        <!--                      placeholder="Ex. Our programs use immersive simulations to mimic real-world scenarios, allowing employees to practice and perfect their skills in a risk-free environment. We offer customized programs for various industries, including customer service, sales, and leadership development. Would you like to know more about a specific program or industry?.">-->
-        <!--	  </textarea>-->
-        <!--            <mat-hint align="start">Optional: Response of the context triggered by the utterance.</mat-hint>-->
-        <!--        </mat-form-field>-->
+		<!--        <mat-form-field>-->
+		<!--            <mat-label>Response</mat-label>-->
+		<!--            <textarea matInput id="response" type="text" formControlName="response"-->
+		<!--                      placeholder="Ex. Our programs use immersive simulations to mimic real-world scenarios, allowing employees to practice and perfect their skills in a risk-free environment. We offer customized programs for various industries, including customer service, sales, and leadership development. Would you like to know more about a specific program or industry?.">-->
+		<!--	  </textarea>-->
+		<!--            <mat-hint align="start">Optional: Response of the context triggered by the utterance.</mat-hint>-->
+		<!--        </mat-form-field>-->
 
-        <app-game-context-message (messageChange)="updateMessage($event)"
-                                  [messages]="context.messages"
-                                  [contextForm]="contextForm">
-        </app-game-context-message>
+		<app-game-context-message (messageChange)="updateMessage($event)"
+															[messages]="context.messages"
+															[contextForm]="contextForm">
+		</app-game-context-message>
 
-        <div fxLayout="row">
-            <div style="margin: 1em 1em 1em 1em;" *ngIf="context !== undefined && context !== null">
-                <button mat-raised-button color="primary" type="submit">Save</button>
-            </div>
-            <div style="margin: 1em 1em 1em 1em;" *ngIf="!createNewContext">
-                <button mat-raised-button color="warn" (click)="deleteContext()" type="button">Delete</button>
-            </div>
-        </div>
+		<div fxLayout="row">
+			<div style="margin: 1em 1em 1em 1em;" *ngIf="context !== undefined && context !== null">
+				<button mat-raised-button color="primary" type="submit">Save</button>
+			</div>
+			<div style="margin: 1em 1em 1em 1em;" *ngIf="!createNewContext">
+				<button mat-raised-button color="warn" (click)="deleteContext()" type="button">Delete</button>
+			</div>
+		</div>
 
-    </form>
+	</form>
 
 </div>
