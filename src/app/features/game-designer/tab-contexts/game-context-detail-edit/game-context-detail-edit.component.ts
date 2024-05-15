@@ -102,7 +102,7 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
 
             // If a new Context is being created, send POST Request
             if (this.createNewContext) {
-                console.log(this.selectedCharacter);
+                console.log("Create context for Character: ",this.selectedCharacter);
                 this.gameService
                     .createContext(this.selectedCharacter.id, contextToSend)
                     .subscribe(context => {
@@ -113,6 +113,7 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
 
             } else {
                 // Send PUT request to update context to API
+                console.log("Update context for Character: ",this.selectedCharacter)
                 this.gameService
                     .updateContext(this.context.id, contextToSend)
                     .subscribe(context => {
@@ -140,7 +141,7 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
 
     onPromptChange($event: MatSelectChange) {
         // This changes the form based on the prompt selected
-        // if it's not utternace than disable the utterance form
+        // if it's not utterance than disable the utterance form
 
         // if(this.prompt?.value!=="Utterance")
         //   this.utterance?.disable();
@@ -156,7 +157,7 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
         let i = this.context.messages.findIndex(msg => {
             return msg.intent === message.intent;
         })
-        console.log("i findindex: ", i)
+        console.log("i findIndex: ", i)
         if (i === -1) {
             this.context.messages.push(message);
         } else {

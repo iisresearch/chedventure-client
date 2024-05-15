@@ -166,7 +166,7 @@ export class GameService {
   }
 
   updateContext(id: number, context: Context): Observable<Context> {
-    return this.httpClient.put<Context>(`${baseUrl}/contexts/game/${id}`, context)
+    return this.httpClient.put<Context>(`${baseUrl}/contexts/${id}`, context)
       .pipe(
         tap(context => this.messageService.Show("Context" + context.name + " has been updated", MessageStatus.Success)),
         catchError(this.handleError<Context>('updateContext', context))
