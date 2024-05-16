@@ -99,15 +99,14 @@ export interface Character {
   title?: string;
   history?: number;
   chatbotUrl: string;
-  contexts?: Context[];
+  contexts: Context[];
 }
 
 export interface Context {
   id: number;
   name: string;
-  prompt?: string;
+  //prompt?: string;
   messages: Message[];
-  character: Character;
 }
 
 export interface Message {

@@ -157,6 +157,22 @@ export class GameService {
       )
   }
 
+  getContextsOfCharacter(id: number): Observable<Context[]> {
+    return this.httpClient.get<Context[]>(`${baseUrl}/contexts/character/${id}`)
+        .pipe(
+            tap(_ => console.log("fetched contexts")),
+            catchError(this.handleError<Context[]>('getContextsOfCharacter', []))
+        );
+  }
+
+  getContextsInGame(id: string): Observable<Context[]> {
+    return this.httpClient.get<Context[]>(`${baseUrl}/contexts/game/${id}`)
+        .pipe(
+            tap(_ => console.log("fetched contexts")),
+            catchError(this.handleError<Context[]>('getContextsInGame', []))
+        );
+  }
+
   createContext(characterId: number, context: Context): Observable<Context> {
     return this.httpClient.post<Context>(`${baseUrl}/contexts/character/${characterId}`, context)
       .pipe(
@@ -174,20 +190,12 @@ export class GameService {
   }
 
   deleteContext(id: number) {
-    return this.httpClient.delete(`${baseUrl}/contexts/game/${id}`)
+    return this.httpClient.delete(`${baseUrl}/contexts/${id}`)
       .pipe(
-        tap(_ => console.log("Context " + _ + " deleted")),
+        tap(_ => console.log("Context deleted ", _ )),
         tap(_ => this.messageService.Show("Context has been deleted", MessageStatus.Success)),
         catchError(this.handleError('deleteContext'))
       )
-  }
-
-  getContextsInGame(id: string): Observable<Context[]> {
-    return this.httpClient.get<Context[]>(`${baseUrl}/contexts/game/${id}`)
-        .pipe(
-            tap(_ => console.log("fetched contexts")),
-            catchError(this.handleError<Context[]>('getContextsInGame', []))
-        );
   }
 
 

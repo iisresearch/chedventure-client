@@ -103,8 +103,9 @@ export class GameCharacterDetailEditComponent implements OnInit {
         title: this.title?.value,
         history: this.history?.value,
         chatbotUrl: this.chatbotUrl?.value,
-        contexts: this.character?.contexts,
+        contexts: this.character.contexts,
       }
+      console.log("Character: ", characterToSend)
 
       // If a new character is being created, send POST Request
       if (this.createNewCharacter) {

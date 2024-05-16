@@ -18,7 +18,6 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
 
     @Input() createNewContext!: boolean;
 
-    @Input() characters!: Character[];
     @Input() selectedCharacter!: Character;
 
     contextForm: FormGroup = new FormGroup({
@@ -40,13 +39,10 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
     constructor(private gameService: GameService) {
     }
 
-    ngOnInit(): void {
-        //this.messages = this.context.messages;
-    }
+    ngOnInit(): void { }
 
     ngOnChanges() {
         console.log("selectedCharacter: ", this.selectedCharacter)
-        console.log("All Characters: ", this.characters)
         if (this.selectedContext && this.selectedCharacter && !this.createNewContext) {
             this.setupForm();
         } else {
@@ -54,17 +50,22 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
                 id: -1,
                 name: "",
                 messages: [],
-                character: this.selectedCharacter,
             };
             this.setupForm();
         }
+    }
+
+    get id() {
+        return this.contextForm.get('id');
     }
 
     get name() {
         return this.contextForm.get('name');
     }
 
-    get messagesToContext() { return this.contextForm.get('messagesToContext') as FormArray; }
+    get messagesToContext() {
+        return this.contextForm.get('messagesToContext') as FormArray;
+    }
 
     setupForm() {
         this.contextForm = new FormGroup({
@@ -72,7 +73,7 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
             //prompt: new FormControl(this.context.prompt),
             messagesToContext: new FormArray([]),
         });
-        console.log("messages",this.selectedContext.messages)
+        console.log("messages", this.selectedContext.messages)
         this.selectedContext.messages!.forEach(message => {
             let formGroupMessages = this.messagesToContext;
             let messageToContext = this.getMessageToContext(message.intent);
@@ -92,31 +93,28 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
             let contextToSend: Context = {
                 id: this.selectedContext.id,
                 name: this.name?.value,
-                //prompt: this.prompt?.value,
                 messages: this.selectedContext.messages,
-                character: this.selectedCharacter,
             }
 
             // If a new Context is being created, send POST Request
             if (this.createNewContext) {
-                console.log("Create context for Character: ",this.selectedCharacter);
+                console.log("Create context for Character: ", contextToSend);
                 this.gameService
                     .createContext(this.selectedCharacter.id, contextToSend)
                     .subscribe(context => {
-                        this.selectedContext = context;
-                        this.updatedContext.emit(this.selectedContext);
-                        console.log("ContextCreated " + contextToSend);
+                        //this.selectedContext = context;
+                        console.log("Context Created ", context);
+                        this.updatedContext.emit(context);
                     })
-
             } else {
                 // Send PUT request to update context to API
-                console.log("Update context for Character: ",this.selectedCharacter)
+                console.log("Update context for Character: ", this.selectedCharacter)
                 this.gameService
                     .updateContext(this.selectedContext.id, contextToSend)
                     .subscribe(context => {
-                        this.selectedContext = context;
-                        this.updatedContext.emit(this.selectedContext);
-                        console.log("ContextUpdated " + contextToSend);
+                        //this.selectedContext = context;
+                        console.log("Context Updated ", context);
+                        this.updatedContext.emit(context);
                     })
 
             }
@@ -126,8 +124,7 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
     deleteContext() {
         if (this.selectedContext?.id && !this.createNewContext) {
             if (confirm("Are you sure you want to delete this context?")) {
-                this.gameService
-                    .deleteContext(this.selectedContext.id)
+                this.gameService.deleteContext(this.selectedContext.id)
                     .subscribe(result => {
                         console.log("ContextDeleted ", result);
                         this.deletedContext.emit(this.selectedContext);
@@ -155,8 +152,8 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
         //this.dialoguesChange.emit(this.dialogues);
     }
 
-    getMessageToContext(intent: number): Message|null {
-        if(this.selectedContext.messages.length !== 0) {
+    getMessageToContext(intent: number): Message | null {
+        if (this.selectedContext.messages.length !== 0) {
             for (let messageToContext of this.selectedContext.messages) {
                 if (messageToContext.intent === intent) {
                     return messageToContext;
