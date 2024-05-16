@@ -106,6 +106,7 @@ export class GameContextDetailComponent implements OnInit {
         this.selectedCharacter = $character;
         this.createNewContext = false;
         this.selectedContext = [];
+        this.getContextsOfCharacter(this.selectedCharacter)
         console.log(`Selected ${this.selectedCharacter.name}: `, this.selectedCharacter);
     }
 
