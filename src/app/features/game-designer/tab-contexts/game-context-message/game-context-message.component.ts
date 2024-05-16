@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Message} from "../../../../core/models/game";
-import {FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
     selector: 'app-game-context-message',
@@ -10,7 +10,12 @@ import {FormGroup} from "@angular/forms";
 export class GameContextMessageComponent implements OnInit {
     @Input() messages!: Message[];
     @Output() messageChange = new EventEmitter<Message>();
-    @Input() contextForm!: FormGroup;
+    //@Input() contextForm!: FormGroup;
+    messageForm: FormGroup = new FormGroup({
+        botMessage: new FormControl("", ),
+        userMessage: new FormControl("", ),
+    });
+
 
     constructor() {
     }
@@ -18,12 +23,17 @@ export class GameContextMessageComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    addMessage(botMessage: string, userMessage: string) {
+    get botMessage() { return this.messageForm.get('botMessage'); }
+    get userMessage() { return this.messageForm.get('userMessage'); }
+
+    addMessage() {
         const newMessage: Message = {
             intent: this.messages.length,
-            utterance: botMessage,
-            response: userMessage,
+            utterance: this.botMessage?.value,
+            response: this.userMessage?.value,
         };
+
+        this.messageForm.reset();
         console.log("newMessage: ", newMessage);
         //addMessage(newMessage);
         this.messageChange.emit(newMessage);

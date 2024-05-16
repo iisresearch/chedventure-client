@@ -8,20 +8,22 @@
 
 .chat-message {
     display: flex;
-    margin: 10px 5px;
+    margin: 10px 10px;
     padding: 10px;
     border-radius: 10px;
     max-width: 100%;
 }
 
 .bot-message {
-    align-self: start;
+    /*align-content: baseline;*/
+    align-self: end;
     background-color: #e6e6e6;
+    /*color: white;*/
 }
 
 .user-message {
-    align-content: end;
-    align-self: end;
+    /*align-content: baseline;*/
+    align-self: start;
     background-color: #0084ff;
     color: white;
 }
@@ -39,6 +41,8 @@
 
 .chat-input button {
     /*padding: 10px 20px;*/
+    align-content: center;
+    margin-left: 15px;
     border: none;
     border-radius: 10px;
     background-color: #0084ff;

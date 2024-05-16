@@ -26,8 +26,6 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
         // messages: new FormArray([]),
     });
 
-    //messages!: Message[];
-
     newMessageToContext(intent: number | undefined, utterance: string | undefined, response: string | undefined) {
         return new FormGroup({
             intent: new FormControl(intent),
@@ -78,7 +76,8 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
             let formGroupMessages = this.messagesToContext;
             let messageToContext = this.getMessageToContext(message.intent);
 
-            formGroupMessages.push(this.newMessageToContext(messageToContext?.intent,
+            formGroupMessages.push(this.newMessageToContext(
+                messageToContext?.intent,
                 messageToContext?.utterance,
                 messageToContext?.response,))
         });
