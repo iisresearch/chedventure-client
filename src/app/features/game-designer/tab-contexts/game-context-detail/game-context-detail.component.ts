@@ -71,7 +71,7 @@ export class GameContextDetailComponent implements OnInit {
 
         this.getContextsOfCharacter(this.selectedCharacter);
 
-        this.selectedContext = [context];
+        this.selectedContext = [];
     }
 
     private getContextsOfCharacter(character: Character): void {
