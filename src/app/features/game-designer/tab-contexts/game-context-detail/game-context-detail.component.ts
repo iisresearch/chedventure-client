@@ -1,9 +1,7 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Character, Context, Game} from "../../../../core/models/game";
 import {GameService} from "../../../../core/game.service";
 import {MatSelectionListChange} from "@angular/material/list";
-import {MatSelectChange} from "@angular/material/select";
-import {Observable, switchMap} from "rxjs";
 
 @Component({
     selector: 'app-game-context-detail',
@@ -55,10 +53,10 @@ export class GameContextDetailComponent implements OnInit {
         this.createNewContext = false;
 
         this.selectedContext = [context];
+        console.log("Selected Context: ", this.selectedContext)
     }
 
     deletedContext(context: Context) {
-
         let i = this.contexts.findIndex(c => {
             return c.id === context.id;
         })
@@ -73,7 +71,7 @@ export class GameContextDetailComponent implements OnInit {
 
         this.getContextsOfCharacter(this.selectedCharacter);
 
-        this.selectedContext = [];
+        this.selectedContext = [context];
     }
 
     private getContextsOfCharacter(character: Character): void {
@@ -86,8 +84,7 @@ export class GameContextDetailComponent implements OnInit {
 
     contextIsSelected(context: Context): boolean {
         if (this.selectedContext && this.selectedContext.length !== 0 && context) {
-            console.log("Selected Context: ", context, this.selectedContext, this.selectedCharacter)
-            return this.compareContextsFunction(context, this.selectedContext[0]);
+            return this.compareContextsFunction(context, this.selectedContext[0].id);
         } else {
             return false;
         }

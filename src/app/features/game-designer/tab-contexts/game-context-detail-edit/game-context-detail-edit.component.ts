@@ -1,8 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
-import {Character, Context, Message, Game} from "../../../../core/models/game";
+import {Character, Context, Game, Message} from "../../../../core/models/game";
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {GameService} from "../../../../core/game.service";
-import {MatSelectChange} from "@angular/material/select";
 
 @Component({
     selector: 'app-game-context-detail-edit',
@@ -21,9 +20,6 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
     @Input() selectedCharacter!: Character;
 
     contextForm: FormGroup = new FormGroup({
-        // name: new FormControl(this.context.name, [Validators.required]),
-        // //prompt: new FormControl(this.context.prompt),
-        // messages: new FormArray([]),
     });
 
     newMessageToContext(intent: number | undefined, utterance: string | undefined, response: string | undefined) {

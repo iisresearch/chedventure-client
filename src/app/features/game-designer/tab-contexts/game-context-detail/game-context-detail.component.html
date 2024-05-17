@@ -3,7 +3,7 @@
 		<mat-card-header>
 			<mat-form-field appearance="outline">
 				<mat-label>Character</mat-label>
-				<mat-select	#characterSelection
+				<mat-select #characterSelection
 										[(ngModel)]="selectedCharacter"
 										(selectionChange)="onChangeCharacter(selectedCharacter)"
 										[compareWith]="compareCharactersFunction">
@@ -27,13 +27,13 @@
 				</div>
 				@if (selectedCharacter && selectedCharacter.contexts) {
 					<mat-selection-list [multiple]="false"
-															[(ngModel)]="selectedContext"
 															(selectionChange)="onChangeContext($event)"
-															[compareWith]="compareContextsFunction"
-					>
+															[(ngModel)]="selectedContext"
+															[compareWith]="compareContextsFunction">
 
-						@for (context of selectedCharacter.contexts; track selectedContext; ) {
-							<mat-list-option [value]="context">
+
+						@for (context of selectedCharacter.contexts; track context; ) {
+							<mat-list-option [value]="context" [selected]="contextIsSelected(context)">
 								{{ context.name }}
 							</mat-list-option>
 						} @empty {
@@ -47,7 +47,6 @@
 			</div>
 
 		</mat-card-content>
-
 	</mat-card>
 
 	<div fxFlex="70" style="padding-left: 3em">
