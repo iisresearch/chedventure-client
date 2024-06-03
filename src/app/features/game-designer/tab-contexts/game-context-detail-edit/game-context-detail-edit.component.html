@@ -47,6 +47,18 @@
 															[messages]="selectedContext.messages">
 		</app-game-context-message>
 
+		<mat-form-field>
+			<mat-label>Select next context/topic</mat-label>
+			<mat-select [(value)]="this.selectedContext.messages.slice(-1)[0].continuation">
+				@for (context of this.selectedCharacter.contexts; track context; let isFirst = $first) {
+					<mat-option [value]="context.id">
+						{{ context.name }}
+					</mat-option>
+				}
+			</mat-select>
+			<mat-hint>The bot will switch to the selected topic once the current one is finished.</mat-hint>
+		</mat-form-field>
+
 		<div fxLayout="row">
 			<div style="margin: 1em 1em 1em 1em;" *ngIf="selectedContext !== undefined && selectedContext !== null">
 				<button mat-raised-button color="primary" type="submit">Save</button>
