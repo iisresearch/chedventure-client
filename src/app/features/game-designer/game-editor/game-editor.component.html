@@ -1,108 +1,123 @@
 <div fxLayout="row" fxLayoutAlign="space-around center">
-  <div></div>
-  <h1 *ngIf="this.game">{{this.game.name}}</h1>
-  <div *ngIf="this.game">
-    <button fxFlex="nogrow" (click)="openDocumentation()" type="button" mat-stroked-button><mat-icon style="margin-right: 0.25em" color="primary">help</mat-icon>Help</button>
-    <button fxFlex="nogrow" (click)="playDraftGame()" type="button" mat-stroked-button style="margin-left: 0.5em"><mat-icon style="margin-right: 0.25em" color="primary">play_circle_filled</mat-icon>Play</button>
-  </div>
+	<div></div>
+	<h1 *ngIf="this.game">{{ this.game.name }}</h1>
+	<div *ngIf="this.game">
+		<button fxFlex="nogrow" (click)="openDocumentation()" type="button" mat-stroked-button>
+			<mat-icon style="margin-right: 0.25em" color="primary">help</mat-icon>
+			Help
+		</button>
+		<button fxFlex="nogrow" (click)="playDraftGame()" type="button" mat-stroked-button style="margin-left: 0.5em">
+			<mat-icon style="margin-right: 0.25em" color="primary">play_circle_filled</mat-icon>
+			Play
+		</button>
+	</div>
 </div>
 
 <div id="game-editor" fxLayout="row" fxLayoutAlign="center" fxFill="">
 
-  <mat-stepper #stepper [selectedIndex]="2">
+	<mat-stepper #stepper [selectedIndex]="2">
 
-    <mat-step [stepControl]="gameForm" errorMessage="Game has to be saved">
-      <ng-template matStepLabel>Game Setup </ng-template>
-      <ng-template matStepContent>
-        <div class="tab-game-editor" *ngIf="finishedFetchingData">
-          <app-game-detail [gameForm]="gameForm" [(game)]="game"></app-game-detail>
-        </div>
-      </ng-template>
-    </mat-step>
+		<mat-step [stepControl]="gameForm" errorMessage="Game has to be saved">
+			<ng-template matStepLabel>Game Setup</ng-template>
+			<ng-template matStepContent>
+				<div class="tab-game-editor" *ngIf="finishedFetchingData">
+					<app-game-detail [gameForm]="gameForm" [(game)]="game"></app-game-detail>
+				</div>
+			</ng-template>
+		</mat-step>
 
-    <mat-step>
-      <ng-template matStepLabel>Rooms & Characters</ng-template>
-      <ng-template matStepContent>
-        <div class="tab-game-editor" *ngIf="finishedFetchingData">
-          <app-game-room-detail [(game)]="game" (charactersChange)="onCharactersChange($event)"></app-game-room-detail>
-        </div>
-      </ng-template>
-    </mat-step>
+		<mat-step>
+			<ng-template matStepLabel>Rooms & Characters</ng-template>
+			<ng-template matStepContent>
+				<div class="tab-game-editor" *ngIf="finishedFetchingData">
+					<app-game-room-detail [(game)]="game" (charactersChange)="onCharactersChange($event)"></app-game-room-detail>
+				</div>
+			</ng-template>
+		</mat-step>
 
-	<mat-step>
-	  <ng-template matStepLabel>Dialogues</ng-template>
-	  <ng-template matStepContent>
-		<div class="tab-game-editor" *ngIf="finishedFetchingData">
-		  <app-game-context-detail [(game)]="game" [characters]="characters"></app-game-context-detail>
-		</div>
-	  </ng-template>
-	</mat-step>
+		<mat-step>
+			<ng-template matStepLabel>Dialogues</ng-template>
+			<ng-template matStepContent>
+				<div class="tab-game-editor" *ngIf="finishedFetchingData">
+					<app-game-context-detail [(game)]="game" [characters]="characters"></app-game-context-detail>
+				</div>
+			</ng-template>
+		</mat-step>
 
-    <mat-step>
-      <ng-template matStepLabel>Final Configuration</ng-template>
-      <ng-template matStepContent>
-        <div class="tab-game-editor" *ngIf="finishedFetchingData">
-          <app-game-detail-edit-final-configuration [(game)]="game"></app-game-detail-edit-final-configuration>
-        </div>
-      </ng-template>
-    </mat-step>
+		<mat-step>
+			<ng-template matStepLabel>Chat Bot Preview</ng-template>
+			<ng-template matStepContent>
+				<div class="tab-game-editor" *ngIf="finishedFetchingData">
+					<app-chatbot-preview ></app-chatbot-preview>
+				</div>
+			</ng-template>
+		</mat-step>
 
-    <!--<mat-step>
-      <ng-template matStepLabel>Publish Game</ng-template>
-      <ng-template matStepContent>
-        <p>This content was also rendered lazily</p>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </ng-template>
-    </mat-step>-->
+		<mat-step>
+			<ng-template matStepLabel>Final Configuration</ng-template>
+			<ng-template matStepContent>
+				<div class="tab-game-editor" *ngIf="finishedFetchingData">
+					<app-game-detail-edit-final-configuration [(game)]="game"></app-game-detail-edit-final-configuration>
+				</div>
+			</ng-template>
+		</mat-step>
 
-  </mat-stepper>
+		<!--<mat-step>
+			<ng-template matStepLabel>Publish Game</ng-template>
+			<ng-template matStepContent>
+				<p>This content was also rendered lazily</p>
+				<button mat-button matStepperPrevious>Back</button>
+				<button mat-button matStepperNext>Next</button>
+			</ng-template>
+		</mat-step>-->
 
-  <!--
-  <mat-tab-group mat-stretch-tabs>
-    <mat-tab label="Setup" >
-      <ng-template matTabContent>
+	</mat-stepper>
 
-        <div class="tab-game-editor">
-          <form [formGroup]="gameForm" fxLayout="column" (ngSubmit)="onSubmit()">
+	<!--
+	<mat-tab-group mat-stretch-tabs>
+		<mat-tab label="Setup" >
+			<ng-template matTabContent>
 
-            <mat-form-field appearance="standard">
-              <mat-label for="name">Game Name</mat-label>
-              <input matInput id="name" type="text" formControlName="name">
-              <mat-error *ngIf="name?.errors?.['required']">Name is required</mat-error>
-            </mat-form-field>
+				<div class="tab-game-editor">
+					<form [formGroup]="gameForm" fxLayout="column" (ngSubmit)="onSubmit()">
 
-            <mat-form-field appearance="standard">
-              <mat-label for="subtitle">Description</mat-label>
-              <input matInput id="subtitle" type="text" formControlName="subtitle">
-            </mat-form-field>
+						<mat-form-field appearance="standard">
+							<mat-label for="name">Game Name</mat-label>
+							<input matInput id="name" type="text" formControlName="name">
+							<mat-error *ngIf="name?.errors?.['required']">Name is required</mat-error>
+						</mat-form-field>
 
-            <mat-form-field>
-              <mat-label for="author">Author</mat-label>
-              <input matInput id="author" type="text" formControlName="author">
-              <mat-error *ngIf="author?.errors?.['required']">Author is required</mat-error>
-            </mat-form-field>
+						<mat-form-field appearance="standard">
+							<mat-label for="subtitle">Description</mat-label>
+							<input matInput id="subtitle" type="text" formControlName="subtitle">
+						</mat-form-field>
 
-            <mat-form-field>
-              <mat-label for="version">Version</mat-label>
-              <input matInput id="version" type="text" formControlName="version">
-              <mat-error *ngIf="version?.errors?.['required']">Version is required</mat-error>
-            </mat-form-field>
+						<mat-form-field>
+							<mat-label for="author">Author</mat-label>
+							<input matInput id="author" type="text" formControlName="author">
+							<mat-error *ngIf="author?.errors?.['required']">Author is required</mat-error>
+						</mat-form-field>
 
-            <div>
-              <button mat-raised-button color="primary" type="submit">Save</button>
-            </div>
+						<mat-form-field>
+							<mat-label for="version">Version</mat-label>
+							<input matInput id="version" type="text" formControlName="version">
+							<mat-error *ngIf="version?.errors?.['required']">Version is required</mat-error>
+						</mat-form-field>
 
-          </form>
-        </div>
+						<div>
+							<button mat-raised-button color="primary" type="submit">Save</button>
+						</div>
 
-      </ng-template>
-    </mat-tab>
-    <mat-tab label="Rooms">
-      <ng-template matTabContent>
-        Rooms
-      </ng-template>
-    </mat-tab>
-  </mat-tab-group>
-  -->
+					</form>
+				</div>
+
+			</ng-template>
+		</mat-tab>
+		<mat-tab label="Rooms">
+			<ng-template matTabContent>
+				Rooms
+			</ng-template>
+		</mat-tab>
+	</mat-tab-group>
+	-->
 </div>
