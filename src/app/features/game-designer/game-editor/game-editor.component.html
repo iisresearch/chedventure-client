@@ -48,7 +48,7 @@
 			<ng-template matStepLabel>Chat Bot Preview</ng-template>
 			<ng-template matStepContent>
 				<div class="tab-game-editor" *ngIf="finishedFetchingData">
-					<app-chatbot-preview ></app-chatbot-preview>
+					<app-chatbot-preview [game]="game" [characters]="characters"></app-chatbot-preview>
 				</div>
 			</ng-template>
 		</mat-step>
