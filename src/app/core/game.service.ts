@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { Observable, of } from "rxjs";
-import { tap, map, catchError } from "rxjs/operators";
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {Observable, of} from "rxjs";
+import {catchError, map, tap} from "rxjs/operators";
 import {Character, Context, IGame, Room, RoomToGame} from "./models/game";
 import {MessageService, MessageStatus} from "./message.service";
-import { environment } from '../../environments/environment';
+import {environment} from '../../environments/environment';
 
 export const baseUrl = environment.apiURL;
 // baseUrlDomain is used in game component & game-detail-edit-final-configuration to display link to game
 export const baseUrlDomain = environment.urlClient;
+// url to chatbot application
+export const chatbotURL = environment.chatbotURL;
 
 @Injectable({
   providedIn: 'root'
@@ -196,6 +198,18 @@ export class GameService {
         tap(_ => this.messageService.Show("Context has been deleted", MessageStatus.Success)),
         catchError(this.handleError('deleteContext'))
       )
+  }
+
+  // Chatbot related endpoints
+  checkChatbotStatus() {
+    return this.httpClient.head(`${chatbotURL}`)
+        .pipe(
+            map(()=> true),
+            catchError((error: HttpErrorResponse) => {
+              console.error('Chatbot server is not available');
+              return of(false);
+            })
+        );
   }
 
 

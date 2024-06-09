@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   apiURL: 'http://localhost:4201',
-  urlClient: 'http://localhost:4200'
+  urlClient: 'http://localhost:4200',
+  chatbotURL: 'http://localhost:8000'
 };
 
 /*
