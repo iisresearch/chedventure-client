@@ -50,7 +50,7 @@ export class ChatbotPreviewComponent implements OnInit {
 
     setIframeForChatbot(agentId: number) {
         // Check if Chatbot is running
-        const url = `${chatbotURL}?agent_id=${agentId}`;
+        const url = `${chatbotURL}?character_id=${agentId}`;
         if(!this.isChatbotRunning) {
             console.warn('Chatbot server is not available.');
             return;
@@ -65,7 +65,7 @@ export class ChatbotPreviewComponent implements OnInit {
         console.log('mountChainlitWidget' in window);
         if ('mountChainlitWidget' in window) {
             (window as any).mountChainlitWidget({
-                chainlitServer: `${chatbotURL}/?agent_id=${agentId}`,
+                chainlitServer: `${chatbotURL}/?character_id=${agentId}`,
                 showCot: true, //Chain of Thought
             });
         }
