@@ -45,6 +45,10 @@
     margin-left: 15px;
     border: none;
     border-radius: 10px;
+
+}
+
+.blue-button {
     background-color: #0084ff;
     color: white;
 }
