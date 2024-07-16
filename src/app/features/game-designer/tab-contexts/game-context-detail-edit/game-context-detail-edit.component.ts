@@ -19,8 +19,7 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
 
     @Input() selectedCharacter!: Character;
 
-    contextForm: FormGroup = new FormGroup({
-    });
+    contextForm: FormGroup = new FormGroup({});
 
     newMessageToContext(intent: number | undefined, utterance: string | undefined, response: string | undefined) {
         return new FormGroup({
@@ -33,7 +32,8 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
     constructor(private gameService: GameService) {
     }
 
-    ngOnInit(): void { }
+    ngOnInit(): void {
+    }
 
     ngOnChanges() {
         console.log("selectedCharacter: ", this.selectedCharacter)
@@ -111,7 +111,6 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
                         console.log("Context Updated ", context);
                         this.updatedContext.emit(context);
                     })
-
             }
         }
     }
@@ -126,25 +125,6 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
                     })
             }
         }
-    }
-
-
-    /**
-     * Is called from child component 'game-context-message' when a message has been updated/added.
-     * @param message
-     */
-    updateMessage(message: Message) {
-
-        let i = this.selectedContext.messages.findIndex(msg => {
-            return msg.intent === message.intent;
-        })
-        console.log("i findIndex: ", i)
-        if (i === -1) {
-            this.selectedContext.messages.push(message);
-        } else {
-            this.selectedContext.messages[i] = message;
-        }
-        //this.dialoguesChange.emit(this.dialogues);
     }
 
     getMessageToContext(intent: number): Message | null {

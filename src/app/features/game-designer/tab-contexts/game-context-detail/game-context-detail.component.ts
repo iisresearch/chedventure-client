@@ -42,10 +42,10 @@ export class GameContextDetailComponent implements OnInit {
         })
         if (i === -1) {
             this.contexts.push(context);
-            console.log("contexts created",this.contexts, context);
+            console.log("contexts created", this.contexts, context);
         } else {
             this.contexts[i] = context;
-            console.log("contexts updated",this.contexts, context);
+            console.log("contexts updated", this.contexts, context);
         }
         console.log("Updated Context: ", this.selectedCharacter, this.contexts)
         this.getContextsOfCharacter(this.selectedCharacter);
@@ -79,6 +79,9 @@ export class GameContextDetailComponent implements OnInit {
             .subscribe((characterContexts: Context[]) => {
                 console.log(`Fetched Character Contexts : `, characterContexts);
                 this.selectedCharacter.contexts = characterContexts;
+                    if (this.selectedCharacter.contexts && this.selectedCharacter.contexts.length > 0) {
+                        this.selectedContext = [this.selectedCharacter.contexts[0]];
+                    }
             });
     }
 
@@ -102,7 +105,6 @@ export class GameContextDetailComponent implements OnInit {
     onChangeCharacter($character: Character) {
         this.selectedCharacter = $character;
         this.createNewContext = false;
-        this.selectedContext = [];
         this.getContextsOfCharacter(this.selectedCharacter)
         console.log(`Selected ${this.selectedCharacter.name}: `, this.selectedCharacter);
     }
@@ -116,20 +118,18 @@ export class GameContextDetailComponent implements OnInit {
                 for (const character of characters) {
                     if (character.contexts && character.contexts.length > 0) {
                         for (const context of character.contexts) {
-                            this.contexts.push(context);
+                           this.contexts.push(context);
                         }
                     }
                 }
 
                 if (this.characters && this.characters.length > 0) {
                     this.selectedCharacter = this.characters[0]; // Set the selected character to the first character
+                    this.getContextsOfCharacter(this.selectedCharacter);
                     console.log(`Fetched Selected ${this.selectedCharacter.name}: `, this.selectedCharacter);
                     //this.characterChange.emit(this.selectedCharacter);
                 }
-                if (this.contexts && this.contexts.length > 0) {
-                    //this.contextsChange.emit(this.contexts);
-                    console.log(`Fetched Contexts : `, this.contexts);
-                }
+                console.log(`Fetched Contexts : `, this.contexts);
             });
     }
 }

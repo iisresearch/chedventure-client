@@ -17,40 +17,16 @@
 			</mat-hint>
 		</mat-form-field>
 
-		<!--        <mat-form-field>-->
-		<!--            <mat-label>Prompt</mat-label>-->
-		<!--            <mat-select (selectionChange)="onPromptChange($event)" id="prompt" type="text" formControlName="prompt">-->
-		<!--                @for (prompt of prompts; track prompt; let isFirst = $first) {-->
-		<!--                    <mat-option [value]="prompt">{{ prompt }}</mat-option>-->
-		<!--                }-->
-		<!--            </mat-select>-->
-		<!--            <mat-hint align="start">Optional: Prompt for the context to better understand the Utterance.</mat-hint>-->
-		<!--        </mat-form-field>-->
-
-		<!--		<mat-form-field>-->
-		<!--			<mat-label for="Utterance">Utterance</mat-label>-->
-		<!--			<textarea matInput id="utterance" type="text" formControlName="utterance"-->
-		<!--								placeholder="Ex. Hello; I would like to know more about simulation training programs.; "></textarea>-->
-		<!--			<mat-hint align="start">Optional: Utterance for the context is the expected user input that triggers a response from the context.-->
-		<!--			</mat-hint>-->
-		<!--		</mat-form-field>-->
-
-		<!--        <mat-form-field>-->
-		<!--            <mat-label>Response</mat-label>-->
-		<!--            <textarea matInput id="response" type="text" formControlName="response"-->
-		<!--                      placeholder="Ex. Our programs use immersive simulations to mimic real-world scenarios, allowing employees to practice and perfect their skills in a risk-free environment. We offer customized programs for various industries, including customer service, sales, and leadership development. Would you like to know more about a specific program or industry?.">-->
-		<!--	  </textarea>-->
-		<!--            <mat-hint align="start">Optional: Response of the context triggered by the utterance.</mat-hint>-->
-		<!--        </mat-form-field>-->
-
-		<app-game-context-message (messageChange)="updateMessage($event)"
+			<!--(messageChange)="updateMessage($event)"-->
+		<app-game-context-message
+															[selectedContext]="selectedContext"
 															[messages]="selectedContext.messages">
 		</app-game-context-message>
 
 		<mat-form-field>
 			<mat-label>Select next context/topic</mat-label>
-			<mat-select [(value)]="this.selectedContext.messages.slice(-1)[0].continuation">
-				@for (context of this.selectedCharacter.contexts; track context; let isFirst = $first) {
+			<mat-select [(value)]="this.selectedContext.name">
+				@for (context of this.selectedCharacter?.contexts; track context; let isFirst = $first) {
 					<mat-option [value]="context.id">
 						{{ context.name }}
 					</mat-option>

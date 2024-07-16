@@ -15,10 +15,10 @@
 							<input matInput formControlName="botMessage">
 						</mat-form-field>
 						<div style="display: inline;">
-							<button mat-icon-button click="updateMessage(i)" color="primary" style="color: green">
+							<button mat-icon-button (click)="updateMessage(i, messages[i])" color="primary" style="color: green">
 								<mat-icon>check</mat-icon>
 							</button>
-							<button mat-icon-button click="removeMessage(i)" color="primary" style="color: red">
+							<button mat-icon-button (click)="deleteMessage(i, messages[i])" color="primary" style="color: red">
 								<mat-icon>delete</mat-icon>
 							</button>
 						</div>

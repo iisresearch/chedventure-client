@@ -111,7 +111,7 @@ export interface Context {
 
 export interface Message {
     intent: number;
-    continuation?: Message;
+    continuation?: string;
     contextualisation?: Context;
     utterance: string;
     response: string;

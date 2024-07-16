@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {catchError, map, tap} from "rxjs/operators";
-import {Character, Context, IGame, Room, RoomToGame} from "./models/game";
+import {Character, Context, IGame, Message, Room, RoomToGame} from "./models/game";
 import {MessageService, MessageStatus} from "./message.service";
 import {environment} from '../../environments/environment';
 
@@ -186,7 +186,7 @@ export class GameService {
   updateContext(id: number, context: Context): Observable<Context> {
     return this.httpClient.put<Context>(`${baseUrl}/contexts/${id}`, context)
       .pipe(
-        tap(context => this.messageService.Show("Context" + context.name + " has been updated", MessageStatus.Success)),
+        tap(context => this.messageService.Show("Context " + context.name + " has been updated", MessageStatus.Success)),
         catchError(this.handleError<Context>('updateContext', context))
       )
   }
@@ -200,7 +200,26 @@ export class GameService {
       )
   }
 
+  updateMessage(intent: number, message: Message): Observable<Message> {
+    return this.httpClient.put<Message>(`${baseUrl}/messages/${intent}`, message)
+        .pipe(
+            tap(_ => this.messageService.Show("Message has been updated", MessageStatus.Success)),
+            catchError(this.handleError<Message>('updateMessage', message))
+        )
+  }
+
+  deleteMessage(intent: number) {
+    return this.httpClient.delete(`${baseUrl}/messages/${intent}`)
+        .pipe(
+            tap(_ => this.messageService.Show("Message has been deleted", MessageStatus.Success)),
+            tap(_ => console.log("Message deleted")),
+            catchError(this.handleError('deleteMessage'))
+        )
+  }
+
   // Chatbot related endpoints
+
+
   checkChatbotStatus() {
     return this.httpClient.head(`${chatbotURL}`)
         .pipe(
@@ -211,9 +230,6 @@ export class GameService {
             })
         );
   }
-
-
-
 
   /**
    * Handle Http operation that failed.
@@ -241,5 +257,4 @@ export class GameService {
       return of(result as T);
     };
   }
-
 }
