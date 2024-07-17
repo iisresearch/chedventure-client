@@ -21,7 +21,7 @@
   <ng-template #updateRoomTitle>
     <h3 style="margin-bottom: 0">Configure room</h3>
   </ng-template>
-  <mat-hint *ngIf="selectedRoom !== undefined && selectedRoom !== null"><small>Don't forget to save your changes with the "Save room" button at the bottom of the page!</small></mat-hint>
+  <mat-hint *ngIf="selectedRoom"><small>Don't forget to save your changes with the "Save room" button at the bottom of the page!</small></mat-hint>
 
 
   <div class="row" style="justify-content: flex-start; align-items: center; align-content: center; margin-bottom: 1em; margin-top: 2em">
@@ -31,15 +31,15 @@
     <button mat-raised-button (click)="openCreateCustomRoomDialog()">Upload custom image</button>
   </div>
 
-  <form [formGroup]="roomToGameForm" (ngSubmit)="onSubmit()" class="column"><!--fxLayout="column" *ngIf="selectedRoom !== undefined && selectedRoom !== null"-->
+  <form [formGroup]="roomToGameForm" (ngSubmit)="onSubmit()" class="column"><!--fxLayout="column" *ngIf="selectedRoom"-->
 
     <mat-form-field>
-      <mat-label for="name">Name</mat-label>
+      <mat-label>Name</mat-label>
       <input matInput id="name" type="text" formControlName="name">
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label for="description">Description</mat-label>
+      <mat-label>Description</mat-label>
       <textarea matInput id="description" type="text" formControlName="description"></textarea>
       <mat-hint align="start">Optional: Describe what the user finds in this room in your game.</mat-hint>
     </mat-form-field>
@@ -49,7 +49,7 @@
       <div *ngFor="let _ of this.instructions.controls; index as i" class="column"><!--fxLayout="column"-->
         <div class="row" style="justify-content: space-between; align-items: center; align-content: center;"><!--fxLayout="row" fxLayoutAlign="space-between center">-->
           <mat-form-field style="flex: 1 1 auto;" fxFlex="">
-            <mat-label for="instruction">{{ i + 1 }}.</mat-label>
+            <mat-label>{{ i + 1 }}.</mat-label>
             <input matInput id="instruction" type="text" [formControlName]="i"/>
           </mat-form-field>
           <button mat-icon-button color="warn" style="flex: 0 1 auto;" (click)="removeInstruction(i)"><mat-icon>remove_circle</mat-icon></button> <!--fxFlex="initial"-->
@@ -126,7 +126,7 @@
     </ng-container>
 
     <div class="row"><!--fxLayout="row">-->
-      <div style="margin: 1em 1em 1em 1em;" *ngIf="selectedRoom !== undefined && selectedRoom !== null">
+      <div style="margin: 1em 1em 1em 1em;" *ngIf="selectedRoom">
         <button mat-raised-button color="primary" type="submit">Save room</button>
       </div>
       <div style="margin: 1em 1em 1em 1em;" *ngIf="!createNewRoomToGame">
@@ -143,6 +143,6 @@
 
 </div>
 
-<!--<ng-container *ngIf="this.selectedRoom !== undefined && this.selectedRoom !== null">
+<!--<ng-container *ngIf="this.selectedRoom">
   <img [src]="getImageOfRoom(selectedRoom)" style="max-width: 750px;"/>
 </ng-container>-->

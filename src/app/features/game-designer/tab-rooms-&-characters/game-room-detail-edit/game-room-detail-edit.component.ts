@@ -68,7 +68,7 @@ export class GameRoomDetailEditComponent implements OnInit {
   ngOnInit(): void {}
 
   ngOnChanges() {
-    if (this.roomToGame !== undefined && this.roomToGame !== null && this.createNewRoomToGame === false) {
+    if (this.roomToGame && this.createNewRoomToGame === false) {
       let room = this.getRoomById(this.roomToGame.room.id);
       if (room !== undefined) {
         this.setupForm(room, this.roomToGame.name, this.roomToGame.description ?? "", this.roomToGame.instructions ?? []);
@@ -191,7 +191,7 @@ export class GameRoomDetailEditComponent implements OnInit {
   }
 
   getRoomById(id: number): Room|undefined {
-    if (this.rooms !== undefined && this.rooms !== null) {
+    if (this.rooms) {
       return this.rooms.find(x => x.id == id);
     }
     return undefined;

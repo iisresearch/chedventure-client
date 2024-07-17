@@ -88,6 +88,7 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
             let contextToSend: Context = {
                 id: this.selectedContext.id,
                 name: this.name?.value,
+                //character: this.selectedCharacter,
                 messages: this.selectedContext.messages,
             }
 

@@ -2,7 +2,7 @@
 <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
   <div fxLayout="row" fxLayoutAlign="center">
     <!--<span><mat-icon>gamepad</mat-icon></span> -->
-    <ng-container *ngIf="this.game !== undefined">
+    <ng-container *ngIf="this.game">
       <span>{{this.game.name}}</span>
     </ng-container>
   </div>
@@ -18,8 +18,7 @@
 
 <!-- Chatbot integration -->
 <div id="chat" *ngIf="showCharacterChat &&
-currentCharacter !== undefined &&
-currentCharacter !== null">
+currentCharacter">
   <iframe width="750" height="750" [src]="currentCharacter.chatbotUrl | safe"></iframe>
 </div>
 
@@ -45,7 +44,7 @@ currentCharacter !== null">
   -->
 
     <!-- Instructions -->
-  <div *ngIf="currentRoom !== null && currentRoom !== undefined && currentRoom.instructions !== undefined && currentRoom.instructions !== null && currentRoom.instructions.length !== 0 || showCharacterChat">
+  <div *ngIf="currentRoom && currentRoom.instructions && currentRoom.instructions.length !== 0 || showCharacterChat">
     <h3>Next Steps</h3>
     <ul *ngIf="showCharacterChat; else showRoomInstructions">
       <li>Converse in the chat or find another stakeholder you would like to talk to.</li>
@@ -75,7 +74,7 @@ currentCharacter !== null">
   </ng-container>
   <!-- Current room name & description -->
   <ng-template #roomDescription>
-    <ng-container *ngIf="currentRoom !== null && currentRoom !== undefined">
+    <ng-container *ngIf="currentRoom">
       <h4>{{currentRoom.name}}</h4>
       <ng-container *ngIf="currentRoom.description && currentRoom.description !== ''; else noDescription">
         <p style="white-space: pre-line">
@@ -93,13 +92,13 @@ currentCharacter !== null">
 
   <!-- Information of target room/stakeholder on hover of hitbox -->
   <div *ngIf="hitboxIsHovered">
-    <ng-container *ngIf="hoveredHitboxTargetRoom !== null && hoveredHitboxTargetRoom !== undefined; else hitboxStakeholder">
+    <ng-container *ngIf="hoveredHitboxTargetRoom; else hitboxStakeholder">
       <h4>{{hoveredHitboxTargetRoom.name}}</h4>
       <p style="white-space: pre-line">{{hoveredHitboxTargetRoom.description}}</p>
       <img [src]="getImageOfRoom(hoveredHitboxTargetRoom)" style="max-width: 350px;"/>
     </ng-container>
     <ng-template #hitboxStakeholder>
-      <ng-container *ngIf="hoveredHitboxTargetCharacter !== null && hoveredHitboxTargetCharacter !== undefined">
+      <ng-container *ngIf="hoveredHitboxTargetCharacter">
         <h4>{{hoveredHitboxTargetCharacter.name}}<span *ngIf="hoveredHitboxTargetCharacter.title"> - {{hoveredHitboxTargetCharacter.title}}</span></h4>
         <p style="white-space: pre-line">{{hoveredHitboxTargetCharacter.description}}</p>
       </ng-container>

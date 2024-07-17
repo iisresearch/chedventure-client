@@ -9,26 +9,26 @@
     <form [formGroup]="characterForm" fxLayout="column" (ngSubmit)="onSubmit()">
 
         <mat-form-field>
-            <mat-label for="name">Name</mat-label>
+            <mat-label>Name</mat-label>
             <input matInput id="name" type="text" formControlName="name">
         </mat-form-field>
 
         <mat-form-field>
-            <mat-label for="title">Title</mat-label>
+            <mat-label>Title</mat-label>
             <input matInput id="title" type="text" formControlName="title"
                    placeholder="Ex. CEO, HR, IT, Marketing Specialist">
             <mat-hint align="start">Title or position (e.g. CEO) of this character.</mat-hint>
         </mat-form-field>
 
         <mat-form-field>
-            <mat-label for="description">Description</mat-label>
+            <mat-label>Description</mat-label>
             <textarea matInput id="description" type="text" formControlName="description"
                       placeholder="You work at a leading tech company. You expertise lies in designing and developing immersive virtual simulations that empower employees to tackle complex scenarios with confidence."></textarea>
             <mat-hint align="start">Optional: Description of this character.</mat-hint>
         </mat-form-field>
 
         <mat-form-field>
-            <mat-label for="history">History</mat-label>
+            <mat-label>History</mat-label>
             <input matInput id="history" type="number" max="10" min="0" formControlName="history" placeholder="0-10">
             <mat-hint align="start">Optional: Number of previous answers this character will remember. e.g. 0 - no
                 answers are remembered, 10 - last answers are remembered.
@@ -43,12 +43,12 @@
         </mat-checkbox>
 
         <mat-form-field [class.disabled]="this.useDummyChatbot?.value">
-            <mat-label for="chatbotUrl">Chatbot URL</mat-label>
+            <mat-label>Chatbot URL</mat-label>
             <input matInput id="chatbotUrl" type="text" formControlName="chatbotUrl">
         </mat-form-field>
 
         <div fxLayout="row">
-            <div style="margin: 1em 1em 1em 1em;" *ngIf="character !== undefined && character !== null">
+            <div style="margin: 1em 1em 1em 1em;" *ngIf="character">
                 <button mat-raised-button color="primary" type="submit">Save</button>
             </div>
             <div style="margin: 1em 1em 1em 1em;" *ngIf="!createNewCharacter">

@@ -39,7 +39,7 @@ export class GameCreateDialogComponent implements OnInit {
         .addGame(newGame)
         .subscribe(game => {
           console.log(game)
-          if (game !== undefined && game.id !== null && game.id !== undefined) {
+          if (game && game.id) {
             this.dialogRef.close(game.id);
           }
         });

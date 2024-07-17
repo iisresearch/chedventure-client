@@ -245,7 +245,7 @@ export class PlayComponent implements OnInit {
       if(hitbox?.targetRoom && hitbox?.targetRoom?.id === this.hoveredHitboxTargetRoom?.id) {
         this.onClickRoomHitbox(object);
       } else {
-        if(hitbox?.targetCharacter !== null && hitbox?.targetCharacter !== undefined && hitbox?.targetCharacter?.id === this.hoveredHitboxTargetCharacter?.id) {
+        if(hitbox?.targetCharacter && hitbox?.targetCharacter?.id === this.hoveredHitboxTargetCharacter?.id) {
           this.onClickRoomHitbox(object);
           return;
         }
@@ -260,9 +260,9 @@ export class PlayComponent implements OnInit {
     let id = Number(object.name.split('-')[1]);
     let hitbox = this.getHitbox(id);
 
-    if(hitbox?.targetRoom !== undefined && hitbox.targetRoom !== null) {
+    if(hitbox?.targetRoom) {
       this.openRoom(hitbox?.targetRoom!.id, true, false);
-    } else if (hitbox?.targetCharacter !== undefined && hitbox.targetCharacter !== null) {
+    } else if (hitbox?.targetCharacter) {
       this.openRoom(hitbox?.targetCharacter!.id, true, true);
     }
     this.evaluateDisablingMoveBackButton();
@@ -277,10 +277,10 @@ export class PlayComponent implements OnInit {
   toggleHitboxIsHoveredToTrue(object: PIXI.Graphics) {
     let id = Number(object.name.split('-')[1]);
     let hitbox = this.getHitbox(id);
-    if(hitbox?.targetRoom !== undefined && hitbox.targetRoom !== null) {
+    if(hitbox?.targetRoom) {
       this.hoveredHitboxTargetRoom = this.getRoom(hitbox.targetRoom!.id);
       this.hitboxIsHovered = true;
-    } else if (hitbox?.targetCharacter !== undefined && hitbox.targetCharacter !== null) {
+    } else if (hitbox?.targetCharacter) {
       this.hoveredHitboxTargetCharacter = this.getCharacter(hitbox.targetCharacter!.id);
       this.hitboxIsHovered = true;
     }
