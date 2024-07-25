@@ -18,7 +18,7 @@
 		</mat-form-field>
 
 			<!--(messageChange)="updateMessage($event)"-->
-		<app-game-context-message
+		<app-game-context-message	[selectedCharacter]="selectedCharacter"
 															[selectedContext]="selectedContext"
 															[messages]="selectedContext.messages">
 		</app-game-context-message>
@@ -26,7 +26,7 @@
 		<mat-form-field>
 			<mat-label>Select next context/topic</mat-label>
 			<mat-select [(value)]="this.selectedContext.name">
-				@for (context of this.selectedCharacter?.contexts; track context; let isFirst = $first) {
+				@for (context of this.selectedCharacter.contexts; track context; let isFirst = $first) {
 					<mat-option [value]="context.id">
 						{{ context.name }}
 					</mat-option>
