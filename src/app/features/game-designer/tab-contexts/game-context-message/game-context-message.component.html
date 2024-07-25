@@ -1,9 +1,9 @@
 <mat-card class="chat-container">
-	@if (isEditing) {
-		<!--Edit message form-->
-		<form [formGroup]="updateForm">
-			<ng-container formArrayName="messages">
-				@for (messageGroup of messagesFormArray.controls; track messageGroup; let i = $index; ) {
+	@for (messageGroup of messagesFormArray.controls; track messageGroup; let i = $index; ) {
+		@if (isEditing) {
+			<form [formGroup]="updateForm">
+				<ng-container formArrayName="messages">
+					<!--Edit message form-->
 					<div [formGroupName]="i" class="chat-input">
 						<mat-form-field appearance="fill" style=" align-content: flex-end; align-self: flex-end; ">
 							<mat-label>User says</mat-label>
@@ -23,54 +23,88 @@
 							</button>
 						</div>
 					</div>
-				}
-			</ng-container>
-		</form>
-	} @else {
-		@for (message of this.messages; track message; let i = $index) {
-
-			<mat-card-content class="chat-message user-message">
-				<mat-icon>person</mat-icon>
-				{{ message.utterance }}
-			</mat-card-content>
-			<mat-card-content class="chat-message bot-message">
-				<mat-icon>smart_toy</mat-icon>
-				{{ message.response }}
-			</mat-card-content>
-		} @empty {
-			<!--Empty For loop-->
-			<mat-card-content>
-				<mat-card-subtitle>No messages created yet</mat-card-subtitle>
-			</mat-card-content>
-		}
-
-
-		<form style="display: inline; margin: 1rem" [formGroup]="messageForm" (ngSubmit)="addMessage()">
-			<!-- Add more chat messages here -->
-			<div class="chat-input">
-				<mat-form-field appearance="fill" style=" align-content: flex-end; align-self: flex-end; ">
-					<mat-label>
+				</ng-container>
+			</form>
+		} @else {
+			<!--Display messages-->
+			<div class="messages-and-dialog-flow">
+				<div style="display: flex; flex-direction: row;">
+					<mat-card-content class="chat-message user-message">
 						<mat-icon>person</mat-icon>
-						User says
-					</mat-label>
-					<input matInput id="userMessage" type="text" formControlName="userMessage">
-				</mat-form-field>
-				<mat-divider [inset]="true"></mat-divider>
-
-				<mat-form-field appearance="fill" style="align-self: flex-start; ">
-					<mat-label>
+						{{ messageGroup.get('userMessage')?.value }}
+					</mat-card-content>
+					<mat-card-content class="chat-message bot-message">
 						<mat-icon>smart_toy</mat-icon>
-						Bot Says
-					</mat-label>
-					<input matInput id="botMessage" type="text" formControlName="botMessage">
-				</mat-form-field>
-				<button mat-icon-button type="submit" color="primary" class="blue-button">
-					<mat-icon>add</mat-icon>
-				</button>
-			</div>
+						{{ messageGroup.get('botMessage')?.value }}
+					</mat-card-content>
+				</div>
+				<mat-divider [vertical]="true" style="margin-left: auto"></mat-divider>
+				<!--Dialog Flow-->
+				<mat-card-content class="dialog-flow-container">
+					<form [formGroup]="dialogFlowForm">
+						<mat-form-field>
+							<mat-label>Continuation</mat-label>
+							<mat-select formControlName="continuation">
+								<mat-option value="await" matTooltipPosition="right"
+														matTooltip="Directly provide the next message below">
+									Next Message
+								</mat-option>
+								<mat-option value="next" matTooltipPosition="right"
+														matTooltip="Chatbot awaits until user provides a response">
+									Await User Response
+								</mat-option>
+								<mat-option value="context" matTooltipPosition="right" matTooltip="Switch to another Context">
+									Follow with Context
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
 
-		</form>
+						<mat-form-field>
+							<mat-label>Contextualisation</mat-label>
+							<mat-select formControlName="contextualisation">
+								@for (context of selectedCharacter.contexts; track context; ) {
+									<mat-option [value]="context.name">{{ context?.name }}</mat-option>
+								}
+							</mat-select>
+						</mat-form-field>
+
+					</form>
+				</mat-card-content>
+			</div>
+			<mat-divider></mat-divider>
+		}
+	} @empty {
+		<!--Empty For loop-->
+		<mat-card-content>
+			<mat-card-subtitle>No messages created yet</mat-card-subtitle>
+		</mat-card-content>
 	}
+
+	<form style="display: inline;" [formGroup]="addMessageForm" (ngSubmit)="addMessage()">
+		<!-- Add more chat messages here -->
+		<div class="chat-input">
+			<mat-form-field appearance="fill" style=" align-content: flex-end; align-self: flex-end; ">
+				<mat-label>
+					<mat-icon>person</mat-icon>
+					User says
+				</mat-label>
+				<input matInput id="userMessage" type="text" formControlName="userMessage">
+			</mat-form-field>
+			<mat-divider [inset]="true"></mat-divider>
+
+			<mat-form-field appearance="fill" style="align-self: flex-start; ">
+				<mat-label>
+					<mat-icon>smart_toy</mat-icon>
+					Bot Says
+				</mat-label>
+				<input matInput id="botMessage" type="text" formControlName="botMessage">
+			</mat-form-field>
+			<button mat-icon-button type="submit" color="primary" class="blue-button">
+				<mat-icon>add</mat-icon>
+			</button>
+		</div>
+	</form>
+
 	<button mat-icon-button type="button" color="primary" (click)="toggleEdit()"
 					[style]="isEditing ? 'background-color: lightblue;': 'background-color: white;'">
 		<mat-icon>edit</mat-icon>

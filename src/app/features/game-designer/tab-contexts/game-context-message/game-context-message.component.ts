@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
-import {Context, Message} from "../../../../core/models/game";
+import {Character, Context, Message} from "../../../../core/models/game";
 import {FormArray, FormControl, FormGroup} from "@angular/forms";
 import {GameService} from "../../../../core/game.service";
 
@@ -11,16 +11,19 @@ import {GameService} from "../../../../core/game.service";
 export class GameContextMessageComponent implements OnInit, OnChanges {
     @Input() messages!: Message[];
     @Input() selectedContext!: Context;
+    @Input() selectedCharacter!: Character; // Used for contextualisation and continuation
     @Output() messageChange = new EventEmitter<Message>();
 
-    messageForm: FormGroup = new FormGroup({
+    addMessageForm: FormGroup = new FormGroup({
         botMessage: new FormControl("",),
         userMessage: new FormControl("",),
     });
 
     updateForm: FormGroup = new FormGroup({
         messages: new FormArray([])
-    })
+    });
+
+    dialogFlowForm: FormGroup = new FormGroup({});
 
     isEditing: boolean = false;
 
@@ -28,26 +31,36 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
     }
 
     ngOnInit(): void {
+        console.log("selectedCharacter: ", this.selectedCharacter)
+        this.dialogFlowForm = new FormGroup({
+            continuation: new FormControl("await",),
+            contextualisation: new FormControl(this.selectedCharacter.contexts[0].name,),
+        })
     }
 
     ngOnChanges() {
         // Update the messages form array when the selectedContext changes
-        if (this.selectedContext && this.isEditing) {
-            console.log("Populating form array", this.selectedContext);
-            this.populateFormArray();
-        }
+        this.populateFormArray();
     }
 
     get botMessage() {
-        return this.messageForm.get('botMessage');
+        return this.addMessageForm.get('botMessage');
     }
 
     get userMessage() {
-        return this.messageForm.get('userMessage');
+        return this.addMessageForm.get('userMessage');
     }
 
     get messagesFormArray() {
         return this.updateForm.get('messages') as FormArray;
+    }
+
+    get contextualisation() {
+        return this.dialogFlowForm.get('contextualisation');
+    }
+
+    get continuation() {
+        return this.dialogFlowForm.get('continuation');
     }
 
     addMessage() {
@@ -56,7 +69,7 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
             response: this.botMessage?.value,
             utterance: this.userMessage?.value,
         };
-        this.messageForm.reset({
+        this.addMessageForm.reset({
                 botMessage: "",
                 userMessage: "",
             }
@@ -84,24 +97,26 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
     }
 
     deleteMessage(index: number, message: Message) {
-        this.gameService.deleteMessage(message.intent)
-            .subscribe(result => {
-                    this.messagesFormArray.removeAt(index);
-                    this.deletedMessage(message);
-                    console.log("Deleted message: ", result);
-                }
-            );
+        if (confirm("Are you sure you want to delete this message?")) {
+            this.gameService.deleteMessage(message.intent)
+                .subscribe(result => {
+                        this.messagesFormArray.removeAt(index);
+                        this.deletedMessage(message);
+                        console.log("Deleted message: ", result);
+                    }
+                );
+        }
     }
 
     toggleEdit() {
         this.isEditing = !this.isEditing;
-        if (this.isEditing) {
+        if (this.isEditing && this.messages.length > 0) {
             this.populateFormArray();
         }
     }
 
     /**
-     * Is called from child component 'game-context-message' when a message has been updated/added.
+     * Is called when a message has been added/updated.
      * @param message
      */
     updatedMessage(message: Message) {
@@ -114,6 +129,7 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
         } else {
             this.selectedContext.messages[i] = message;
         }
+        this.populateFormArray();
         //this.dialoguesChange.emit(this.dialogues);
     }
 
@@ -124,6 +140,7 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
         if (i !== -1) {
             this.selectedContext.messages.splice(i, 1);
         }
+        this.populateFormArray();
     }
 
     populateFormArray() {
