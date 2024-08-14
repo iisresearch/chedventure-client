@@ -21,14 +21,6 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
 
     contextForm: FormGroup = new FormGroup({});
 
-    newMessageToContext(intent: number | undefined, utterance: string | undefined, response: string | undefined) {
-        return new FormGroup({
-            intent: new FormControl(intent),
-            utterance: new FormControl(utterance),
-            response: new FormControl(response),
-        });
-    }
-
     constructor(private gameService: GameService) {
     }
 
@@ -69,13 +61,13 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
         });
         console.log("messages", this.selectedContext.messages)
         this.selectedContext.messages!.forEach(message => {
-            let formGroupMessages = this.messagesToContext;
-            let messageToContext = this.getMessageToContext(message.intent);
-
-            formGroupMessages.push(this.newMessageToContext(
-                messageToContext?.intent,
-                messageToContext?.utterance,
-                messageToContext?.response,))
+            this.messagesToContext.push(new FormGroup({
+                intent: new FormControl(message.intent),
+                utterance: new FormControl(message.utterance),
+                response: new FormControl(message.response),
+                //continuation: new FormControl(message.continuation),
+                //contextualisation: new FormControl(message.contextualisation),
+            }));
         });
 
         console.log("contextForm: ", this.contextForm)
@@ -128,14 +120,4 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
         }
     }
 
-    getMessageToContext(intent: number): Message | null {
-        if (this.selectedContext.messages.length !== 0) {
-            for (let messageToContext of this.selectedContext.messages) {
-                if (messageToContext.intent === intent) {
-                    return messageToContext;
-                }
-            }
-        }
-        return null
-    }
 }

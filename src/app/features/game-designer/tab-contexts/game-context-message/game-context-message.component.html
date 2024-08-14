@@ -41,34 +41,30 @@
 				<mat-divider [vertical]="true" style="margin-left: auto"></mat-divider>
 				<!--Dialog Flow-->
 				<mat-card-content class="dialog-flow-container">
-					<form [formGroup]="dialogFlowForm">
 						<mat-form-field>
 							<mat-label>Continuation</mat-label>
-							<mat-select formControlName="continuation">
-								<mat-option value="await" matTooltipPosition="right"
-														matTooltip="Directly provide the next message below">
+							<mat-select [value]="getContinuationFormValue(messages[i])" (selectionChange)="onContinuationChange(messages[i], $event)" matTooltip="Display next message or await response">
+								<mat-option value="next" matTooltipPosition="right" matTooltip="Directly provide the next message below">
 									Next Message
 								</mat-option>
-								<mat-option value="next" matTooltipPosition="right"
-														matTooltip="Chatbot awaits until user provides a response">
+								<mat-option value="await" matTooltipPosition="right" matTooltip="Awaits until user provides a response">
 									Await User Response
 								</mat-option>
-								<mat-option value="context" matTooltipPosition="right" matTooltip="Switch to another Context">
-									Follow with Context
-								</mat-option>
+<!--								<mat-option value="context" matTooltipPosition="right" matTooltip="Switch to another Context">-->
+<!--									Follow with Context-->
+<!--								</mat-option>-->
 							</mat-select>
 						</mat-form-field>
 
 						<mat-form-field>
 							<mat-label>Contextualisation</mat-label>
-							<mat-select formControlName="contextualisation">
+							<mat-select [(value)]="messages[i].contextualisation" matTooltip="Switch to another Context">
 								@for (context of selectedCharacter.contexts; track context; ) {
 									<mat-option [value]="context.name">{{ context?.name }}</mat-option>
 								}
 							</mat-select>
 						</mat-form-field>
 
-					</form>
 				</mat-card-content>
 			</div>
 			<mat-divider></mat-divider>
@@ -99,7 +95,7 @@
 				</mat-label>
 				<input matInput id="botMessage" type="text" formControlName="botMessage">
 			</mat-form-field>
-			<button mat-icon-button type="submit" color="primary" class="blue-button">
+			<button mat-icon-button type="submit" matTooltip="Remember to 'Save' your new messages" color="primary" class="blue-button">
 				<mat-icon>add</mat-icon>
 			</button>
 		</div>

@@ -1,7 +1,8 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Character, Context, Message} from "../../../../core/models/game";
-import {FormArray, FormControl, FormGroup} from "@angular/forms";
+import {Form, FormArray, FormControl, FormGroup} from "@angular/forms";
 import {GameService} from "../../../../core/game.service";
+import {MatSelectChange} from "@angular/material/select";
 
 @Component({
     selector: 'app-game-context-message',
@@ -9,10 +10,10 @@ import {GameService} from "../../../../core/game.service";
     styleUrl: './game-context-message.component.css'
 })
 export class GameContextMessageComponent implements OnInit, OnChanges {
-    @Input() messages!: Message[];
+    messages!: Message[];
     @Input() selectedContext!: Context;
     @Input() selectedCharacter!: Character; // Used for contextualisation and continuation
-    @Output() messageChange = new EventEmitter<Message>();
+    @Output() messagesChange = new EventEmitter<Message[]>();
 
     addMessageForm: FormGroup = new FormGroup({
         botMessage: new FormControl("",),
@@ -23,7 +24,7 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
         messages: new FormArray([])
     });
 
-    dialogFlowForm: FormGroup = new FormGroup({});
+    // dialogFlowForm: FormGroup = new FormGroup({});
 
     isEditing: boolean = false;
 
@@ -31,15 +32,20 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
     }
 
     ngOnInit(): void {
-        console.log("selectedCharacter: ", this.selectedCharacter)
-        this.dialogFlowForm = new FormGroup({
-            continuation: new FormControl("await",),
-            contextualisation: new FormControl(this.selectedCharacter.contexts[0].name,),
-        })
+        console.log("selectedContext.messages: ", this.selectedContext.messages)
+        this.updateForm = new FormGroup({
+            messages: new FormArray([])
+        });
+        this.populateFormArray();
     }
 
     ngOnChanges() {
+        if (!this.selectedContext || !this.selectedContext.messages) {
+            console.error("Selected context or its messages are not available.");
+            return;
+        }
         // Update the messages form array when the selectedContext changes
+        this.messages = this.selectedContext.messages;
         this.populateFormArray();
     }
 
@@ -56,16 +62,16 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
     }
 
     get contextualisation() {
-        return this.dialogFlowForm.get('contextualisation');
+        return this.updateForm.get('contextualisation') as FormControl;
     }
 
     get continuation() {
-        return this.dialogFlowForm.get('continuation');
+        return this.updateForm.get('continuation') as FormControl;
     }
 
     addMessage() {
         const newMessage: Message = {
-            intent: this.messages.length,
+            intent: -1,
             response: this.botMessage?.value,
             utterance: this.userMessage?.value,
         };
@@ -85,6 +91,8 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
             intent: message.intent,
             utterance: messageFormGroup.get('userMessage')?.value,
             response: messageFormGroup.get('botMessage')?.value,
+            continuation: messageFormGroup.get('continuation')?.value,
+            contextualisation: messageFormGroup.get('contextualisation')?.value,
         };
 
         // this.messageChange.emit(updatedMessage);
@@ -120,37 +128,101 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
      * @param message
      */
     updatedMessage(message: Message) {
-        let i = this.selectedContext.messages.findIndex(msg => {
+        let i = this.messages.findIndex(msg => {
             return msg.intent === message.intent;
         })
         console.log("i findIndex: ", i)
         if (i === -1) {
-            this.selectedContext.messages.push(message);
+            this.messages.push(message);
         } else {
-            this.selectedContext.messages[i] = message;
+            this.messages[i] = message;
         }
         this.populateFormArray();
-        //this.dialoguesChange.emit(this.dialogues);
+        // this.messagesChange.emit(this.messages);
     }
 
     deletedMessage(message: Message) {
-        let i = this.selectedContext.messages.findIndex(msg => {
+        let i = this.messages.findIndex(msg => {
             return msg.intent === message.intent;
         })
         if (i !== -1) {
-            this.selectedContext.messages.splice(i, 1);
+            this.messages.splice(i, 1);
         }
         this.populateFormArray();
+        this.messagesChange.emit(this.messages);
     }
 
     populateFormArray() {
         const messagesArray = this.updateForm.get('messages') as FormArray;
         messagesArray.clear();
         this.messages.forEach(message => {
+            const continuation = this.getContinuationFormValue(message);
+            let contextualisation = undefined;
+            if (message.contextualisation && message.contextualisation.length > 0)
+                contextualisation = this.selectedContext.name;
+            else
+                contextualisation = this.selectedContext.name;
+            console.log("Contextualisation: ", this.selectedContext)
             messagesArray.push(new FormGroup({
                 botMessage: new FormControl(message.response),
                 userMessage: new FormControl(message.utterance),
+                continuation: new FormControl(continuation),
+                contextualisation: new FormControl(contextualisation),
             }));
         });
+        console.log("messagesArray: ", messagesArray)
     }
+
+    getContinuationFormValue(message: Message) {
+        let i = this.messages.findIndex(msg => msg.intent === message.intent)
+        // Check if message and intent is present
+        if (i === -1 || this.messages.length < 1) {
+            console.error("Invalid index or message not found:", message);
+            return 'await'; // or some other default value
+        }
+        // Gets next message from all contexts
+        // Determine the next message intent based on the current context
+        const nextMessage = (message.contextualisation === this.selectedContext.name)
+            ? (this.messages[i + 1] || null) // next message in the same context
+            : this.selectedCharacter?.contexts
+            .find(ctx => ctx.name === message.contextualisation)
+            ?.messages[0] || null; // first message of another context
+        console.log("Next message: ", nextMessage)
+
+        switch (message.continuation) {
+            case '':
+                return 'await';
+            case nextMessage?.intent.toString():
+                return 'next';
+            default:
+                console.log("Continuation not set: ", message);
+                return 'await';
+        }
+    }
+
+    onContinuationChange(message: Message, $event: MatSelectChange) {
+        console.log("onContinuationChange: ", $event.value);
+        const context = this.selectedCharacter?.contexts.find(ctx => ctx.name === message.contextualisation);
+
+        const nextMessage = (context && context?.name !== this.selectedContext?.name)
+            ? context?.messages[0] // first message of another context
+            : this.messages[this.messages.findIndex(msg => msg.intent === message.intent) + 1]; // next message in the same context
+
+        switch ($event.value) {
+            case 'await':
+                message.continuation = "";
+                break;
+            case 'next':
+                console.log("Next message change: ", nextMessage);
+                if (nextMessage)
+                    message.continuation = nextMessage.intent.toString();
+                else
+                    message.continuation = '';
+                break;
+            default:
+                this.continuation?.setValue($event.value);
+        }
+        this.updatedMessage(message);
+    }
+
 }

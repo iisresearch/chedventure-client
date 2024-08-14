@@ -19,21 +19,8 @@
 
 			<!--(messageChange)="updateMessage($event)"-->
 		<app-game-context-message	[selectedCharacter]="selectedCharacter"
-															[selectedContext]="selectedContext"
-															[messages]="selectedContext.messages">
+															[selectedContext]="selectedContext">
 		</app-game-context-message>
-
-		<mat-form-field>
-			<mat-label>Select next context/topic</mat-label>
-			<mat-select [(value)]="this.selectedContext.name">
-				@for (context of this.selectedCharacter.contexts; track context; let isFirst = $first) {
-					<mat-option [value]="context.id">
-						{{ context.name }}
-					</mat-option>
-				}
-			</mat-select>
-			<mat-hint>The bot will switch to the selected topic once the current one is finished.</mat-hint>
-		</mat-form-field>
 
 		<div fxLayout="row">
 			<div style="margin: 1em 1em 1em 1em;" *ngIf="selectedContext">
