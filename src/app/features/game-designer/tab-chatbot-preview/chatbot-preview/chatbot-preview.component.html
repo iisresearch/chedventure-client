@@ -1,16 +1,15 @@
 <div>
 	<span id="chatbotDiv"></span>
-<!--	<button  mat-raised-button color="primary" (click)="mountChainlitWidget(this.selectedCharacter.id)">-->
-<!--	Activate Chainlit Copilot-->
-<!--</button>-->
+	<!--	<button  mat-raised-button color="primary" (click)="mountChainlitWidget(this.selectedCharacter.id)">-->
+	<!--	Activate Chainlit Copilot-->
+	<!--</button>-->
 </div>
 
 <mat-card-header>
 	<mat-form-field appearance="outline">
 		<mat-label>Select Character</mat-label>
-		<mat-select #characterSelection (selectionChange)="this.setIframeForChatbot(this.selectedCharacter.id)"
-								[(ngModel)]="selectedCharacter"
-								> <!--[compareWith]="compareCharactersFunction"-->
+		<mat-select #characterSelection [(ngModel)]="selectedCharacter"
+		> <!--[compareWith]="compareCharactersFunction"-->
 			@for (character of characters; track character; ) {
 				<mat-option [value]="character">{{ character.name }}</mat-option>
 			}
@@ -18,11 +17,29 @@
 	</mat-form-field>
 </mat-card-header>
 
-<div>
-	<ng-container *ngIf="isChatbotRunning else ChatbotNotRunning">
-		<iframe #chatbotFrame width="100%" height="600px" [frameBorder]="0"></iframe>
-	</ng-container>
-	<ng-template #ChatbotNotRunning>
-		<h3>Chatbot is currently under development</h3>
-	</ng-template>
+<div style="display: flex; margin: 1em;">
+	<div>
+		<ng-container *ngIf="isChatbotRunning else ChatbotNotRunning">
+			<iframe width="750" height="750" [src]="selectedCharacter.chatbotUrl | safe" [frameBorder]="0"></iframe>
+		</ng-container>
+		<ng-template #ChatbotNotRunning>
+			<h3>Chatbot is currently under development</h3>
+		</ng-template>
+	</div>
+	<div style="margin-left: 1em;">
+		<ng-container *ngIf="selectedCharacter">
+			<h4>{{ selectedCharacter.name }}<span *ngIf="selectedCharacter.title"> - {{ selectedCharacter.title }}</span></h4>
+			<p *ngIf="selectedCharacter.description; else noStakeholderDescription">
+				{{ selectedCharacter.description }}
+			</p>
+			<div style="display: flex">
+				<ng-template #noStakeholderDescription>
+					<p>
+						You are currently talking with <i>{{ selectedCharacter.name }}</i>
+					</p>
+				</ng-template>
+			</div>
+			<mat-divider></mat-divider>
+		</ng-container>
+	</div>
 </div>
