@@ -10,7 +10,7 @@ export const baseUrl = environment.apiURL;
 // baseUrlDomain is used in game component & game-detail-edit-final-configuration to display link to game
 export const baseUrlDomain = environment.urlClient;
 // url to chatbot application
-export const chatbotURL = environment.chatbotURL;
+export const chatbotUrl = environment.chatbotUrl;
 
 @Injectable({
   providedIn: 'root'
@@ -221,7 +221,7 @@ export class GameService {
 
 
   checkChatbotStatus() {
-    return this.httpClient.head(`${chatbotURL}`)
+    return this.httpClient.head(`${chatbotUrl}`)
         .pipe(
             map(()=> true),
             catchError((error: HttpErrorResponse) => {

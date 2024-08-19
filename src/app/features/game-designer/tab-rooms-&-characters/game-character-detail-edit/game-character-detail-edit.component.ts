@@ -21,7 +21,7 @@ export class GameCharacterDetailEditComponent implements OnInit {
 
   disabled = true;
 
-  DEFAULT_CHATBOT: string = environment.chatbotURL+"/?character_id=-1"; // = environment.chatbotURL+"/?character_id="; // "https://creator.voiceflow.com/prototype/626abdde3e2ab5c39626f392";
+  DEFAULT_CHATBOT: string = environment.chatbotUrl+"/?character_id=-1"; // = environment.chatbotURL+"/?character_id="; // "https://creator.voiceflow.com/prototype/626abdde3e2ab5c39626f392";
 
   characterForm: FormGroup = new FormGroup({
     // name: new FormControl("", [Validators.required]),
@@ -61,7 +61,7 @@ export class GameCharacterDetailEditComponent implements OnInit {
   }
 
   setupForm() {
-    this.DEFAULT_CHATBOT = environment.chatbotURL+"/?character_id="+this.character?.id;
+    this.DEFAULT_CHATBOT = environment.chatbotUrl+"/?character_id="+this.character?.id;
     let chatbotIsDefault = true;
     let chatbotURl = this.DEFAULT_CHATBOT;
     if (this.character.chatbotUrl !== this.DEFAULT_CHATBOT) {
@@ -116,7 +116,7 @@ export class GameCharacterDetailEditComponent implements OnInit {
             // Update ChatbotUrl to include character id if default chatbot is on
             if (this.useDefaultChatbot?.value === true) {
               if (!character.id) throw new Error("Character ID is not defined");
-              character.chatbotUrl = environment.chatbotURL + "/?character_id=" + character.id;
+              character.chatbotUrl = environment.chatbotUrl + "/?character_id=" + character.id;
               this.gameService.updateCharacter(character.id, character)
                   .subscribe(updatedCharacter => {
                     this.character = updatedCharacter;

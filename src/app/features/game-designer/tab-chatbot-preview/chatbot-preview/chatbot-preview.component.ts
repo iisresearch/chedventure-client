@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Character, Game} from "../../../../core/models/game";
-import {chatbotURL, GameService} from "../../../../core/game.service";
+import {chatbotUrl, GameService} from "../../../../core/game.service";
 
 @Component({
     selector: 'app-chatbot-preview',
