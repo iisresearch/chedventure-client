@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {STEPPER_GLOBAL_OPTIONS} from "@angular/cdk/stepper";
+import {STEPPER_GLOBAL_OPTIONS, StepperSelectionEvent} from "@angular/cdk/stepper";
 import {Character, Game} from "../../../core/models/game";
 import {ActivatedRoute} from "@angular/router";
 import {GameService} from "../../../core/game.service";
@@ -19,6 +19,8 @@ import {MatStepper} from "@angular/material/stepper";
 })
 export class GameEditorComponent implements OnInit {
   @ViewChild('stepper') private stepper!: MatStepper;
+
+  reloadChatbot = false;
 
   game!: Game;
 
@@ -61,6 +63,12 @@ export class GameEditorComponent implements OnInit {
 
   onCharactersChange(characters: Character[]) {
     this.characters = characters;
+  }
+
+  onStepperSelectionChange(event: StepperSelectionEvent, INDEX_OF_CHATBOT_STEP: number) {
+    if (event.selectedIndex === INDEX_OF_CHATBOT_STEP) {
+      this.reloadChatbot = !this.reloadChatbot;
+    }
   }
 
 }

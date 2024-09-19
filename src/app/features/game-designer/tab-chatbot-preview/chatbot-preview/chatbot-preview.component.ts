@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import {Character, Game} from "../../../../core/models/game";
 import {chatbotUrl, GameService} from "../../../../core/game.service";
 
@@ -9,8 +9,11 @@ import {chatbotUrl, GameService} from "../../../../core/game.service";
 })
 export class ChatbotPreviewComponent implements OnInit {
     @Input() game!: Game;
+    @Input() reloadChatbot!: boolean;
 
     isChatbotRunning: boolean = false;
+
+    iframeSrc!: string;
     
     selectedCharacter!: Character;
     @Input() characters!: Character[];
@@ -18,8 +21,18 @@ export class ChatbotPreviewComponent implements OnInit {
     constructor(private gameService: GameService) {}
 
     ngOnInit() {
-        this.checkChatbotStatus();
         this.loadCharacters();
+        this.checkChatbotStatus();
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['reloadChatbot'] && !changes['reloadChatbot'].firstChange) {
+            this.reloadIframe();
+        }
+    }
+
+    reloadIframe() {
+        this.iframeSrc = this.selectedCharacter.chatbotUrl + '&timestamp=' + new Date().getTime();
     }
 
     private loadCharacters() {
@@ -36,6 +49,7 @@ export class ChatbotPreviewComponent implements OnInit {
     // Initialize chatbot iframe and widget
     private initializeChatbot() {
         this.selectedCharacter = this.characters[0];
+        this.reloadIframe();
     }
     // Check Chatbot server status
     private checkChatbotStatus() {

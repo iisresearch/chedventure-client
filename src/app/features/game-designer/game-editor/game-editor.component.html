@@ -15,7 +15,7 @@
 
 <div id="game-editor" fxLayout="row" fxLayoutAlign="center" fxFill="">
 
-	<mat-stepper #stepper [selectedIndex]="2">
+	<mat-stepper #stepper [selectedIndex]="0" (selectionChange)="onStepperSelectionChange($event, 2)">
 
 		<mat-step [stepControl]="gameForm" errorMessage="Game has to be saved">
 			<ng-template matStepLabel>Game Setup</ng-template>
@@ -48,7 +48,7 @@
 			<ng-template matStepLabel>Chat Bot Preview</ng-template>
 			<ng-template matStepContent>
 				<div class="tab-game-editor" *ngIf="finishedFetchingData">
-					<app-chatbot-preview [game]="game" [characters]="characters"></app-chatbot-preview>
+					<app-chatbot-preview [game]="game" [characters]="characters" [reloadChatbot]="reloadChatbot"></app-chatbot-preview>
 				</div>
 			</ng-template>
 		</mat-step>

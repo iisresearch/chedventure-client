@@ -128,13 +128,14 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
      * @param message
      */
     updatedMessage(message: Message) {
-        let i = this.messages.findIndex(msg => {
-            return msg.intent === message.intent;
-        })
-        console.log("i findIndex: ", i)
-        if (i === -1) {
+
+        if (message.intent === -1) {
             this.messages.push(message);
         } else {
+            let i = this.messages.findIndex(msg => {
+                return msg.intent === message.intent;
+            })
+            console.log("i findIndex: ", i)
             this.messages[i] = message;
         }
         this.populateFormArray();
