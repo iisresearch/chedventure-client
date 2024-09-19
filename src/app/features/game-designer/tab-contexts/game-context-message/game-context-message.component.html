@@ -1,7 +1,7 @@
 <mat-card class="chat-container">
 	@for (messageGroup of messagesFormArray.controls; track messageGroup; let i = $index; ) {
-		<form [formGroup]="updateForm">
-			@if (isEditing) {
+		@if (isEditing) {
+			<form [formGroup]="updateForm">
 				<ng-container formArrayName="messages">
 					<!--Edit message form-->
 					<div [formGroupName]="i" class="chat-input">
@@ -24,72 +24,51 @@
 						</div>
 					</div>
 				</ng-container>
-			} @else {
-				<!--Display messages-->
-				<ng-container formArrayName="messages">
-					<div [formGroupName]="i">
-						<div class="messages-and-dialog-flow">
-							<div style="display: flex; flex-direction: row;">
-								<mat-card-content class="chat-message user-message">
-									<mat-icon>person</mat-icon>
-									{{ messageGroup.get('userMessage')?.value }}
-								</mat-card-content>
-								<mat-card-content class="chat-message bot-message">
-									<mat-icon>smart_toy</mat-icon>
-									{{ messageGroup.get('botMessage')?.value }}
-								</mat-card-content>
-							</div>
-							<mat-divider [vertical]="true" style="margin-left: auto"></mat-divider>
-							<!--Dialog Flow-->
-							<mat-card-content class="dialog-flow-container">
-								<mat-form-field>
-									<mat-label>Continuation</mat-label>
-									<mat-select
-											formControlName="continuation"
-											(selectionChange)="onContinuationChange(i, messageGroup)"
-											matTooltip="Display next message or await response">
-										<mat-option value="next" matTooltipPosition="right"
-																matTooltip="Directly provide the next message below">
-											Next Message
-										</mat-option>
-										<mat-option value="await" matTooltipPosition="right"
-																matTooltip="Awaits until user provides a response">
-											Await User Response
-										</mat-option>
-										<!--								<mat-option value="context" matTooltipPosition="right" matTooltip="Switch to another Context">-->
-										<!--									Follow with Context-->
-										<!--								</mat-option>-->
-									</mat-select>
-								</mat-form-field>
-								@if (messageGroup.get('continuation')?.hasError('noNextMessage')) {
-										<mat-card>
-											<mat-error style="white-space: normal; min-height: 64px; margin-top: 8px;  ">
-												Add new 'Next message' or change the contextualisation.
-											</mat-error>
-										</mat-card>
+			</form>
+		} @else {
+			<!--Display messages-->
+			<div class="messages-and-dialog-flow">
+				<div style="display: flex; flex-direction: row;">
+					<mat-card-content class="chat-message user-message">
+						<mat-icon>person</mat-icon>
+						{{ messageGroup.get('userMessage')?.value }}
+					</mat-card-content>
+					<mat-card-content class="chat-message bot-message">
+						<mat-icon>smart_toy</mat-icon>
+						{{ messageGroup.get('botMessage')?.value }}
+					</mat-card-content>
+				</div>
+				<mat-divider [vertical]="true" style="margin-left: auto"></mat-divider>
+				<!--Dialog Flow-->
+				<mat-card-content class="dialog-flow-container">
+						<mat-form-field>
+							<mat-label>Continuation</mat-label>
+							<mat-select [value]="getContinuationFormValue(messages[i])" (selectionChange)="onContinuationChange(messages[i], $event)" matTooltip="Display next message or await response">
+								<mat-option value="next" matTooltipPosition="right" matTooltip="Directly provide the next message below">
+									Next Message
+								</mat-option>
+								<mat-option value="await" matTooltipPosition="right" matTooltip="Awaits until user provides a response">
+									Await User Response
+								</mat-option>
+<!--								<mat-option value="context" matTooltipPosition="right" matTooltip="Switch to another Context">-->
+<!--									Follow with Context-->
+<!--								</mat-option>-->
+							</mat-select>
+						</mat-form-field>
+
+						<mat-form-field>
+							<mat-label>Contextualisation</mat-label>
+							<mat-select [(value)]="messages[i].contextualisation" matTooltip="Switch to another Context">
+								@for (context of selectedCharacter.contexts; track context; ) {
+									<mat-option [value]="context.name">{{ context?.name }}</mat-option>
 								}
+							</mat-select>
+						</mat-form-field>
 
-
-								<mat-form-field>
-									<mat-label>Contextualisation</mat-label>
-									<mat-select formControlName="contextualisation"
-															(selectionChange)="onContextualisationChange(i, messageGroup)"
-															matTooltip="Switch to another Context">
-										@for (context of selectedCharacter.contexts; track context; ) {
-											<mat-option [value]="context.name"
-											>{{ context?.name }}
-											</mat-option>
-										}
-									</mat-select>
-								</mat-form-field>
-
-							</mat-card-content>
-						</div>
-					</div>
-				</ng-container>
-				<mat-divider></mat-divider>
-			}
-		</form>
+				</mat-card-content>
+			</div>
+			<mat-divider></mat-divider>
+		}
 	} @empty {
 		<!--Empty For loop-->
 		<mat-card-content>
@@ -116,8 +95,7 @@
 				</mat-label>
 				<input matInput id="botMessage" type="text" formControlName="botMessage">
 			</mat-form-field>
-			<button mat-icon-button type="submit" matTooltip="Remember to 'Save' your new messages" color="primary"
-							class="blue-button">
+			<button mat-icon-button type="submit" matTooltip="Remember to 'Save' your new messages" color="primary" class="blue-button">
 				<mat-icon>add</mat-icon>
 			</button>
 		</div>

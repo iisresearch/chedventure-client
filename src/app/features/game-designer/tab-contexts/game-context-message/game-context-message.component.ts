@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, signal} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Character, Context, Message} from "../../../../core/models/game";
-import {AbstractControl, Form, FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {Form, FormArray, FormControl, FormGroup} from "@angular/forms";
 import {GameService} from "../../../../core/game.service";
 import {MatSelectChange} from "@angular/material/select";
 
@@ -21,7 +21,7 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
     });
 
     updateForm: FormGroup = new FormGroup({
-        messages: new FormArray([]),
+        messages: new FormArray([])
     });
 
     // dialogFlowForm: FormGroup = new FormGroup({});
@@ -62,11 +62,11 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
     }
 
     get contextualisation() {
-        return this.updateForm.get('contextualisation');
+        return this.updateForm.get('contextualisation') as FormControl;
     }
 
     get continuation() {
-        return this.updateForm.get('continuation');
+        return this.updateForm.get('continuation') as FormControl;
     }
 
     addMessage() {
@@ -157,7 +157,11 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
         messagesArray.clear();
         this.messages.forEach(message => {
             const continuation = this.getContinuationFormValue(message);
-            let contextualisation = message.contextualisation || this.selectedContext.name;
+            let contextualisation = undefined;
+            if (message.contextualisation && message.contextualisation.length > 0)
+                contextualisation = this.selectedContext.name;
+            else
+                contextualisation = this.selectedContext.name;
             console.log("Contextualisation: ", this.selectedContext)
             messagesArray.push(new FormGroup({
                 botMessage: new FormControl(message.response),
@@ -178,7 +182,11 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
         }
         // Gets next message from all contexts
         // Determine the next message intent based on the current context
-        const nextMessage = this.getNextMessage(message);
+        const nextMessage = (message.contextualisation === this.selectedContext.name)
+            ? (this.messages[i + 1] || null) // next message in the same context
+            : this.selectedCharacter?.contexts
+            .find(ctx => ctx.name === message.contextualisation)
+            ?.messages[0] || null; // first message of another context
         console.log("Next message: ", nextMessage)
 
         switch (message.continuation) {
@@ -192,45 +200,29 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
         }
     }
 
-    onContinuationChange(index: number, messageGroup: AbstractControl) {
-        const formGroup = messageGroup as FormGroup;
-        const currentMessage = this.messages[index];
-        const selectedContinuation = formGroup.get('continuation')?.value;
+    onContinuationChange(message: Message, $event: MatSelectChange) {
+        console.log("onContinuationChange: ", $event.value);
+        const context = this.selectedCharacter?.contexts.find(ctx => ctx.name === message.contextualisation);
 
-        let nextMessage = this.getNextMessage(currentMessage);
+        const nextMessage = (context && context?.name !== this.selectedContext?.name)
+            ? context?.messages[0] // first message of another context
+            : this.messages[this.messages.findIndex(msg => msg.intent === message.intent) + 1]; // next message in the same context
 
-        if (selectedContinuation === 'next') {
-            if (!nextMessage) {
-                console.warn("No more messages in the current context.");
-                formGroup.get('continuation')?.setErrors({ 'noNextMessage': true });
-                return;
-            }
-            currentMessage.continuation = nextMessage.intent.toString();
-        } else {
-            currentMessage.continuation = ""; // Await user response
+        switch ($event.value) {
+            case 'await':
+                message.continuation = "";
+                break;
+            case 'next':
+                console.log("Next message change: ", nextMessage);
+                if (nextMessage)
+                    message.continuation = nextMessage.intent.toString();
+                else
+                    message.continuation = '';
+                break;
+            default:
+                this.continuation?.setValue($event.value);
         }
-
-        this.updatedMessage(currentMessage);
+        this.updatedMessage(message);
     }
 
-    onContextualisationChange(index: number, messageGroup: AbstractControl) {
-        const formGroup = messageGroup as FormGroup;  // Explicitly cast to FormGroup
-        const newContextName = formGroup.get('contextualisation')?.value;
-        const currentMessage = this.messages[index];
-        // Update the contextualization of the message
-        currentMessage.contextualisation = newContextName;
-
-        this.updatedMessage(currentMessage);
-    }
-
-    getNextMessage(currentMessage: Message): Message | null {
-        let currentIndex = this.messages.findIndex(msg => msg.intent === currentMessage.intent);
-        // Same context
-        if (currentMessage.contextualisation === this.selectedContext.name) {
-            return this.messages[currentIndex + 1] || null;
-        }
-        // Different context
-        const newContext = this.selectedCharacter?.contexts.find(ctx => ctx.name === currentMessage.contextualisation);
-        return newContext?.messages[0] || null;
-    }
 }
