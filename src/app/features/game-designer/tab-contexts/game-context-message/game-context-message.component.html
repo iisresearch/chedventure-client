@@ -59,7 +59,8 @@
 
 						<mat-form-field>
 							<mat-label>Switch to context</mat-label>
-							<mat-select [(value)]="messages[i].contextualisation" matTooltip="Switch to another Context">
+							<mat-select [(value)]="messages[i].contextualisation" (selectionChange)="onContextualisationChange(messages[i], $event)"
+													matTooltip="Switch to another Context">
 								@for (context of selectedCharacter.contexts; track context; ) {
 									<mat-option [value]="context.name">{{ context?.name }}</mat-option>
 								}

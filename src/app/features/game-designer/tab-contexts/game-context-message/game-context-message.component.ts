@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Character, Context, Message} from "../../../../core/models/game";
-import {Form, FormArray, FormControl, FormGroup} from "@angular/forms";
+import {FormArray, FormControl, FormGroup} from "@angular/forms";
 import {GameService} from "../../../../core/game.service";
 import {MatSelectChange} from "@angular/material/select";
 
@@ -158,17 +158,16 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
         messagesArray.clear();
         this.messages.forEach(message => {
             const continuation = this.getContinuationFormValue(message);
-            let contextualisation = undefined;
-            if (message.contextualisation && message.contextualisation.length > 0)
-                contextualisation = this.selectedContext.name;
-            else
-                contextualisation = this.selectedContext.name;
+            if (!message.contextualisation || message.contextualisation === '') {
+                message.contextualisation = this.selectedContext.name;
+            }
+
             console.log("Contextualisation: ", this.selectedContext)
             messagesArray.push(new FormGroup({
                 botMessage: new FormControl(message.response),
                 userMessage: new FormControl(message.utterance),
                 continuation: new FormControl(continuation),
-                contextualisation: new FormControl(contextualisation),
+                contextualisation: new FormControl(message.contextualisation),
             }));
         });
         console.log("messagesArray: ", messagesArray)
@@ -176,10 +175,10 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
 
     getContinuationFormValue(message: Message) {
         // Check if message and intent is present
-        if (message.intent === 1 || this.messages.length < 1) {
-            console.error("Invalid index or message not found:", message);
-            return 'await'; // or some other default value
-        }
+        // if (message.intent === -1 || this.messages.length < 1) {
+        //     console.error("Invalid index or message not found:", message);
+        //     return 'await'; // or some other default value
+        // }
         let i = this.messages.findIndex(msg => msg.intent === message.intent)
         // Gets next message from all contexts
         // Determine the next message intent based on the current context
@@ -208,22 +207,30 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
         const nextMessage = (context && context?.name !== this.selectedContext?.name)
             ? context?.messages[0] // first message of another context
             : this.messages[this.messages.findIndex(msg => msg.intent === message.intent) + 1]; // next message in the same context
+        if (nextMessage && nextMessage.intent !== -1) {
 
-        switch ($event.value) {
-            case 'await':
-                message.continuation = "";
-                break;
-            case 'next':
-                console.log("Next message change: ", nextMessage);
-                if (nextMessage)
-                    message.continuation = nextMessage.intent.toString();
-                else
-                    message.continuation = '';
-                break;
-            default:
-                this.continuation?.setValue($event.value);
+
+            switch ($event.value) {
+                case 'await':
+                    message.continuation = "";
+                    break;
+                case 'next':
+                    console.log("Next message change: ", nextMessage);
+                    if (nextMessage)
+                        message.continuation = nextMessage.intent.toString();
+                    else
+                        message.continuation = '';
+                    break;
+                default:
+                    this.continuation?.setValue($event.value);
+            }
+            this.updatedMessage(message);
+        } else {
+            return;
         }
-        this.updatedMessage(message);
     }
 
+    onContextualisationChange(message: Message, $event: MatSelectChange) {
+        message.contextualisation = $event.value;
+    }
 }
