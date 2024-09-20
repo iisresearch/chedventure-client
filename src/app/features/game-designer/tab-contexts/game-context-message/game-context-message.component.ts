@@ -161,8 +161,7 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
             if (!message.contextualisation || message.contextualisation === '') {
                 message.contextualisation = this.selectedContext.name;
             }
-
-            console.log("Contextualisation: ", this.selectedContext)
+            console.log("Current Message: ", message)
             messagesArray.push(new FormGroup({
                 botMessage: new FormControl(message.response),
                 userMessage: new FormControl(message.utterance),
@@ -174,29 +173,16 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
     }
 
     getContinuationFormValue(message: Message) {
-        // Check if message and intent is present
-        // if (message.intent === -1 || this.messages.length < 1) {
-        //     console.error("Invalid index or message not found:", message);
-        //     return 'await'; // or some other default value
-        // }
-        let i = this.messages.findIndex(msg => msg.intent === message.intent)
-        // Gets next message from all contexts
         // Determine the next message intent based on the current context
-        const nextMessage = (message.contextualisation === this.selectedContext.name)
-            ? (this.messages[i + 1] || null) // next message in the same context
-            : this.selectedCharacter?.contexts
-            .find(ctx => ctx.name === message.contextualisation)
-            ?.messages[0] || null; // first message of another context
+        const nextMessage = this.getNextMessage(message);
         console.log("Next message: ", nextMessage)
 
         switch (message.continuation) {
             case '':
                 return 'await';
-            case nextMessage?.intent.toString():
-                return 'next';
             default:
                 console.log("Continuation not set: ", message);
-                return 'await';
+                return 'next';
         }
     }
 
@@ -204,12 +190,10 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
         console.log("onContinuationChange: ", $event.value);
         const context = this.selectedCharacter?.contexts.find(ctx => ctx.name === message.contextualisation);
 
-        const nextMessage = (context && context?.name !== this.selectedContext?.name)
-            ? context?.messages[0] // first message of another context
-            : this.messages[this.messages.findIndex(msg => msg.intent === message.intent) + 1]; // next message in the same context
-        if (nextMessage && nextMessage.intent !== -1) {
+        const nextMessage = this.getNextMessage(message);
 
-
+        // if (!nextMessage || nextMessage.intent === -1)
+        //     return;
             switch ($event.value) {
                 case 'await':
                     message.continuation = "";
@@ -224,13 +208,26 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
                 default:
                     this.continuation?.setValue($event.value);
             }
+            if (message.intent === -1)
+                return;
             this.updatedMessage(message);
-        } else {
-            return;
-        }
+    }
+
+    getNextMessage(message: Message) {
+        let i = this.messages.findIndex(msg => msg.intent === message.intent)
+        // Gets next message from all contexts
+        // Determine the next message intent based on the current context
+        const nextMessage = (message.contextualisation === this.selectedContext.name)
+            ? (this.messages[i + 1] || null) // next message in the same context
+            : this.selectedCharacter?.contexts
+            .find(ctx => ctx.name === message.contextualisation) // find the context from character
+            ?.messages[0] || null; // first message of another context
+        console.log("Next message: ", nextMessage)
+        return nextMessage;
     }
 
     onContextualisationChange(message: Message, $event: MatSelectChange) {
         message.contextualisation = $event.value;
+        console.log("Contextualisation change: ", message);
     }
 }
