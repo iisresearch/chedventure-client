@@ -42,8 +42,9 @@
 				<!--Dialog Flow-->
 				<mat-card-content class="dialog-flow-container">
 						<mat-form-field>
-							<mat-label>Continuation</mat-label>
-							<mat-select [value]="getContinuationFormValue(messages[i])" (selectionChange)="onContinuationChange(messages[i], $event)" matTooltip="Display next message or await response">
+							<mat-label>Choose next action</mat-label>
+							<mat-select [value]="getContinuationFormValue(messages[i])" (selectionChange)="onContinuationChange(messages[i], $event)"
+													matTooltip="Display next message or await response">
 								<mat-option value="next" matTooltipPosition="right" matTooltip="Directly provide the next message below">
 									Next Message
 								</mat-option>
@@ -57,7 +58,7 @@
 						</mat-form-field>
 
 						<mat-form-field>
-							<mat-label>Contextualisation</mat-label>
+							<mat-label>Switch to context</mat-label>
 							<mat-select [(value)]="messages[i].contextualisation" matTooltip="Switch to another Context">
 								@for (context of selectedCharacter.contexts; track context; ) {
 									<mat-option [value]="context.name">{{ context?.name }}</mat-option>

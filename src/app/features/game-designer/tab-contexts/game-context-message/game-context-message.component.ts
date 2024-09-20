@@ -175,12 +175,12 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
     }
 
     getContinuationFormValue(message: Message) {
-        let i = this.messages.findIndex(msg => msg.intent === message.intent)
         // Check if message and intent is present
-        if (i === -1 || this.messages.length < 1) {
+        if (message.intent === 1 || this.messages.length < 1) {
             console.error("Invalid index or message not found:", message);
             return 'await'; // or some other default value
         }
+        let i = this.messages.findIndex(msg => msg.intent === message.intent)
         // Gets next message from all contexts
         // Determine the next message intent based on the current context
         const nextMessage = (message.contextualisation === this.selectedContext.name)

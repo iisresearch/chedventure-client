@@ -65,8 +65,8 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
                 intent: new FormControl(message.intent),
                 utterance: new FormControl(message.utterance),
                 response: new FormControl(message.response),
-                //continuation: new FormControl(message.continuation),
-                //contextualisation: new FormControl(message.contextualisation),
+                continuation: new FormControl(message.continuation),
+                contextualisation: new FormControl(message.contextualisation),
             }));
         });
 
@@ -83,7 +83,7 @@ export class GameContextDetailEditComponent implements OnInit, OnChanges {
                 //character: this.selectedCharacter,
                 messages: this.selectedContext.messages,
             }
-
+            console.log("contextToSend: ", contextToSend);
             // If a new Context is being created, send POST Request
             if (this.createNewContext) {
                 console.log("Create context for Character: ", contextToSend);
