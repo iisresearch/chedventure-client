@@ -9,9 +9,6 @@
 .messages-and-dialog-flow {
     display: flex;
     flex-direction: row;
-    /*justify-content: space-between;*/
-    /*width: 100%;*/
-    /*flex: 1;*/
 }
 
 
@@ -22,7 +19,6 @@
     margin: 0;
     /*align-self: flex-end;*/
     padding: 0;
-
 }
 
 .chat-message {
@@ -50,21 +46,28 @@
 .chat-input {
     display: flex;
     /*justify-content: space-between;*/
-    margin: 20px 5px 0 5px;
+    margin: 2rem 0.5rem 1rem 0.5rem;
     flex-direction: row;
+    /*flex-wrap: wrap;*/
+    flex-grow: 1;
+}
+@media screen and (max-width: 900px) {
+    .chat-input {
+        flex-wrap: wrap;
+    }
 }
 
 .chat-input mat-form-field {
-    flex-grow: 1;
+    flex: 1 1 auto;
+    min-width: 10px;
 }
 
 .chat-input button {
     /*padding: 10px 20px;*/
     align-content: center;
-    margin-left: 15px;
+    margin-left: 1rem;
     border: none;
     border-radius: 10px;
-
 }
 
 .blue-button {

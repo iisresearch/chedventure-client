@@ -7,12 +7,9 @@
 	</ng-template>
 
 	<form [formGroup]="contextForm" fxLayout="column" (ngSubmit)="onSubmit()">
-		<mat-form-field  style="display: block; width: 100%;">
+		<mat-form-field hintLabel="A context refers to a part of a conversation between a stakeholder and a student.">
 			<mat-label>Name</mat-label>
 			<input matInput id="name" type="text" formControlName="name" placeholder="Ex. Start; Interview; Option;">
-			<mat-hint align="start">
-				A context refers to a part of a conversation between a stakeholder and a student.
-			</mat-hint>
 		</mat-form-field>
 
 			<!--(messageChange)="updateMessage($event)"-->

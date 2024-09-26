@@ -4,13 +4,13 @@
 			<form [formGroup]="updateForm">
 				<ng-container formArrayName="messages">
 					<!--Edit message form-->
-					<div [formGroupName]="i" class="chat-input">
+					<div [formGroupName]="i" class="chat-input" style="flex-wrap: nowrap;">
 						<mat-form-field appearance="fill" style=" align-content: flex-end; align-self: flex-end; ">
 							<mat-label>User says</mat-label>
 							<input matInput formControlName="userMessage">
 						</mat-form-field>
-						<mat-divider [inset]="true"></mat-divider>
-						<mat-form-field appearance="fill" style=" align-content: flex-end; align-self: flex-end; ">
+						<div style="margin-right: 5%;"></div>
+						<mat-form-field appearance="fill" style="align-content: flex-end; align-self: flex-end;">
 							<mat-label>Bot Says</mat-label>
 							<input matInput formControlName="botMessage">
 						</mat-form-field>
@@ -88,19 +88,20 @@
 		</mat-card-content>
 	}
 
-	<form style="display: inline;" [formGroup]="addMessageForm" (ngSubmit)="addMessage()">
+	<form style="display: flex;" class="chat-input" [formGroup]="addMessageForm" (ngSubmit)="addMessage()">
 		<!-- Add more chat messages here -->
-		<div class="chat-input">
-			<mat-form-field appearance="fill" style=" align-content: flex-end; align-self: flex-end; ">
+<!--		<div class="">-->
+			<mat-form-field appearance="fill" >
 				<mat-label>
 					<mat-icon>person</mat-icon>
 					User says
 				</mat-label>
 				<input matInput id="userMessage" type="text" formControlName="userMessage">
 			</mat-form-field>
-			<mat-divider [inset]="true"></mat-divider>
 
-			<mat-form-field appearance="fill" style="align-self: flex-start; ">
+		<div style="margin-right: 5%;"></div>
+
+			<mat-form-field appearance="fill">
 				<mat-label>
 					<mat-icon>smart_toy</mat-icon>
 					Bot Says
@@ -111,9 +112,9 @@
 							class="blue-button">
 				<mat-icon>add</mat-icon>
 			</button>
-		</div>
+<!--		</div>-->
 	</form>
-
+<mat-divider></mat-divider>
 	<button mat-button type="button" color="primary" (click)="toggleEdit()"
 					[style]="isEditing ? 'background-color: lightblue;': 'background-color: white;'">
 			<mat-icon>edit</mat-icon>
