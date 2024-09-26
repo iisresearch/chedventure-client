@@ -41,32 +41,42 @@
 				<mat-divider [vertical]="true" style="margin-left: auto"></mat-divider>
 				<!--Dialog Flow-->
 				<mat-card-content class="dialog-flow-container">
-						<mat-form-field>
-							<mat-label>Choose next action</mat-label>
-							<mat-select [value]="getContinuationFormValue(messages[i])" (selectionChange)="onContinuationChange(messages[i], $event)"
-													matTooltip="Display next message or await response">
-								<mat-option value="next" matTooltipPosition="right" matTooltip="Directly provide the next message below">
-									Next Message
-								</mat-option>
-								<mat-option value="await" matTooltipPosition="right" matTooltip="Awaits until user provides a response">
-									Await User Response
-								</mat-option>
-<!--								<mat-option value="context" matTooltipPosition="right" matTooltip="Switch to another Context">-->
-<!--									Follow with Context-->
-<!--								</mat-option>-->
-							</mat-select>
-						</mat-form-field>
+					<mat-form-field>
+						<mat-label matTooltip="Display next message or await response">
+							Choose next action
+							<mat-icon class="info-icon">info</mat-icon>
+						</mat-label>
+						<mat-select required [value]="getContinuationFormValue(messages[i])"
+												(selectionChange)="onContinuationChange(messages[i], $event)">
+							<mat-option value="next" matTooltipPosition="right" matTooltip="Directly provide the next message below">
+								Next Message
+							</mat-option>
+							<mat-option value="await" matTooltipPosition="right" matTooltip="Awaits until user provides a response">
+								Await User Response
+							</mat-option>
+							<!--								<mat-option value="context" matTooltipPosition="right" matTooltip="Switch to another Context">-->
+							<!--									Follow with Context-->
+							<!--								</mat-option>-->
+						</mat-select>
+					</mat-form-field>
 
-						<mat-form-field>
-							<mat-label>Switch to context</mat-label>
-							<mat-select [value]="messages[i].contextualisation" (selectionChange)="onContextualisationChange(messages[i], $event)"
-													matTooltip="Switch to another Context">
-								@for (context of selectedCharacter.contexts; track context; ) {
-									<mat-option [value]="context.name">{{ context?.name }}</mat-option>
-								}
-							</mat-select>
-						</mat-form-field>
-
+					<mat-form-field>
+						<mat-label matTooltip="Switch to another Context">
+							Switch to context
+							<mat-icon class="info-icon">info</mat-icon>
+						</mat-label>
+						<mat-select required [value]="messages[i].contextualisation"
+												(selectionChange)="onContextualisationChange(messages[i], $event)">
+							@if (!messages[i].contextualisation && !this.selectedContext.name) {
+								<mat-option value="Current Context" [value]="''">
+									Current Context
+								</mat-option>
+							}
+							@for (context of selectedCharacter.contexts; track context; ) {
+								<mat-option [value]="context.name">{{ context?.name }}</mat-option>
+							}
+						</mat-select>
+					</mat-form-field>
 				</mat-card-content>
 			</div>
 			<mat-divider></mat-divider>
@@ -97,14 +107,16 @@
 				</mat-label>
 				<input matInput id="botMessage" type="text" formControlName="botMessage">
 			</mat-form-field>
-			<button mat-icon-button type="submit" matTooltip="Remember to 'Save' your new messages" color="primary" class="blue-button">
+			<button mat-icon-button type="submit" matTooltip="Remember to 'Save' your new messages" color="primary"
+							class="blue-button">
 				<mat-icon>add</mat-icon>
 			</button>
 		</div>
 	</form>
 
-	<button mat-icon-button type="button" color="primary" (click)="toggleEdit()"
+	<button mat-button type="button" color="primary" (click)="toggleEdit()"
 					[style]="isEditing ? 'background-color: lightblue;': 'background-color: white;'">
-		<mat-icon>edit</mat-icon>
+			<mat-icon>edit</mat-icon>
+			<span style="margin-left: 8px;">Edit Messages</span>
 	</button>
 </mat-card>

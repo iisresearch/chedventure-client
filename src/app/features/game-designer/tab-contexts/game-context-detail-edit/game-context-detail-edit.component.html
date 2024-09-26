@@ -7,13 +7,11 @@
 	</ng-template>
 
 	<form [formGroup]="contextForm" fxLayout="column" (ngSubmit)="onSubmit()">
-
-		<mat-form-field>
+		<mat-form-field  style="display: block; width: 100%;">
 			<mat-label>Name</mat-label>
 			<input matInput id="name" type="text" formControlName="name" placeholder="Ex. Start; Interview; Option;">
-			<mat-hint align="start">A dialogue is a conversation between a stakeholder and a student. A dialogue refers
-				to the specific situation, environment, or
-				scenario in which the conversation takes place.
+			<mat-hint align="start">
+				A context refers to a part of a conversation between a stakeholder and a student.
 			</mat-hint>
 		</mat-form-field>
 
