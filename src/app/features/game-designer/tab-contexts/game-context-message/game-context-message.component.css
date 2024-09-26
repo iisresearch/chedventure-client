@@ -29,6 +29,14 @@
     border-radius: 10px;
 }
 
+.fall-back-button {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    /*margin: 0;*/
+    align-items: start; /* Center aligns the button vertically */
+}
+
 .bot-message {
     /*align-content: baseline;*/
     align-self: end;

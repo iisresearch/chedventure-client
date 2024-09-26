@@ -38,8 +38,19 @@
 						{{ messageGroup.get('botMessage')?.value }}
 					</mat-card-content>
 				</div>
-				<mat-divider [vertical]="true" style="margin-left: auto"></mat-divider>
-				<!--Dialog Flow-->
+
+
+				<!--Fallback button-->
+					<mat-card-actions class="fall-back-button">
+						<button mat-icon-button (click)="setFallback(i)"
+										matTooltip="Set fallback: This message will be used if no matching message was found in the context">
+							<mat-icon>replay</mat-icon>
+						</button>
+					</mat-card-actions>
+
+
+			<mat-divider [vertical]="true" style="margin-left: 0"></mat-divider>
+				<!--Dialog Flow, Continuation, Contextualisation-->
 				<mat-card-content class="dialog-flow-container">
 					<mat-form-field>
 						<mat-label matTooltip="Display next message or await response">
@@ -90,34 +101,34 @@
 
 	<form style="display: flex;" class="chat-input" [formGroup]="addMessageForm" (ngSubmit)="addMessage()">
 		<!-- Add more chat messages here -->
-<!--		<div class="">-->
-			<mat-form-field appearance="fill" >
-				<mat-label>
-					<mat-icon>person</mat-icon>
-					User says
-				</mat-label>
-				<input matInput id="userMessage" type="text" formControlName="userMessage">
-			</mat-form-field>
+		<!--		<div class="">-->
+		<mat-form-field appearance="fill">
+			<mat-label>
+				<mat-icon>person</mat-icon>
+				User says
+			</mat-label>
+			<input matInput id="userMessage" type="text" formControlName="userMessage">
+		</mat-form-field>
 
 		<div style="margin-right: 5%;"></div>
 
-			<mat-form-field appearance="fill">
-				<mat-label>
-					<mat-icon>smart_toy</mat-icon>
-					Bot Says
-				</mat-label>
-				<input matInput id="botMessage" type="text" formControlName="botMessage">
-			</mat-form-field>
-			<button mat-icon-button type="submit" matTooltip="Remember to 'Save' your new messages" color="primary"
-							class="blue-button">
-				<mat-icon>add</mat-icon>
-			</button>
-<!--		</div>-->
+		<mat-form-field appearance="fill">
+			<mat-label>
+				<mat-icon>smart_toy</mat-icon>
+				Bot Says
+			</mat-label>
+			<input matInput id="botMessage" type="text" formControlName="botMessage">
+		</mat-form-field>
+		<button mat-icon-button type="submit" matTooltip="Remember to 'Save' your new messages" color="primary"
+						class="blue-button">
+			<mat-icon>add</mat-icon>
+		</button>
+		<!--		</div>-->
 	</form>
-<mat-divider></mat-divider>
+	<mat-divider></mat-divider>
 	<button mat-button type="button" color="primary" (click)="toggleEdit()"
 					[style]="isEditing ? 'background-color: lightblue;': 'background-color: white;'">
-			<mat-icon>edit</mat-icon>
-			<span style="margin-left: 8px;">Edit Messages</span>
+		<mat-icon>edit</mat-icon>
+		<span style="margin-left: 8px;">Edit Messages</span>
 	</button>
 </mat-card>

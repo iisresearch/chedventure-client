@@ -230,4 +230,8 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
         message.contextualisation = $event.value;
         console.log("Contextualisation change: ", message);
     }
+
+    setFallback(i: number) {
+        
+    }
 }
