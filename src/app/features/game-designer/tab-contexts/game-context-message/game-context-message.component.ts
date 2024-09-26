@@ -231,7 +231,30 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
         console.log("Contextualisation change: ", message);
     }
 
-    setFallback(i: number) {
-        
+    // Set the fallback message for all messages in the context and update the server
+    setFallback(fallbackMessage: Message) {
+        console.log("Setting fallback to: ", fallbackMessage);
+        this.messages.forEach(msg => {
+            msg.fallback = fallbackMessage.intent.toString();
+        });
+        // Send updated messages to the server
+        let contextToSend: Context = {
+            id: this.selectedContext.id,
+            name: this.selectedContext.name,
+            messages: this.messages,
+        }
+        console.log("contextToSend: ", contextToSend);
+        this.gameService
+            .updateContext(this.selectedContext.id, contextToSend)
+            .subscribe(context => {
+                //this.selectedContext = context;
+                console.log("Context Updated ", context);
+                context.messages.forEach(
+                    message => {
+                        this.updatedMessage(message);
+                    }
+                );
+                console.log("Updated messages: ", this.messages);
+            })
     }
 }

@@ -42,7 +42,7 @@
 
 				<!--Fallback button-->
 					<mat-card-actions class="fall-back-button">
-						<button mat-icon-button (click)="setFallback(i)"
+						<button mat-icon-button type="button" (click)="setFallback(messages[i])"
 										matTooltip="Set fallback: This message will be used if no matching message was found in the context">
 							<mat-icon>replay</mat-icon>
 						</button>

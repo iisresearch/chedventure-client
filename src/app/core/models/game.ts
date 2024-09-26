@@ -115,4 +115,5 @@ export interface Message {
     contextualisation?: string;
     utterance: string;
     response: string;
+    fallback?: string;
 }
