@@ -175,13 +175,12 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
     getContinuationFormValue(message: Message) {
         // Determine the next message intent based on the current context
         const nextMessage = this.getNextMessage(message);
-        console.log("Next message: ", nextMessage)
 
         switch (message.continuation) {
             case '':
                 return 'await';
             default:
-                console.log("Continuation not set: ", message);
+                // console.log("Continuation not set: ", message);
                 return 'next';
         }
     }
@@ -222,7 +221,7 @@ export class GameContextMessageComponent implements OnInit, OnChanges {
             : this.selectedCharacter?.contexts
             .find(ctx => ctx.name === message.contextualisation) // find the context from character
             ?.messages[0] || null; // first message of another context
-        console.log("Next message: ", nextMessage)
+        // console.log("Next message: ", nextMessage)
         return nextMessage;
     }
 
