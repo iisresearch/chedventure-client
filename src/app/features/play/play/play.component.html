@@ -6,7 +6,24 @@
       <span>{{this.game.name}}</span>
     </ng-container>
   </div>
-  <button mat-button (click)="openGameDocumentationDialog()"><mat-icon>contact_support</mat-icon></button>
+	<div style="align-items: end;">
+  <button mat-button (click)="openGameDocumentationDialog()" matTooltip="Game Documentation"><mat-icon>contact_support</mat-icon></button>
+		<button mat-button [matMenuTriggerFor]="contactMenu" matTooltip="Contact Developer"><mat-icon>sports_esports</mat-icon></button>
+		<!-- Define the Submenu -->
+		<mat-menu #contactMenu="matMenu">
+			<button mat-menu-item (click)="openGitHubLink()" style="height: 30px; min-height: 16px;">
+				<mat-icon style="font-size: 18px;">code</mat-icon>
+				<span style="font-size: 14px;">Contact Dev</span>
+			</button>
+			<button mat-menu-item (click)="openContributeGithubLink()" style="height: 30px; min-height: 16px;">
+				<mat-icon style="font-size: 18px;">build</mat-icon>
+				<span style="font-size: 14px;">Contribute</span>
+			</button>
+			<button mat-menu-item (click)="openRickRoll()" style="height: 30px; min-height: 16px;">
+				<mat-icon style="font-size: 18px;"></mat-icon>
+			</button>
+		</mat-menu>
+	</div>
 </mat-toolbar>
 
 
@@ -17,8 +34,7 @@
 </div>
 
 <!-- Chatbot integration -->
-<div id="chat" *ngIf="showCharacterChat &&
-currentCharacter">
+<div id="chat" *ngIf="showCharacterChat && currentCharacter">
   <iframe width="750" height="750" [src]="currentCharacter.chatbotUrl | safe"></iframe>
 </div>
 
@@ -42,6 +58,37 @@ currentCharacter">
     </div>
   <mat-divider></mat-divider>
   -->
+	<!-- Current room name & description -->
+	<ng-template #roomDescription>
+		<ng-container *ngIf="currentRoom">
+			<h3>{{currentRoom.name}}</h3>
+			<ng-container *ngIf="currentRoom.description && currentRoom.description !== ''; else noDescription">
+				<p style="white-space: pre-line">
+					{{currentRoom.description}}
+				</p>
+			</ng-container>
+			<ng-template #noDescription>
+				<p>
+					You are currently in the <i>{{currentRoom.name}}.</i>
+				</p>
+			</ng-template>
+		</ng-container>
+		<mat-divider></mat-divider>
+	</ng-template>
+
+	<!-- Current stakeholder name & description (if stakeholder is being shown) -->
+	<ng-container *ngIf="showCharacterChat && currentCharacter; else roomDescription">
+		<h3>{{currentCharacter.name}}<span *ngIf="currentCharacter.title"> - {{currentCharacter.title}}</span></h3>
+		<p *ngIf="currentCharacter.description; else noStakeholderDescription">
+			{{currentCharacter.description}}
+		</p>
+		<ng-template #noStakeholderDescription>
+			<p>
+				You are currently talking with <i>{{currentCharacter.name}}</i>
+			</p>
+		</ng-template>
+		<mat-divider></mat-divider>
+	</ng-container>
 
     <!-- Instructions -->
   <div *ngIf="currentRoom && currentRoom.instructions && currentRoom.instructions.length !== 0 || showCharacterChat">
@@ -59,47 +106,16 @@ currentCharacter">
     <mat-divider></mat-divider>
   </div>
 
-  <!-- Current stakeholder name & description (if stakeholder is being shown) -->
-  <ng-container *ngIf="showCharacterChat && currentCharacter; else roomDescription">
-    <h4>{{currentCharacter.name}}<span *ngIf="currentCharacter.title"> - {{currentCharacter.title}}</span></h4>
-    <p *ngIf="currentCharacter.description; else noStakeholderDescription">
-      {{currentCharacter.description}}
-    </p>
-    <ng-template #noStakeholderDescription>
-      <p>
-        You are currently talking with <i>{{currentCharacter.name}}</i>
-      </p>
-    </ng-template>
-    <mat-divider></mat-divider>
-  </ng-container>
-  <!-- Current room name & description -->
-  <ng-template #roomDescription>
-    <ng-container *ngIf="currentRoom">
-      <h4>{{currentRoom.name}}</h4>
-      <ng-container *ngIf="currentRoom.description && currentRoom.description !== ''; else noDescription">
-        <p style="white-space: pre-line">
-          {{currentRoom.description}}
-        </p>
-      </ng-container>
-      <ng-template #noDescription>
-        <p>
-          You are currently in the <i>{{currentRoom.name}}.</i>
-        </p>
-      </ng-template>
-    </ng-container>
-    <mat-divider></mat-divider>
-  </ng-template>
-
   <!-- Information of target room/stakeholder on hover of hitbox -->
   <div *ngIf="hitboxIsHovered">
     <ng-container *ngIf="hoveredHitboxTargetRoom; else hitboxStakeholder">
-      <h4>{{hoveredHitboxTargetRoom.name}}</h4>
+      <h3>{{hoveredHitboxTargetRoom.name}}</h3>
       <p style="white-space: pre-line">{{hoveredHitboxTargetRoom.description}}</p>
-      <img [src]="getImageOfRoom(hoveredHitboxTargetRoom)" style="max-width: 350px;"/>
+      <img [src]="getImageOfRoom(hoveredHitboxTargetRoom)" style="max-width: 350px;" alt="Room image"/>
     </ng-container>
     <ng-template #hitboxStakeholder>
       <ng-container *ngIf="hoveredHitboxTargetCharacter">
-        <h4>{{hoveredHitboxTargetCharacter.name}}<span *ngIf="hoveredHitboxTargetCharacter.title"> - {{hoveredHitboxTargetCharacter.title}}</span></h4>
+        <h3>{{hoveredHitboxTargetCharacter.name}}<span *ngIf="hoveredHitboxTargetCharacter.title"> - {{hoveredHitboxTargetCharacter.title}}</span></h3>
         <p style="white-space: pre-line">{{hoveredHitboxTargetCharacter.description}}</p>
       </ng-container>
     </ng-template>

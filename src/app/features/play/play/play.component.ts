@@ -13,6 +13,8 @@ import {Character, HitboxesToRoomToGame, IGame, RoomToGame} from "../../../core/
 import {MatDialog, MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {MessageService, MessageStatus} from "../../../core/message.service";
 
+import confetti from 'canvas-confetti';
+
 @Component({
   selector: 'app-play',
   templateUrl: './play.component.html',
@@ -428,6 +430,31 @@ export class PlayComponent implements OnInit {
     });
   }
 
+  openGitHubLink() {
+    window.open("https://github.com/kiril-buga", "_blank");
+  }
+
+  openRickRoll() {
+    // Trigger the confetti effect
+    const duration = 2000; // in milliseconds
+
+    confetti({
+      particleCount: 200,
+      spread: 160,
+      origin: { y: 0.6 },
+    });
+
+    // Clear confetti after a certain duration
+    setTimeout(() => {
+      confetti.reset();
+      window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank");
+    }, duration);
+
+  }
+
+  openContributeGithubLink() {
+    window.open('https://github.com/iisresearch/ChEdBot', '_blank');
+  }
 }
 
 export interface DialogDataGameDocumentation {
