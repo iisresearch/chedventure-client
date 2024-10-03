@@ -126,9 +126,14 @@
 		<!--		</div>-->
 	</form>
 	<mat-divider></mat-divider>
-	<button mat-button type="button" color="primary" (click)="toggleEdit()"
+	<button mat-button type="button" matTooltip="In editing mode, remeber to save your changes by clicking on the green check mark" color="primary" (click)="toggleEdit()"
 					[style]="isEditing ? 'background-color: lightblue;': 'background-color: white;'">
 		<mat-icon>edit</mat-icon>
-		<span style="margin-left: 8px;">Edit Messages</span>
+		@if (isEditing) {
+			<span style="margin-left: 8px;">Stop Editing</span>
+		} @else {
+			<span style="margin-left: 8px;">Edit Messages</span>
+		}
+
 	</button>
 </mat-card>
