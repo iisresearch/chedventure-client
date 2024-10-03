@@ -1,4 +1,4 @@
-import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
+import {Component, Input, Output, OnInit, EventEmitter, SimpleChanges} from '@angular/core';
 import {Character, Game, Hitbox, HitboxesToRoomToGame, Room, RoomToGame} from "../../../../core/models/game";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {FormArray, FormControl, FormGroup, UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
@@ -52,7 +52,7 @@ export class GameRoomDetailEditComponent implements OnInit {
   newHitboxToRoomToGame(id: number|null, active: boolean, hitbox: number,
                         targetRoom: number|null, targetCharacter: number|null,
                         displayHitbox: boolean, blink: boolean): FormGroup {
-    return new FormGroup({
+    const group = new FormGroup({
       id: new FormControl(id),
       active: new FormControl(active),
       hitbox: new FormControl(hitbox),
@@ -61,29 +61,46 @@ export class GameRoomDetailEditComponent implements OnInit {
       displayHitbox: new FormControl({value: displayHitbox, disabled: !active}),
       blink: new FormControl({value: blink, disabled: !active}),
     })
+
+    // Subscribe to changes in the 'active' control
+    group.get('active')!.valueChanges.subscribe(activeValue => {
+      if (activeValue) {
+        group.get('targetRoom')!.enable();
+        group.get('targetCharacter')!.enable();
+        group.get('displayHitbox')!.enable();
+        group.get('blink')!.enable();
+      } else {
+        group.get('targetRoom')!.disable();
+        group.get('targetCharacter')!.disable();
+        group.get('displayHitbox')!.disable();
+        group.get('blink')!.disable();
+      }
+    });
+
+    return group;
   }
 
   constructor(private _sanitizer: DomSanitizer, public dialog: MatDialog, private gameService: GameService) { }
 
   ngOnInit(): void {}
 
-  ngOnChanges() {
-    if (this.roomToGame && this.createNewRoomToGame === false) {
-      let room = this.getRoomById(this.roomToGame.room.id);
-      if (room !== undefined) {
-        this.setupForm(room, this.roomToGame.name, this.roomToGame.description ?? "", this.roomToGame.instructions ?? []);
+  ngOnChanges(changes: SimpleChanges) {
+      if (this.roomToGame && this.createNewRoomToGame === false) {
+        let room = this.getRoomById(this.roomToGame.room.id);
+        if (room !== undefined) {
+          this.setupForm(room, this.roomToGame.name, this.roomToGame.description ?? "", this.roomToGame.instructions ?? []);
+        }
+      } else {
+        let rTG: RoomToGame = {
+          id: -1,
+          name: "",
+          description: null,
+          instructions: null,
+          room: this.selectedRoom,
+          hitboxesToRoomToGame: [],
+        };
+        this.roomToGame = rTG;
       }
-    } else {
-      let rTG: RoomToGame = {
-        id: -1,
-        name: "",
-        description: null,
-        instructions: null,
-        room: this.selectedRoom,
-        hitboxesToRoomToGame: [],
-      };
-      this.roomToGame = rTG;
-    }
   }
 
   setupForm(room: Room, name: string, description: string, instructions: String[]) {
@@ -234,6 +251,8 @@ export class GameRoomDetailEditComponent implements OnInit {
         room: this.room?.value,
         hitboxesToRoomToGame: hitboxesToRoomToGame
       }
+
+      console.log("RoomToGame to send: ", roomToGameToSend);
 
       // If a new roomToGame is being created, send POST Request to API
       if (this.createNewRoomToGame) {
